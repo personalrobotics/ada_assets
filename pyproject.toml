@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ada-assets"
+version = "0.1.0"
+description = "MuJoCo models for the ADA robot-assisted feeding system"
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Siddhartha Srinivasa", email = "siddhartha.srinivasa@gmail.com"},
+]
+requires-python = ">=3.10"
+dependencies = [
+    "mujoco",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ada_assets"]
+
+# Include model XMLs and mesh files in the wheel
+[tool.hatch.build.targets.wheel.force-include]
+"src/ada_assets/models" = "ada_assets/models"
+
+[project.urls]
+Homepage = "https://github.com/personalrobotics/ada_assets"
+Repository = "https://github.com/personalrobotics/ada_assets"
+Issues = "https://github.com/personalrobotics/ada_assets/issues"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I"]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+]

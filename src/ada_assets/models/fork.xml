@@ -1,0 +1,70 @@
+<!-- Articutool fork: 2-DOF end-effector (tilt + roll) with forque F/T sensor.
+     Transforms from ada_ros2/ada_description/urdf/forque/forque.xacro.
+     Attaches at the JACO2's tool_attachment_site. -->
+<mujoco model="articutool_fork">
+
+  <default>
+    <default class="forque">
+      <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+    </default>
+  </default>
+
+  <asset>
+    <material name="forque_grey" rgba="0.4 0.4 0.4 1" specular="0.5" shininess="0.3"/>
+    <material name="fork_metal" rgba="0.75 0.75 0.78 1" specular="0.8" shininess="0.7"/>
+    <mesh name="ft_arm_mount" file="2024_01_18_FTArmMount.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ft_mount" file="2024_01_18_FTMount.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ft_sensor" file="2023_03_09_wirelessFT.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="fork_handle" file="2024_06_24_forkHandleHollow.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="fork_handle_cover" file="2024_06_24_forkHandleCover.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ft_sensor_body" file="ATI-9105-TW-NANO25-E.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="fork_tine" file="fork_tine.stl" scale="0.001 0.001 0.001"/>
+  </asset>
+
+  <worldbody>
+    <!-- Root body — positioned at the attachment frame.
+         The transforms below are from the URDF export (verified). -->
+    <body name="articutool_base">
+
+      <!-- Static forque assembly (visual, no joints) -->
+      <geom class="forque" mesh="ft_arm_mount" material="forque_grey"
+            pos="0.0065 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
+      <geom class="forque" mesh="ft_mount" material="forque_grey"
+            pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
+      <geom class="forque" mesh="ft_sensor" material="forque_grey"
+            pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
+      <geom class="forque" mesh="fork_handle" material="forque_grey"
+            pos="0.0028 -0.011 -0.0025" quat="0.507813 0.492063 0.495354 0.504604"/>
+      <geom class="forque" mesh="fork_handle_cover" material="forque_grey"
+            pos="0.0028 -0.011 -0.0025" quat="0.507813 0.492063 0.495354 0.504604"/>
+
+      <!-- F/T sensor site (for mj_manipulator wrist F/T readings) -->
+      <site name="ft_sensor_site" pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"
+            size="0.005" rgba="0 0 1 0.5"/>
+
+      <!-- Tilt joint body -->
+      <body name="articutool_tilt" pos="0.00407858 -0.0187867 -0.225045" quat="0.0129148 0.258758 0.965856 9.61286e-05">
+        <joint name="articutool_tilt_joint" axis="1 0 0" range="-1.0 1.0" limited="true" damping="0.1"/>
+        <geom class="forque" mesh="ft_sensor_body" material="forque_grey"/>
+
+        <!-- Roll joint body -->
+        <body name="articutool_roll" pos="-0.0054 0.008 0.093" quat="0 0 -0.5 0.866025">
+          <joint name="articutool_roll_joint" axis="0 0 1" range="-3.14159 3.14159" limited="true" damping="0.05"/>
+          <geom type="mesh" mesh="fork_tine" material="fork_metal"
+                contype="1" conaffinity="1"/>
+
+          <!-- Fork tip — the actual feeding contact point -->
+          <site name="fork_tip" pos="0.0135 0.007 0" size="0.003" rgba="1 0 0 1"/>
+        </body>
+      </body>
+
+    </body>
+  </worldbody>
+
+  <actuator>
+    <general name="act_articutool_tilt" joint="articutool_tilt_joint" gaintype="fixed" biastype="affine"
+             gainprm="10" biasprm="0 -10 -1"/>
+    <general name="act_articutool_roll" joint="articutool_roll_joint" gaintype="fixed" biastype="affine"
+             gainprm="5" biasprm="0 -5 -0.5"/>
+  </actuator>
+</mujoco>

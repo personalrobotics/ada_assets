@@ -1,0 +1,210 @@
+<!-- Kinova JACO2 j2n6s200: 6-DOF non-spherical wrist arm.
+     Converted from ada_ros2/ada_description URDF.
+     All transforms verified against MuJoCo's URDF compiler output.
+
+     Materials tuned to match the real JACO2 appearance:
+       - Dark carbon fiber bodies with slight sheen
+       - Bright brushed aluminum rings between joints
+       - Matte black base and dark grey fingers
+
+     Follows menagerie pattern: same mesh in visual (group=2) and
+     collision (group=3) geom groups. -->
+<mujoco model="j2n6s200">
+
+  <!-- Lighting that brings out specular highlights on the carbon fiber -->
+  <visual>
+    <headlight ambient="0.3 0.3 0.3" diffuse="0.5 0.5 0.5" specular="0.5 0.5 0.5"/>
+  </visual>
+
+  <default>
+    <default class="jaco2">
+      <joint damping="0.5"/>
+      <default class="jaco2_visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="jaco2_collision">
+        <geom type="mesh" contype="1" conaffinity="1" group="3"
+              rgba="0.3 0.5 0.3 0.2"/>
+      </default>
+      <default class="jaco2_ring">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+    </default>
+  </default>
+
+  <asset>
+    <!-- Materials extracted from original DAE files (Blender Phong shading).
+         Collada shininess 50 → MuJoCo shininess ≈ 0.39 (50/128).
+         Specular color → MuJoCo specular intensity (grayscale average).
+         Diffuse color → MuJoCo rgba. -->
+    <!-- base, shoulder, arm, forearm, wrist: diffuse=0.179, specular=0.461, shininess=50, reflectivity=0.075 -->
+    <material name="carbon_fiber" rgba="0.179 0.179 0.179 1" specular="0.461" shininess="0.39" reflectance="0.075"/>
+    <!-- ring_big, ring_small: diffuse=0.627, specular=0.5, shininess=50 -->
+    <material name="brushed_aluminum" rgba="0.627 0.627 0.627 1" specular="0.5" shininess="0.39"/>
+    <!-- hand_2finger: no material in DAE, use same as carbon_fiber -->
+    <material name="matte_black" rgba="0.179 0.179 0.179 1" specular="0.461" shininess="0.39" reflectance="0.075"/>
+    <!-- finger_proximal, finger_distal: diffuse=0.596, specular=0.5, shininess=50 -->
+    <material name="finger_rubber" rgba="0.596 0.596 0.596 1" specular="0.5" shininess="0.39"/>
+
+    <mesh name="base" file="base.stl"/>
+    <mesh name="shoulder" file="shoulder.stl"/>
+    <mesh name="arm" file="arm.stl"/>
+    <mesh name="forearm" file="forearm.stl"/>
+    <mesh name="wrist" file="wrist.stl"/>
+    <mesh name="hand_2finger" file="hand_2finger.stl"/>
+    <mesh name="ring_big" file="ring_big.stl"/>
+    <mesh name="ring_small" file="ring_small.stl"/>
+    <mesh name="finger_proximal" file="finger_proximal.stl"/>
+    <mesh name="finger_distal" file="finger_distal.stl"/>
+  </asset>
+
+  <worldbody>
+    <body name="j2n6s200_link_base" childclass="jaco2">
+      <inertial pos="0 0 0.1255" mass="0.46784" diaginertia="0.000951 0.000951 0.000374"/>
+      <geom class="jaco2_visual" mesh="base" material="matte_black"/>
+      <geom class="jaco2_collision" mesh="base"/>
+
+      <site name="base_mount_site" pos="0 0 0" size="0.01" rgba="0 0 1 0.3"/>
+
+      <body name="j2n6s200_link_1" pos="0 0 0.15675" quat="0 0 1 0" gravcomp="1">
+        <inertial pos="0 -0.002 -0.0605" mass="0.7477" diaginertia="0.00152032 0.00152032 0.00059816"/>
+        <joint name="j2n6s200_joint_1" axis="0 0 1"/>
+        <geom class="jaco2_visual" mesh="shoulder" material="carbon_fiber"/>
+        <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
+        <geom class="jaco2_collision" mesh="shoulder"/>
+
+        <body name="j2n6s200_link_2" pos="0 0.0016 -0.11875" quat="0 0 -0.707107 0.707107" gravcomp="1">
+          <inertial pos="0 -0.2065 -0.01" quat="0.707107 0.707107 0 0" mass="0.99" diaginertia="0.0105022 0.0105022 0.000792"/>
+          <joint name="j2n6s200_joint_2" axis="0 0 1" range="0.820305 5.46288" limited="true"/>
+          <geom class="jaco2_visual" mesh="arm" material="carbon_fiber"/>
+          <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
+          <geom class="jaco2_collision" mesh="arm"/>
+
+          <body name="j2n6s200_link_3" pos="0 -0.41 0" quat="0 0 1 0" gravcomp="1">
+            <inertial pos="0 0.081 -0.0086" quat="0.707107 0.707107 0 0" mass="0.6763" diaginertia="0.00142022 0.00142022 0.000304335"/>
+            <joint name="j2n6s200_joint_3" axis="0 0 1" range="0.331613 5.95157" limited="true"/>
+            <geom class="jaco2_visual" mesh="forearm" material="carbon_fiber"/>
+            <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
+            <geom class="jaco2_collision" mesh="forearm"/>
+
+            <body name="j2n6s200_link_4" pos="0 0.2073 -0.0114" quat="0 0 -0.707107 0.707107" gravcomp="1">
+              <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
+              <joint name="j2n6s200_joint_4" axis="0 0 1"/>
+              <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
+              <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
+              <geom class="jaco2_collision" mesh="wrist"/>
+
+              <body name="j2n6s200_link_5" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
+                <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
+                <joint name="j2n6s200_joint_5" axis="0 0 1"/>
+                <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
+                <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
+                <geom class="jaco2_collision" mesh="wrist"/>
+
+                <body name="j2n6s200_link_6" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
+                  <inertial pos="0 0 -0.06" mass="0.78" diaginertia="0.000624 0.00037 0.00037"/>
+                  <joint name="j2n6s200_joint_6" axis="0 0 1"/>
+                  <geom class="jaco2_visual" mesh="hand_2finger" material="carbon_fiber"/>
+                  <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
+                  <geom class="jaco2_collision" mesh="hand_2finger"/>
+
+                  <!-- Tool attachment site — articutool/gripper attaches here -->
+                  <site name="tool_attachment_site" pos="0 0 -0.16" quat="0 1 0 0" size="0.01" rgba="1 0 0 0.3"/>
+
+                  <!-- EE site for IK (at the URDF end_effector frame) -->
+                  <site name="ee_site" pos="0 0 -0.16" quat="0 0.707107 0.707107 0" size="0.005" rgba="0 1 0 1"/>
+
+                  <!-- Fingers — underactuated: 1 motor per finger drives
+                       proximal (revolute) + distal (revolute with spring).
+                       The distal spring biases it straight; when the proximal
+                       is blocked by contact, the actuator force transfers to
+                       the distal via a fixed tendon, wrapping around the object.
+                       Each finger is independently actuated (separate motor).
+                       Ref: Kinova patent US8840160B2. -->
+                  <body name="j2n6s200_link_finger_1" pos="-0.0025 0.03095 -0.11482" quat="0.314405 -0.633364 -0.314405 0.633364" gravcomp="1">
+                    <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
+                    <joint name="j2n6s200_joint_finger_1" axis="0 0 1" range="0 1.51" limited="true" damping="0.05" armature="0.001"/>
+                    <geom class="jaco2_visual" mesh="finger_proximal" material="finger_rubber"/>
+                    <geom class="jaco2_collision" mesh="finger_proximal"/>
+                    <body name="j2n6s200_link_finger_tip_1" pos="0.044 -0.003 0" gravcomp="1">
+                      <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
+                      <joint name="j2n6s200_joint_finger_tip_1" axis="0 0 1" range="0 1.2" limited="true"
+                             stiffness="0.2" damping="0.05" springref="0" armature="0.001"/>
+                      <geom class="jaco2_visual" mesh="finger_distal" material="finger_rubber"/>
+                      <geom class="jaco2_collision" mesh="finger_distal"/>
+                    </body>
+                  </body>
+                  <body name="j2n6s200_link_finger_2" pos="-0.0025 -0.03095 -0.11482" quat="0.633364 -0.314405 0.633364 -0.314405" gravcomp="1">
+                    <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
+                    <joint name="j2n6s200_joint_finger_2" axis="0 0 1" range="0 1.51" limited="true" damping="0.05" armature="0.001"/>
+                    <geom class="jaco2_visual" mesh="finger_proximal" material="finger_rubber"/>
+                    <geom class="jaco2_collision" mesh="finger_proximal"/>
+                    <body name="j2n6s200_link_finger_tip_2" pos="0.044 -0.003 0" gravcomp="1">
+                      <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
+                      <joint name="j2n6s200_joint_finger_tip_2" axis="0 0 1" range="0 1.2" limited="true"
+                             stiffness="0.2" damping="0.05" springref="0" armature="0.001"/>
+                      <geom class="jaco2_visual" mesh="finger_distal" material="finger_rubber"/>
+                      <geom class="jaco2_collision" mesh="finger_distal"/>
+                    </body>
+                  </body>
+
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Underactuated finger mechanism (Kinova patent US8840160B2):
+       Each finger has 1 motor driving a tendon coupled to BOTH joints.
+       The distal has a spring biasing it straight.
+       In free space: the spring is stronger than the tendon's distal
+       pull, so the proximal curls while the distal stays straight.
+       On contact: the proximal is blocked, the tendon force transfers
+       to the distal (overcoming the spring), wrapping around the object.
+
+       MuJoCo implementation: fixed tendon with coef=1.0 on proximal
+       and coef=0.5 on distal. Position actuator drives the tendon.
+       Spring stiffness on distal is tuned so it holds straight in
+       free space but yields under the tendon's transferred force. -->
+  <tendon>
+    <fixed name="finger_1_tendon">
+      <joint joint="j2n6s200_joint_finger_1" coef="1.0"/>
+      <joint joint="j2n6s200_joint_finger_tip_1" coef="0.5"/>
+    </fixed>
+    <fixed name="finger_2_tendon">
+      <joint joint="j2n6s200_joint_finger_2" coef="1.0"/>
+      <joint joint="j2n6s200_joint_finger_tip_2" coef="0.5"/>
+    </fixed>
+  </tendon>
+
+  <actuator>
+    <!-- Arm joints -->
+    <!-- Effort limits from URDF: J1=40, J2=80, J3=40, J4-6=20 Nm -->
+    <general name="act_j2n6s200_joint_1" joint="j2n6s200_joint_1" gaintype="fixed" biastype="affine" gainprm="50" biasprm="0 -50 -5" forcerange="-40 40"/>
+    <general name="act_j2n6s200_joint_2" joint="j2n6s200_joint_2" gaintype="fixed" biastype="affine" gainprm="80" biasprm="0 -80 -8" ctrlrange="0.820305 5.46288" forcerange="-80 80"/>
+    <general name="act_j2n6s200_joint_3" joint="j2n6s200_joint_3" gaintype="fixed" biastype="affine" gainprm="50" biasprm="0 -50 -5" ctrlrange="0.331613 5.95157" forcerange="-40 40"/>
+    <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
+    <!-- Finger actuators: each independently drives its proximal joint.
+         ctrl range maps to Kinova API 0 (open) → 1.51 (fully closed).
+         Effort limit 2 Nm (from URDF). Strong enough to grip firmly. -->
+    <general name="act_finger_1" tendon="finger_1_tendon" gaintype="fixed" biastype="affine"
+             gainprm="0.3" biasprm="0 -0.3 -0.05" ctrlrange="0 1.51" forcerange="-2 2"/>
+    <general name="act_finger_2" tendon="finger_2_tendon" gaintype="fixed" biastype="affine"
+             gainprm="0.3" biasprm="0 -0.3 -0.05" ctrlrange="0 1.51" forcerange="-2 2"/>
+  </actuator>
+
+  <!-- qpos order: 6 arm + finger_1_proximal + finger_tip_1 + finger_2_proximal + finger_tip_2
+       Distal joints at 0 (spring holds them straight in free space). -->
+  <keyframe>
+    <key name="above_plate" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 1.33 0 1.33 0"/>
+    <key name="resting" qpos="-1.860 2.181 0.364 -5.187 -0.470 -0.814 1.33 0 1.33 0"/>
+    <key name="staging" qpos="-2.122 4.496 4.022 -4.710 -2.493 -1.926 1.33 0 1.33 0"/>
+    <key name="stow" qpos="-1.521 2.601 0.328 -4.000 0.228 3.879 1.33 0 1.33 0"/>
+    <key name="open" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 0 0 0 0"/>
+  </keyframe>
+</mujoco>

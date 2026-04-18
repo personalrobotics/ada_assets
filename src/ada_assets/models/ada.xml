@@ -1,0 +1,15 @@
+<!-- ADA robot: JACO2 arm on wheelchair with seated human.
+     Compose/decompose by adding or removing <include> lines.
+     All component XMLs are optional — include only what you need.
+
+     meshdir MUST be set to "assets" by the loading scene/script. -->
+<mujoco model="ada">
+  <compiler angle="radian"/>
+  <option integrator="implicitfast" impratio="10" cone="elliptic"/>
+
+  <!-- Components — add/remove as needed -->
+  <include file="wheelchair.xml"/>
+  <include file="jaco2.xml"/>
+  <include file="seated.xml"/>
+  <!-- <include file="fork.xml"/> -->
+</mujoco>

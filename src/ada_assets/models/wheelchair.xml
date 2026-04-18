@@ -1,0 +1,33 @@
+<!-- Permobil wheelchair.
+     The arm attaches at arm_attachment_site.
+
+     The real wheelchair has a "tilt" that's actually a calibration
+     transform — when the user sits down, the tyres compress unevenly
+     and the chair tilts. This is measured once per session and applied
+     as a fixed transform, not an actuated joint. In the assembly,
+     set the quat on arm_attachment_site's parent body to match the
+     measured tilt. Default: identity (perfectly level). -->
+<mujoco model="wheelchair">
+
+  <asset>
+    <material name="wheelchair_metal" rgba="0.3 0.3 0.35 1" specular="0.4" shininess="0.3"/>
+    <mesh name="wheelchair" file="wheelchair.stl"/>
+  </asset>
+
+  <worldbody>
+    <!-- z=0.4612 from physics drop test (convex hull on floor plane). -->
+    <body name="wheelchair_base" pos="0 0 0.4612">
+      <geom name="wheelchair_visual" type="mesh" mesh="wheelchair" material="wheelchair_metal"
+            contype="0" conaffinity="0" group="2"/>
+      <geom name="wheelchair_collision" type="mesh" mesh="wheelchair"
+            contype="1" conaffinity="1" group="3"
+            rgba="0.3 0.5 0.3 0.2"/>
+
+      <!-- Arm mount. The tilt calibration (if needed) is applied as a
+           quat on this body at assembly time. Default: identity. -->
+      <body name="arm_mount" pos="0 0 -0.4612">
+        <site name="arm_attachment_site" pos="0 0 0" size="0.01" rgba="0 0 1 0.3"/>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>

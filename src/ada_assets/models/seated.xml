@@ -1,0 +1,91 @@
+<!-- Seated human model for the ADA feeding setup.
+     ALL POSITIONS IN FLOOR FRAME (z=0 = floor).
+
+     Converted from ada_planning_scene config (seated namespace).
+     Original positions were relative to arm root frame. The arm root
+     sits 0.4612m above the floor (from wheelchair drop test).
+     Floor-frame z = root-frame z + 0.4612.
+
+     Original root-frame positions (from ada_planning_scene.yaml):
+       body:      [0.02, -0.02, -0.05]  quat_xyzw=[0, 0, 0, 1]
+       head(tom): [0.29,  0.35,  0.85]  quat_xyzw=[-0.0616, -0.0616, -0.6804, 0.7044]
+       face_wall: [0.37,  0.22,  0.85]  box [0.45, 0.01, 0.4]
+
+     Components:
+       1. body_collision — safety envelope wrapping the seated user (collision only)
+       2. tom visual — head/upper body mesh
+       3. head collision sphere
+       4. mouth site — feeding target
+       5. face wall — thin box in front of face (collision, initially disabled) -->
+<mujoco model="seated_human">
+
+  <asset>
+    <material name="skin" rgba="0.72 0.58 0.47 0.8" specular="0.2" shininess="0.1"/>
+    <material name="body_safety" rgba="0.72 0.58 0.47 0.15" specular="0.1" shininess="0.05"/>
+    <mesh name="tom" file="tom.stl"/>
+    <mesh name="body_collision" file="body_collision_in_wheelchair.stl"/>
+  </asset>
+
+  <worldbody>
+    <!-- Body safety envelope. Same position as wheelchair_base [0, 0, 0.4612].
+         In the original planning scene, both wheelchair and body collision
+         are at [0.02, -0.02, -0.05] relative to root — same position.
+         The wheelchair drop test gives z=0.4612 for wheels on floor.
+         Body collision must match exactly so it wraps around the chair. -->
+    <body name="user_body" pos="0 0 0.4612">
+      <geom name="body_safety_envelope" type="mesh" mesh="body_collision"
+            material="body_safety" contype="1" conaffinity="1" group="3"/>
+    </body>
+
+    <!-- Head — mocap body (movable via data.mocap_pos/quat).
+         Floor-frame pos = [0.29, 0.35, 1.3112].
+         Face wall is a child geom — moves with the head. -->
+    <!-- Head pos x,y aligned to wheelchair visual center (0.269, 0.340)
+         rather than the raw planning scene value (0.29, 0.35) which was
+         relative to the arm root, not the chair center. z from planning
+         scene converted to floor frame. -->
+    <body name="head" mocap="true"
+          pos="0.269 0.340 1.3112"
+          quat="0.704416 -0.061628 -0.061628 -0.680442">
+      <!-- Tom visual (head/upper body mesh) -->
+      <geom name="head_visual" type="mesh" mesh="tom" material="skin"
+            contype="0" conaffinity="0" group="2"/>
+      <!-- Head collision box — sized to tom.stl bounds:
+           x: [-0.256, 0.017] → half=0.137, center=-0.120
+           y: [-0.133, 0.133] → half=0.133, center=0
+           z: [-0.193, 0.220] → half=0.207, center=0.014 -->
+      <geom name="head_collision" type="box"
+            size="0.137 0.133 0.207" pos="-0.120 0 0.014"
+            contype="1" conaffinity="1" group="3"
+            rgba="0.7 0.5 0.4 0.15"/>
+      <!-- Mouth — feeding target frame. Approximate default position;
+           on the real robot this comes from face detection at runtime.
+           Offset: forward (+x in head frame) and slightly below center.
+           The site defines the programmatic target. The geom markers
+           show the frame axes in the viewer (mj_viser doesn't render sites).
+           Frame: +x = out of mouth (approach direction), +z = up (toward top of head). -->
+      <site name="mouth" pos="0.05 0.0 -0.02" size="0.001"/>
+      <!-- Approach axis (x = out of mouth, red) -->
+      <geom name="mouth_axis_x" type="cylinder" size="0.002 0.015"
+            pos="0.065 0.0 -0.02" quat="0.707107 0 0.707107 0"
+            rgba="1 0 0 0.9" contype="0" conaffinity="0" group="2"/>
+      <!-- Opening axis (y, green) -->
+      <geom name="mouth_axis_y" type="cylinder" size="0.002 0.015"
+            pos="0.05 0.015 -0.02" quat="0.707107 0.707107 0 0"
+            rgba="0 1 0 0.9" contype="0" conaffinity="0" group="2"/>
+      <!-- Up axis (z = toward top of head, blue) -->
+      <geom name="mouth_axis_z" type="cylinder" size="0.002 0.015"
+            pos="0.05 0.0 -0.005"
+            rgba="0 0 1 0.9" contype="0" conaffinity="0" group="2"/>
+      <!-- Face wall — thin box in front of face. Child of head so it
+           tracks head movement (improvement over original, which was a
+           fixed world-frame box at [0.37, 0.22, 0.85] in root frame).
+           Half-sizes from planning scene: primitive_dims=[0.45, 0.01, 0.4]/2.
+           Initially disabled (contype=0). Toggle at runtime for safety. -->
+      <geom name="face_wall_geom" type="box"
+            size="0.005 0.225 0.2" pos="0.15 0 0"
+            contype="0" conaffinity="0" group="3"
+            rgba="1 0.3 0.3 0.1"/>
+    </body>
+  </worldbody>
+</mujoco>
