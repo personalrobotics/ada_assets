@@ -14,7 +14,7 @@ Usage::
 
     model, data = assemble_ada()                    # wheelchair + arm + human
     model, data = assemble_ada(with_human=False)    # wheelchair + arm only
-    model, data = assemble_ada(with_fork=True)      # + articutool fork
+    model, data = assemble_ada(with_articutool=True)      # + articutool fork
 
 Or generate the XML::
 
@@ -35,14 +35,14 @@ from ada_assets import ASSETS_DIR, MODELS_DIR
 def assemble_ada(
     *,
     with_human: bool = True,
-    with_fork: bool = False,
+    with_articutool: bool = False,
     with_floor: bool = True,
 ) -> tuple[mujoco.MjModel, mujoco.MjData]:
     """Assemble the ADA robot and return (model, data).
 
     Args:
         with_human: Include seated human (body collision, head, mouth).
-        with_fork: Include Articutool fork (2-DOF) on the arm flange.
+        with_articutool: Include Articutool (2-DOF) on the arm flange.
         with_floor: Include floor plane and lighting.
 
     Returns:
@@ -50,7 +50,7 @@ def assemble_ada(
     """
     spec = _build_spec(
         with_human=with_human,
-        with_fork=with_fork,
+        with_articutool=with_articutool,
         with_floor=with_floor,
     )
     model = spec.compile()
@@ -68,7 +68,7 @@ def assemble_ada(
 def _build_spec(
     *,
     with_human: bool = True,
-    with_fork: bool = False,
+    with_articutool: bool = False,
     with_floor: bool = True,
 ) -> mujoco.MjSpec:
     """Build the MjSpec for the ADA assembly."""
@@ -92,13 +92,14 @@ def _build_spec(
         human_spec.meshdir = str(ASSETS_DIR)
         spec.attach(human_spec, prefix="human/", frame=spec.worldbody.add_frame())
 
-    # Attach fork at JACO2's tool_attachment_site
-    if with_fork:
-        fork_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "fork.xml"))
-        fork_spec.meshdir = str(ASSETS_DIR)
-        tool_site = spec.site("tool_attachment_site")
-        if tool_site is not None:
-            spec.attach(fork_spec, prefix="fork/", site=tool_site)
+    # Add articutool as a graspable freejoint object on worldbody.
+    # It's NOT attached to the arm — the JACO2 picks it up with its
+    # fingers. A weld constraint is added at runtime when grasped
+    # (via grasp_manager.attach_object). Place it near the arm for now.
+    if with_articutool:
+        articutool_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "articutool.xml"))
+        articutool_spec.meshdir = str(ASSETS_DIR)
+        spec.attach(articutool_spec, prefix="articutool/", frame=spec.worldbody.add_frame())
 
     # Floor + lighting
     if with_floor:
@@ -125,21 +126,21 @@ def _add_floor(spec: mujoco.MjSpec) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Assemble the ADA robot model.")
     parser.add_argument("--no-human", action="store_true", help="Exclude seated human.")
-    parser.add_argument("--with-fork", action="store_true", help="Include Articutool fork.")
+    parser.add_argument("--with-articutool", action="store_true", help="Include Articutool.")
     parser.add_argument("--save", type=Path, help="Save assembled XML to this path.")
     parser.add_argument("--view", action="store_true", help="Launch mj_viser viewer.")
     args = parser.parse_args()
 
     model, data = assemble_ada(
         with_human=not args.no_human,
-        with_fork=args.with_fork,
+        with_articutool=args.with_articutool,
     )
     print(f"ADA assembled: nbody={model.nbody} ngeom={model.ngeom} njnt={model.njnt} nu={model.nu}")
 
     if args.save:
         spec = _build_spec(
             with_human=not args.no_human,
-            with_fork=args.with_fork,
+            with_articutool=args.with_articutool,
         )
         args.save.parent.mkdir(parents=True, exist_ok=True)
         spec.to_file(str(args.save))

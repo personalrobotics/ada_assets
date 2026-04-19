@@ -11,5 +11,5 @@
   <include file="wheelchair.xml"/>
   <include file="jaco2.xml"/>
   <include file="seated.xml"/>
-  <!-- <include file="fork.xml"/> -->
+  <!-- <include file="articutool.xml"/> -->
 </mujoco>

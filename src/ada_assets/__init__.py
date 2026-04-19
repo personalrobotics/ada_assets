@@ -37,7 +37,7 @@ MODELS_DIR = Path(__file__).parent / "models"
 ASSETS_DIR = MODELS_DIR / "assets"
 
 # Available component models
-COMPONENTS = ["jaco2", "wheelchair", "seated", "fork"]
+COMPONENTS = ["jaco2", "wheelchair", "seated", "articutool"]
 
 # Available assembled models
 ASSEMBLIES = ["ada", "scene"]
@@ -73,7 +73,7 @@ def get_component_path(component: str) -> Path:
     """Get path to a component XML for custom assembly.
 
     Args:
-        component: One of "jaco2", "wheelchair", "seated", "fork".
+        component: One of "jaco2", "wheelchair", "seated", "articutool".
 
     Returns:
         Path to the component XML file.
