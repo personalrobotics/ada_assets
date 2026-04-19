@@ -114,6 +114,14 @@
             <site name="ft_sensor_site" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
 
             <!-- === Articutool 2-DOF mechanism === -->
+            <!-- Motor housing visual — fills the gap between the ATI sensor
+                 body and the fork tine. The real Articutool has a cylindrical
+                 housing here containing the tilt and roll motors. No mesh
+                 exists in the original URDF; approximated as a cylinder. -->
+            <geom name="motor_housing" type="cylinder" size="0.015 0.04"
+                  pos="0 0 0.04" rgba="0.35 0.35 0.35 1"
+                  contype="0" conaffinity="0" group="2"/>
+
             <!-- Tilt joint: rotates the fork about a lateral axis.
                  Controls approach angle to food. -->
             <body name="articutool_tilt" pos="0 0 0.02">
