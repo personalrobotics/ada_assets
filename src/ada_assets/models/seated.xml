@@ -67,18 +67,6 @@
       <!-- Mouth pos: moved back from 0.05 to 0.02 in x (closer to face surface).
            On the real robot this comes from face detection at runtime. -->
       <site name="mouth" pos="0.02 0.0 0.0" size="0.001"/>
-      <!-- Approach axis (x = out of mouth, red) -->
-      <geom name="mouth_axis_x" type="cylinder" size="0.002 0.015"
-            pos="0.035 0.0 0.0" quat="0.707107 0 0.707107 0"
-            rgba="1 0 0 0.9" contype="0" conaffinity="0" group="2"/>
-      <!-- Opening axis (y, green) -->
-      <geom name="mouth_axis_y" type="cylinder" size="0.002 0.015"
-            pos="0.02 0.015 0.0" quat="0.707107 0.707107 0 0"
-            rgba="0 1 0 0.9" contype="0" conaffinity="0" group="2"/>
-      <!-- Up axis (z = toward top of head, blue) -->
-      <geom name="mouth_axis_z" type="cylinder" size="0.002 0.015"
-            pos="0.02 0.0 0.015"
-            rgba="0 0 1 0.9" contype="0" conaffinity="0" group="2"/>
       <!-- Face wall — thin box in front of face. Child of head so it
            tracks head movement (improvement over original, which was a
            fixed world-frame box at [0.37, 0.22, 0.85] in root frame).

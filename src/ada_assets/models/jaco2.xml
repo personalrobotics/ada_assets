@@ -111,6 +111,12 @@
                   <!-- Tool attachment site — articutool/gripper attaches here -->
                   <site name="tool_attachment_site" pos="0 0 -0.16" quat="0 1 0 0" size="0.01" rgba="1 0 0 0.3"/>
 
+                  <!-- Forque attachment site — exact xacro transform from
+                       FTArmMount_to_arm: xyz=[0.0065, -0.011, -0.0075],
+                       rpy=[π/2, 0, π/2] = quat=[0.5, 0.5, 0.5, 0.5] -->
+                  <site name="forque_attachment_site" pos="0.0065 -0.011 -0.0075"
+                        quat="0.5 0.5 0.5 0.5" size="0.005" rgba="0 0 1 0.3"/>
+
                   <!-- EE site for IK (at the URDF end_effector frame) -->
                   <site name="ee_site" pos="0 0 -0.16" quat="0 0.707107 0.707107 0" size="0.005" rgba="0 1 0 1"/>
 

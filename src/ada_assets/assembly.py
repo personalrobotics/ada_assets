@@ -3,10 +3,10 @@
 
 """Assemble the ADA robot from components via MjSpec.
 
-Composes wheelchair + JACO2 arm (+ optionally seated human and fork)
+Composes wheelchair + JACO2 arm (+ optionally seated human and forque)
 into a single MuJoCo model. The JACO2 attaches at the wheelchair's
-arm_attachment_site. The human and fork are added to worldbody as
-static scenery (human) or attached to the arm flange (fork).
+arm_attachment_site. The human is added to worldbody as static scenery.
+The forque is welded to link_6 at the xacro FTArmMount transform.
 
 Usage::
 
@@ -27,9 +27,24 @@ import argparse
 import sys
 from pathlib import Path
 
+import numpy as np
 import mujoco
 
 from ada_assets import ASSETS_DIR, MODELS_DIR
+
+
+def _init_forque_pose(model: mujoco.MjModel, data: mujoco.MjData) -> None:
+    """Set the forque freejoint qpos so it starts at the grasp site."""
+    site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, "forque_attachment_site")
+    jnt_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, "forque/fork_freejoint")
+    adr = model.jnt_qposadr[jnt_id]
+    # Freejoint qpos: [x, y, z, qw, qx, qy, qz]
+    data.qpos[adr:adr + 3] = data.site_xpos[site_id]
+    # Site orientation as quaternion
+    mat = data.site_xmat[site_id].reshape(3, 3)
+    quat = np.zeros(4)
+    mujoco.mju_mat2Quat(quat, mat.flatten())
+    data.qpos[adr + 3:adr + 7] = quat
 
 
 def assemble_ada(
@@ -62,6 +77,13 @@ def assemble_ada(
         mujoco.mj_resetDataKeyframe(model, data, key_id)
 
     mujoco.mj_forward(model, data)
+
+    # Initialize forque freejoint to match the hand's forque_attachment_site
+    # so it starts in the correct grasped position (not at origin).
+    if with_forque:
+        _init_forque_pose(model, data)
+        mujoco.mj_forward(model, data)
+
     return model, data
 
 
@@ -92,14 +114,22 @@ def _build_spec(
         human_spec.meshdir = str(ASSETS_DIR)
         spec.attach(human_spec, prefix="human/", frame=spec.worldbody.add_frame())
 
-    # Add forque as a graspable freejoint object on worldbody.
-    # It's NOT attached to the arm — the JACO2 picks it up with its
-    # fingers. A weld constraint is added at runtime when grasped
-    # (via grasp_manager.attach_object). Place it near the arm for now.
+    # Forque as a graspable freejoint object on worldbody.
+    # A weld equality constraint connects grasp_site to forque_attachment_site,
+    # starting enabled. Disable the constraint at runtime to release the tool.
     if with_forque:
         forque_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "forque.xml"))
         forque_spec.meshdir = str(ASSETS_DIR)
         spec.attach(forque_spec, prefix="forque/", frame=spec.worldbody.add_frame())
+
+        # Weld: forque/grasp_site → forque_attachment_site (on link_6)
+        weld = spec.add_equality()
+        weld.name = "forque_grasp_weld"
+        weld.type = mujoco.mjtEq.mjEQ_WELD
+        weld.objtype = mujoco.mjtObj.mjOBJ_SITE
+        weld.name1 = "forque/grasp_site"
+        weld.name2 = "forque_attachment_site"
+        weld.active = True
 
     # Floor + lighting
     if with_floor:
