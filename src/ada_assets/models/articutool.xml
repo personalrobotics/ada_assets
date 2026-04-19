@@ -162,4 +162,23 @@
              gaintype="fixed" biastype="affine"
              gainprm="5" biasprm="0 -5 -0.5" forcerange="-3 3"/>
   </actuator>
+
+  <!-- ATI-9105-TW-NANO25-E force/torque sensor.
+       Reads the 3-axis force and 3-axis torque at ft_sensor_site.
+       When the tool is welded to the hand, forces from food contact
+       travel: tine → roll → tilt → sensor site → handle → weld → hand.
+       The sensor captures the interaction force at the sensor boundary.
+
+       MuJoCo sensor types:
+         framelinvel/frameangvel would give velocity (not force).
+         'force' and 'torque' on a site give the constraint force
+         transmitted through the body tree at that site frame.
+
+       Note: these sensors read zero when the tool is in free flight
+       (no constraint forces). They produce meaningful readings when
+       the tool is welded to the hand AND the tine contacts something. -->
+  <sensor>
+    <force name="ft_force" site="ft_sensor_site"/>
+    <torque name="ft_torque" site="ft_sensor_site"/>
+  </sensor>
 </mujoco>
