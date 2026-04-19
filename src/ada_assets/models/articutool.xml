@@ -177,8 +177,18 @@
        Note: these sensors read zero when the tool is in free flight
        (no constraint forces). They produce meaningful readings when
        the tool is welded to the hand AND the tine contacts something. -->
+  <!-- ATI Nano25-E specs (SI-125-3 calibration):
+       Force range:  Fx,Fy = ±125 N, Fz = ±500 N
+       Torque range: Tx,Ty,Tz = ±3 Nm
+       Resolution:   F_xy = 0.0625 N, Fz = 0.125 N, T = 0.00216 Nm
+       Noise (RMS):  ~0.06 N force, ~0.003 Nm torque
+       Source: https://www.ati-ia.com/products/ft/ft_models.aspx?id=Nano25
+
+       MuJoCo cutoff is a single scalar — use the conservative axis
+       (125 N for force, 3 Nm for torque). The Fz axis can go higher
+       on the real sensor but MuJoCo clamps uniformly. -->
   <sensor>
-    <force name="ft_force" site="ft_sensor_site"/>
-    <torque name="ft_torque" site="ft_sensor_site"/>
+    <force name="ft_force" site="ft_sensor_site" cutoff="125" noise="0.06"/>
+    <torque name="ft_torque" site="ft_sensor_site" cutoff="3" noise="0.003"/>
   </sensor>
 </mujoco>
