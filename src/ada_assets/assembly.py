@@ -1,0 +1,158 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2025 Siddhartha Srinivasa
+
+"""Assemble the ADA robot from components via MjSpec.
+
+Composes wheelchair + JACO2 arm (+ optionally seated human and fork)
+into a single MuJoCo model. The JACO2 attaches at the wheelchair's
+arm_attachment_site. The human and fork are added to worldbody as
+static scenery (human) or attached to the arm flange (fork).
+
+Usage::
+
+    from ada_assets.assembly import assemble_ada
+
+    model, data = assemble_ada()                    # wheelchair + arm + human
+    model, data = assemble_ada(with_human=False)    # wheelchair + arm only
+    model, data = assemble_ada(with_fork=True)      # + articutool fork
+
+Or generate the XML::
+
+    uv run python -m ada_assets.assembly --save
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+import mujoco
+
+from ada_assets import ASSETS_DIR, MODELS_DIR
+
+
+def assemble_ada(
+    *,
+    with_human: bool = True,
+    with_fork: bool = False,
+    with_floor: bool = True,
+) -> tuple[mujoco.MjModel, mujoco.MjData]:
+    """Assemble the ADA robot and return (model, data).
+
+    Args:
+        with_human: Include seated human (body collision, head, mouth).
+        with_fork: Include Articutool fork (2-DOF) on the arm flange.
+        with_floor: Include floor plane and lighting.
+
+    Returns:
+        Compiled MuJoCo model and data, with the JACO2 at above_plate keyframe.
+    """
+    spec = _build_spec(
+        with_human=with_human,
+        with_fork=with_fork,
+        with_floor=with_floor,
+    )
+    model = spec.compile()
+    data = mujoco.MjData(model)
+
+    # Apply above_plate keyframe if it exists
+    key_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_KEY, "above_plate")
+    if key_id >= 0:
+        mujoco.mj_resetDataKeyframe(model, data, key_id)
+
+    mujoco.mj_forward(model, data)
+    return model, data
+
+
+def _build_spec(
+    *,
+    with_human: bool = True,
+    with_fork: bool = False,
+    with_floor: bool = True,
+) -> mujoco.MjSpec:
+    """Build the MjSpec for the ADA assembly."""
+    # Start with the wheelchair as the base
+    spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "wheelchair.xml"))
+    spec.meshdir = str(ASSETS_DIR)
+    spec.compiler.degree = False  # use radians
+    spec.option.integrator = mujoco.mjtIntegrator.mjINT_IMPLICITFAST
+    spec.option.impratio = 10
+    spec.option.cone = mujoco.mjtCone.mjCONE_ELLIPTIC
+
+    # Attach JACO2 at the wheelchair's arm_attachment_site
+    jaco2_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "jaco2.xml"))
+    jaco2_spec.meshdir = str(ASSETS_DIR)
+    arm_site = spec.site("arm_attachment_site")
+    spec.attach(jaco2_spec, prefix="", site=arm_site)
+
+    # Add seated human (static scenery — no joints, no physics interaction)
+    if with_human:
+        human_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "seated.xml"))
+        human_spec.meshdir = str(ASSETS_DIR)
+        spec.attach(human_spec, prefix="human/", frame=spec.worldbody.add_frame())
+
+    # Attach fork at JACO2's tool_attachment_site
+    if with_fork:
+        fork_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "fork.xml"))
+        fork_spec.meshdir = str(ASSETS_DIR)
+        tool_site = spec.site("tool_attachment_site")
+        if tool_site is not None:
+            spec.attach(fork_spec, prefix="fork/", site=tool_site)
+
+    # Floor + lighting
+    if with_floor:
+        _add_floor(spec)
+
+    return spec
+
+
+def _add_floor(spec: mujoco.MjSpec) -> None:
+    """Add floor plane and lighting."""
+    light = spec.worldbody.add_light()
+    light.pos = [0, 0, 3]
+    light.dir = [0, 0, -1]
+
+    floor = spec.worldbody.add_geom()
+    floor.name = "floor"
+    floor.type = mujoco.mjtGeom.mjGEOM_PLANE
+    floor.size = [3, 3, 0.05]
+    floor.rgba = [0.9, 0.9, 0.9, 1]
+    floor.contype = 1
+    floor.conaffinity = 1
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Assemble the ADA robot model.")
+    parser.add_argument("--no-human", action="store_true", help="Exclude seated human.")
+    parser.add_argument("--with-fork", action="store_true", help="Include Articutool fork.")
+    parser.add_argument("--save", type=Path, help="Save assembled XML to this path.")
+    parser.add_argument("--view", action="store_true", help="Launch mj_viser viewer.")
+    args = parser.parse_args()
+
+    model, data = assemble_ada(
+        with_human=not args.no_human,
+        with_fork=args.with_fork,
+    )
+    print(f"ADA assembled: nbody={model.nbody} ngeom={model.ngeom} njnt={model.njnt} nu={model.nu}")
+
+    if args.save:
+        spec = _build_spec(
+            with_human=not args.no_human,
+            with_fork=args.with_fork,
+        )
+        args.save.parent.mkdir(parents=True, exist_ok=True)
+        spec.to_file(str(args.save))
+        print(f"Saved to {args.save}")
+
+    if args.view:
+        from mj_viser import MujocoViewer
+
+        viewer = MujocoViewer(model, data, label="ADA")
+        viewer.launch()
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
