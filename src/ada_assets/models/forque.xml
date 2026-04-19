@@ -108,50 +108,29 @@
 
             <!-- F/T sensor site — between handle and utensil.
                  Forces from food contact travel through:
-                 tine → roll → tilt → THIS SITE → handle → weld → hand.
+                 tine → THIS SITE → handle → weld → hand.
                  Use mj_manipulator's ft_force_sensor/ft_torque_sensor
                  pointing at this site. -->
             <site name="ft_sensor_site" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
 
-            <!-- === Articutool 2-DOF mechanism === -->
-            <!-- Motor housing visual — fills the gap between the ATI sensor
-                 body and the fork tine. The real Articutool has a cylindrical
-                 housing here containing the tilt and roll motors. No mesh
-                 exists in the original URDF; approximated as a cylinder. -->
-            <geom name="motor_housing" type="cylinder" size="0.015 0.04"
-                  pos="0 0 0.04" rgba="0.35 0.35 0.35 1"
-                  contype="0" conaffinity="0" group="2"/>
+            <!-- forkTine: directly on the forque sensor body.
+                 Transform from xacro: xyz=[-0.0054, 0.008, 0.093]
+                 rpy=[0, π, 240°] = quat=[0.000000, -0.866025, -0.500000, 0.000000]
+                 No motor assembly — tine is rigidly connected to the sensor.
+                 The Articutool 2-DOF mechanism (from articutool_ros2) would
+                 go between this sensor body and the tine when integrated. -->
+            <body name="fork_tine" pos="-0.0054 0.008 0.093"
+                  quat="0.000000 -0.866025 -0.500000 0.000000">
+              <inertial pos="0.013090 0.0180789 0.0445231" mass="0.024"
+                        fullinertia="0.0000098769 0.000009848103 0.0000015674 0.000000000806182 -0.00000000296036 0.00000057639"/>
+              <geom class="forque_visual" mesh="fork_tine" material="fork_metal"/>
+              <geom class="forque_collision" mesh="fork_tine"/>
 
-            <!-- Tilt joint: rotates the fork about a lateral axis.
-                 Controls approach angle to food. -->
-            <body name="articutool_tilt" pos="0 0 0.02">
-              <inertial pos="0 0 0.01" mass="0.02" diaginertia="0.000005 0.000005 0.000002"/>
-              <joint name="articutool_tilt_joint" axis="1 0 0"
-                     range="-1.0 1.0" limited="true" damping="0.05" armature="0.001"/>
-
-              <!-- Roll joint: rotates the fork about its long axis.
-                   For TWIRL_CW/CCW primitives. -->
-              <body name="articutool_roll" pos="0 0 0.02">
-                <inertial pos="0 0 0.01" mass="0.01" diaginertia="0.000003 0.000003 0.000001"/>
-                <joint name="articutool_roll_joint" axis="0 0 1"
-                       range="-3.14159 3.14159" limited="true" damping="0.02" armature="0.001"/>
-
-                <!-- forkTine: xyz=[-0.0054, 0.008, 0.093]
-                     rpy=[0, π, 240°] = quat=[-0.000000, -0.866025, -0.500000, 0.000000] -->
-                <body name="fork_tine" pos="-0.0054 0.008 0.093"
-                      quat="0.000000 -0.866025 -0.500000 0.000000">
-                  <inertial pos="0.013090 0.0180789 0.0445231" mass="0.024"
-                            fullinertia="0.0000098769 0.000009848103 0.0000015674 0.000000000806182 -0.00000000296036 0.00000057639"/>
-                  <geom class="forque_visual" mesh="fork_tine" material="fork_metal"/>
-                  <geom class="forque_collision" mesh="fork_tine"/>
-
-                  <!-- forkTip: xyz=[0.0135, 0.007, 0], rpy=[π, 0, 0]
-                       The feeding contact point. -->
-                  <site name="fork_tip" pos="0.0135 0.007 0"
-                        quat="0.000000 1.000000 0.000000 0.000000"
-                        size="0.003" rgba="1 0 0 1"/>
-                </body>
-              </body>
+              <!-- forkTip: xyz=[0.0135, 0.007, 0], rpy=[π, 0, 0]
+                   The feeding contact point. -->
+              <site name="fork_tip" pos="0.0135 0.007 0"
+                    quat="0.000000 1.000000 0.000000 0.000000"
+                    size="0.003" rgba="1 0 0 1"/>
             </body>
 
           </body>
@@ -160,16 +139,9 @@
     </body>
   </worldbody>
 
-  <actuator>
-    <!-- Articutool tilt: controls approach angle to food -->
-    <general name="act_articutool_tilt" joint="articutool_tilt_joint"
-             gaintype="fixed" biastype="affine"
-             gainprm="10" biasprm="0 -10 -1" forcerange="-5 5"/>
-    <!-- Articutool roll: for TWIRL_CW/CCW primitives -->
-    <general name="act_articutool_roll" joint="articutool_roll_joint"
-             gaintype="fixed" biastype="affine"
-             gainprm="5" biasprm="0 -5 -0.5" forcerange="-3 3"/>
-  </actuator>
+  <!-- No actuators on the forque itself. The tilt/roll DOFs belong to
+       the Articutool motor assembly (articutool_ros2), which would be
+       inserted between forque_sensor and fork_tine when integrated. -->
 
   <!-- ATI-9105-TW-NANO25-E force/torque sensor.
        Reads the 3-axis force and 3-axis torque at ft_sensor_site.
