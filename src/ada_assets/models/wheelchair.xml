@@ -23,11 +23,11 @@
             contype="1" conaffinity="1" group="3"
             rgba="0.3 0.5 0.3 0.2"/>
 
-      <!-- Arm mount. The tilt calibration (if needed) is applied as a
-           quat on this body at assembly time. Default: identity. -->
-      <body name="arm_mount" pos="0 0 -0.4612">
-        <site name="arm_attachment_site" pos="0 0 0" size="0.01" rgba="0 0 1 0.3"/>
-      </body>
+      <!-- Arm attachment site. Position derived from planning scene:
+           wheelchair is at [0.02, -0.02, -0.05] FROM root (arm base).
+           Inverse: arm base is at [-0.02, 0.02, 0.05] FROM wheelchair mesh origin.
+           The JACO2 link_base body attaches here via MjSpec.attach. -->
+      <site name="arm_attachment_site" pos="-0.02 0.02 0.05" size="0.01" rgba="0 0 1 0.3"/>
     </body>
   </worldbody>
 </mujoco>
