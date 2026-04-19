@@ -1,11 +1,39 @@
-<!-- Articutool fork: 2-DOF end-effector (tilt + roll) with forque F/T sensor.
-     Transforms from ada_ros2/ada_description/urdf/forque/forque.xacro.
-     Attaches at the JACO2's tool_attachment_site. -->
+<!-- Articutool fork: graspable tool with F/T sensor and 2-DOF mechanism.
+
+     This is a STANDALONE OBJECT — the JACO2 picks it up with its fingers.
+     When grasped, a weld constraint holds it to the hand. The ATI F/T
+     sensor (between handle and tine) produces realistic force/torque
+     readings through the weld chain.
+
+     Kinematic chain (transforms from ada_ros2 forque.xacro):
+       fork_base (freejoint)
+         └─ FTArmMount ← grip point (fingers close here)
+              └─ FTMount (fixed, xyz=[0, 0, -0.005])
+                   ├─ FT (fixed, xyz=[0, 0, 0]) — F/T sensor electronics
+                   └─ forkHandle (fixed, xyz=[0, 0.005, 0.0013], slight rotation)
+                        ├─ forkHandleCover (fixed, xyz=[0, 0, 0])
+                        └─ forque (fixed, xyz=[-0.00634, -0.222553, -0.004286])
+                             ← F/T sensor site here (between handle and utensil)
+                             └─ articutool_tilt (REVOLUTE, axis=[1,0,0])
+                                  └─ articutool_roll (REVOLUTE, axis=[0,0,1])
+                                       └─ forkTine (fixed, xyz=[-0.0054, 0.008, 0.093])
+                                            └─ forkTip (site)
+
+     The 2 actuated DOFs (tilt + roll) are between the ATI sensor body
+     (forque) and the fork tine. This matches the real Articutool mechanism
+     where small motors in the handle drive the utensil orientation.
+
+     All meshes at scale 0.001 (STL files are in mm).
+     All transforms verified against the xacro. -->
 <mujoco model="articutool_fork">
 
   <default>
-    <default class="forque">
+    <default class="forque_visual">
       <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+    </default>
+    <default class="forque_collision">
+      <geom type="mesh" contype="1" conaffinity="1" group="3"
+            rgba="0.3 0.5 0.3 0.2"/>
     </default>
   </default>
 
@@ -14,7 +42,7 @@
     <material name="fork_metal" rgba="0.75 0.75 0.78 1" specular="0.8" shininess="0.7"/>
     <mesh name="ft_arm_mount" file="2024_01_18_FTArmMount.stl" scale="0.001 0.001 0.001"/>
     <mesh name="ft_mount" file="2024_01_18_FTMount.stl" scale="0.001 0.001 0.001"/>
-    <mesh name="ft_sensor" file="2023_03_09_wirelessFT.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="ft_electronics" file="2023_03_09_wirelessFT.stl" scale="0.001 0.001 0.001"/>
     <mesh name="fork_handle" file="2024_06_24_forkHandleHollow.stl" scale="0.001 0.001 0.001"/>
     <mesh name="fork_handle_cover" file="2024_06_24_forkHandleCover.stl" scale="0.001 0.001 0.001"/>
     <mesh name="ft_sensor_body" file="ATI-9105-TW-NANO25-E.stl" scale="0.001 0.001 0.001"/>
@@ -22,49 +50,116 @@
   </asset>
 
   <worldbody>
-    <!-- Root body — positioned at the attachment frame.
-         The transforms below are from the URDF export (verified). -->
-    <body name="articutool_base">
+    <!-- Fork base — freejoint so it can be picked up and put down.
+         Initial position should be set by the assembly (holster, table, etc). -->
+    <body name="fork_base">
+      <freejoint name="fork_freejoint"/>
+      <inertial pos="0 -0.05 -0.02" mass="0.541" diaginertia="0.001 0.001 0.0005"/>
 
-      <!-- Static forque assembly (visual, no joints) -->
-      <geom class="forque" mesh="ft_arm_mount" material="forque_grey"
-            pos="0.0065 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
-      <geom class="forque" mesh="ft_mount" material="forque_grey"
-            pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
-      <geom class="forque" mesh="ft_sensor" material="forque_grey"
-            pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"/>
-      <geom class="forque" mesh="fork_handle" material="forque_grey"
-            pos="0.0028 -0.011 -0.0025" quat="0.507813 0.492063 0.495354 0.504604"/>
-      <geom class="forque" mesh="fork_handle_cover" material="forque_grey"
-            pos="0.0028 -0.011 -0.0025" quat="0.507813 0.492063 0.495354 0.504604"/>
+      <!-- FTArmMount — this is where the JACO2 fingers grip.
+           Transform from xacro: parent=j2n6s200_link_6,
+           xyz=[0.0065, -0.011, -0.0075], rpy=[π/2, 0, π/2]
+           But since this is now a standalone object, FTArmMount
+           is the root — the grip point is at the body origin.
+           The arm-to-mount transform is applied when grasping. -->
+      <geom class="forque_visual" mesh="ft_arm_mount" material="forque_grey"/>
+      <geom class="forque_collision" mesh="ft_arm_mount"/>
 
-      <!-- F/T sensor site (for mj_manipulator wrist F/T readings) -->
-      <site name="ft_sensor_site" pos="0.0015 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5"
-            size="0.005" rgba="0 0 1 0.5"/>
+      <!-- Site where the weld attaches when grasped by the JACO2 -->
+      <site name="grasp_site" pos="0 0 0" size="0.005" rgba="0 1 0 0.5"/>
 
-      <!-- Tilt joint body -->
-      <body name="articutool_tilt" pos="0.00407858 -0.0187867 -0.225045" quat="0.0129148 0.258758 0.965856 9.61286e-05">
-        <joint name="articutool_tilt_joint" axis="1 0 0" range="-1.0 1.0" limited="true" damping="0.1"/>
-        <geom class="forque" mesh="ft_sensor_body" material="forque_grey"/>
+      <!-- FTMount: xyz=[0, 0, -0.005] from FTArmMount -->
+      <body name="ft_mount" pos="0 0 -0.005">
+        <inertial pos="0.010934 -0.138522 -0.05066" mass="0.103"
+                  fullinertia="0.00017623 0.000068428 0.00021455 0.00000095729 -0.0000000562908 -0.00001757133"/>
+        <geom class="forque_visual" mesh="ft_mount" material="forque_grey"/>
+        <geom class="forque_collision" mesh="ft_mount"/>
 
-        <!-- Roll joint body -->
-        <body name="articutool_roll" pos="-0.0054 0.008 0.093" quat="0 0 -0.5 0.866025">
-          <joint name="articutool_roll_joint" axis="0 0 1" range="-3.14159 3.14159" limited="true" damping="0.05"/>
-          <geom type="mesh" mesh="fork_tine" material="fork_metal"
-                contype="1" conaffinity="1"/>
+        <!-- FT (wireless electronics): xyz=[0, 0, 0] from FTMount -->
+        <body name="ft_electronics" pos="0 0 0">
+          <inertial pos="0.0111446 -0.0882070 -0.0544936" mass="0.280"
+                    fullinertia="0.000543925 0.000165428 0.000691232 -0.00000128367 0 -0.00000001487288"/>
+          <geom class="forque_visual" mesh="ft_electronics" material="forque_grey"/>
+        </body>
 
-          <!-- Fork tip — the actual feeding contact point -->
-          <site name="fork_tip" pos="0.0135 0.007 0" size="0.003" rgba="1 0 0 1"/>
+        <!-- forkHandle: xyz=[0, 0.005, 0.0013], rpy=[-0.025, 0, -0.0065] -->
+        <body name="fork_handle" pos="0 0.005 0.0013"
+              quat="0.999917 -0.012500 0.000041 -0.003250">
+          <inertial pos="0.011097 -0.162629 -0.011948" mass="0.028"
+                    fullinertia="0.00003114 0.000011867 0.000038478 -0.00000050626 0.000000082271 0.00000054005"/>
+          <geom class="forque_visual" mesh="fork_handle" material="forque_grey"/>
+          <geom class="forque_collision" mesh="fork_handle"/>
+
+          <!-- forkHandleCover: xyz=[0, 0, 0] -->
+          <body name="fork_handle_cover" pos="0 0 0">
+            <inertial pos="0.011157 -0.168451 0.006404" mass="0.004"
+                      fullinertia="0.0000027878 0.00000064518 0.000003363634 0.00000000012805 0.00000000006585 0.00000016201"/>
+            <geom class="forque_visual" mesh="fork_handle_cover" material="forque_grey"/>
+          </body>
+
+          <!-- forque (ATI sensor body): xyz=[-0.00634, -0.222553, -0.004286]
+               rpy=[π/2, π/3, 0] = quat=[0.612372, 0.612372, 0.353553, -0.353553] -->
+          <body name="forque_sensor" pos="-0.00634 -0.222553 -0.004286"
+                quat="0.612372 0.612372 0.353553 -0.353553">
+            <inertial pos="0.0124692 0.0137169 0.010558" mass="0.0634"
+                      fullinertia="0.000005235822 0.000006264852 0.00000640797 -0.0000003129932 0.000000013798 -0.00000004033694"/>
+            <geom class="forque_visual" mesh="ft_sensor_body" material="forque_grey"/>
+            <geom class="forque_collision" mesh="ft_sensor_body"/>
+
+            <!-- F/T sensor site — between handle and utensil.
+                 Forces from food contact travel through:
+                 tine → roll → tilt → THIS SITE → handle → weld → hand.
+                 Use mj_manipulator's ft_force_sensor/ft_torque_sensor
+                 pointing at this site. -->
+            <site name="ft_sensor_site" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
+
+            <!-- === Articutool 2-DOF mechanism === -->
+            <!-- Tilt joint: rotates the fork about a lateral axis.
+                 Controls approach angle to food. -->
+            <body name="articutool_tilt" pos="0 0 0.02">
+              <inertial pos="0 0 0.01" mass="0.02" diaginertia="0.000005 0.000005 0.000002"/>
+              <joint name="articutool_tilt_joint" axis="1 0 0"
+                     range="-1.0 1.0" limited="true" damping="0.05" armature="0.001"/>
+
+              <!-- Roll joint: rotates the fork about its long axis.
+                   For TWIRL_CW/CCW primitives. -->
+              <body name="articutool_roll" pos="0 0 0.02">
+                <inertial pos="0 0 0.01" mass="0.01" diaginertia="0.000003 0.000003 0.000001"/>
+                <joint name="articutool_roll_joint" axis="0 0 1"
+                       range="-3.14159 3.14159" limited="true" damping="0.02" armature="0.001"/>
+
+                <!-- forkTine: xyz=[-0.0054, 0.008, 0.093]
+                     rpy=[0, π, 240°] = quat=[-0.000000, -0.866025, -0.500000, 0.000000] -->
+                <body name="fork_tine" pos="-0.0054 0.008 0.093"
+                      quat="0.000000 -0.866025 -0.500000 0.000000">
+                  <inertial pos="0.013090 0.0180789 0.0445231" mass="0.024"
+                            fullinertia="0.0000098769 0.000009848103 0.0000015674 0.000000000806182 -0.00000000296036 0.00000057639"/>
+                  <geom class="forque_visual" mesh="fork_tine" material="fork_metal"/>
+                  <geom class="forque_collision" mesh="fork_tine"/>
+
+                  <!-- forkTip: xyz=[0.0135, 0.007, 0], rpy=[π, 0, 0]
+                       The feeding contact point. -->
+                  <site name="fork_tip" pos="0.0135 0.007 0"
+                        quat="0.000000 1.000000 0.000000 0.000000"
+                        size="0.003" rgba="1 0 0 1"/>
+                </body>
+              </body>
+            </body>
+
+          </body>
         </body>
       </body>
-
     </body>
   </worldbody>
 
   <actuator>
-    <general name="act_articutool_tilt" joint="articutool_tilt_joint" gaintype="fixed" biastype="affine"
-             gainprm="10" biasprm="0 -10 -1"/>
-    <general name="act_articutool_roll" joint="articutool_roll_joint" gaintype="fixed" biastype="affine"
-             gainprm="5" biasprm="0 -5 -0.5"/>
+    <!-- Articutool tilt: controls approach angle to food -->
+    <general name="act_articutool_tilt" joint="articutool_tilt_joint"
+             gaintype="fixed" biastype="affine"
+             gainprm="10" biasprm="0 -10 -1" forcerange="-5 5"/>
+    <!-- Articutool roll: for TWIRL_CW/CCW primitives -->
+    <general name="act_articutool_roll" joint="articutool_roll_joint"
+             gaintype="fixed" biastype="affine"
+             gainprm="5" biasprm="0 -5 -0.5" forcerange="-3 3"/>
   </actuator>
 </mujoco>
