@@ -37,7 +37,7 @@ MODELS_DIR = Path(__file__).parent / "models"
 ASSETS_DIR = MODELS_DIR / "assets"
 
 # Available component models
-COMPONENTS = ["jaco2", "wheelchair", "seated", "forque"]
+COMPONENTS = ["jaco2", "wheelchair", "seated", "forque", "articutool", "camera"]
 
 # Available assembled models
 ASSEMBLIES = ["ada", "scene"]

@@ -1,0 +1,173 @@
+<!-- Wrist camera assembly: Intel RealSense D415 on Jetson Nano enclosure.
+
+     Mounts on JACO2 link_6 at xyz=[0.0165, 0, 0.0011], rpy=[3π/2, 0, 3π/2].
+     The camera_link frame (calibrated extrinsics) and color_optical_frame
+     are exposed as sites for MuJoCo camera rendering.
+
+     Kinematic chain (all transforms from ada_ros2 camera.xacro + ada.xacro):
+       camera_mount (attachment point on link_6)
+         └─ nanoMount (fixed, xyz=[0.0165, 0, 0.0011], rpy=[3π/2, 0, 3π/2])
+              └─ enclosureBottom (fixed, xyz=[0.0412, -0.0218, 0.026], rpy=[0, 0, π/2])
+                   ├─ nano / jetsonNano (fixed, xyz=[0.0105, 0.014, -0.0015])
+                   ├─ frontStabilizer (fixed, xyz=[0.1063, 0.0493, -0.0363], rpy=[0, 0, π/2])
+                   └─ enclosureTop (fixed, xyz=[0.009925, 0.04099, 0.05442], rpy=[0, 165.4°, π])
+                        └─ cameraMount (fixed, xyz=[-0.0132, 0, -0.022], rpy=[0, π/2, 0])
+                             ├─ screwHeadLeft (fixed)
+                             ├─ screwHeadRight (fixed)
+                             ├─ D415 camera (fixed, xyz=[0.006, 0, 0.013], rpy=[0, -π/2, π])
+                             ├─ camera_link (extrinsics, xyz=[0.0194, -0.01606, 0.029014])
+                             └─ color_optical_frame (site for MuJoCo camera)
+
+     D415 specs (Intel datasheet):
+       Color: 1920x1080 @ 30fps, FOV 69.4° x 42.5° x 77°
+       Depth: 1280x720, FOV 65° x 40°, range 0.16-10m
+       Nominal intrinsics (1280x720 color): fx=913, fy=911, cx=635, cy=373
+
+     All meshes at scale 0.001 (STL files are in mm).
+     All transforms verified against camera.xacro + ada.xacro. -->
+<mujoco model="camera_assembly">
+  <compiler angle="radian"/>
+
+  <default>
+    <default class="camera_visual">
+      <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+    </default>
+    <default class="camera_collision">
+      <geom type="mesh" contype="1" conaffinity="1" group="3"
+            rgba="0.3 0.3 0.5 0.2"/>
+    </default>
+  </default>
+
+  <asset>
+    <material name="cam_abs_black" rgba="0.12 0.12 0.12 1" specular="0.1" shininess="0.05"/>
+    <material name="cam_pcb_green" rgba="0.1 0.35 0.15 1" specular="0.2" shininess="0.1"/>
+    <material name="cam_aluminum" rgba="0.5 0.52 0.55 1" specular="0.6" shininess="0.4" reflectance="0.1"/>
+    <material name="cam_screw" rgba="0.3 0.3 0.3 1" specular="0.4" shininess="0.3"/>
+    <mesh name="nano_arm_mount" file="2023_03_09_nanoArmMount.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="enclosure_bottom" file="2023_09_28_nanoEnclosureBottom.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="jetson_nano" file="2023_03_21_jetsonNano.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="front_stabilizer" file="2023_09_21_nanoEnclosureFrontStabilizer.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="enclosure_top" file="2023_06_06_nanoEnclosureTopCameraBack.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="camera_back_mount" file="2023_06_06_cameraBackMount.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="screw_head" file="2023_11_07_screwHead.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="d415" file="d415.stl"/>
+  </asset>
+
+  <worldbody>
+    <!-- nanoMount: attaches to link_6 at xyz=[0.0165, 0, 0.0011], rpy=[3π/2, 0, 3π/2] -->
+    <body name="camera_base">
+      <inertial pos="-0.0024 0.0047 0.0115" mass="0.008"
+                fullinertia="0.00000095025 0.0000067325 0.0000069433 -0.000000297842 -0.00000000010444 0.000000000470196"/>
+      <geom class="camera_visual" mesh="nano_arm_mount" material="cam_abs_black"/>
+      <geom class="camera_collision" mesh="nano_arm_mount"/>
+
+      <!-- enclosureBottom: xyz=[0.0412, -0.0218, 0.026], rpy=[0, 0, π/2] -->
+      <body name="enclosure_bottom" pos="0.0412 -0.0218 0.026"
+            quat="0.707107 0 0 0.707107">
+        <inertial pos="0.0546451 0.0472161 0.00043655" mass="0.040"
+                  fullinertia="0.000041028 0.000083168 0.000116424 -0.000000324 -0.00000045367 0.0000026243"/>
+        <geom class="camera_visual" mesh="enclosure_bottom" material="cam_abs_black"/>
+        <geom class="camera_collision" mesh="enclosure_bottom"/>
+
+        <!-- Jetson Nano: xyz=[0.0105, 0.014, -0.0015] -->
+        <body name="jetson_nano" pos="0.0105 0.014 -0.0015">
+          <inertial pos="0.0435615 0.02502709 0.0091247" mass="0.142"
+                    fullinertia="0.000077456 0.0001013 0.0001727 -0.000004935 0.0000015461 0.0000036951"/>
+          <geom class="camera_visual" mesh="jetson_nano" material="cam_pcb_green"/>
+          <geom class="camera_collision" mesh="jetson_nano"/>
+        </body>
+
+        <!-- Front stabilizer: xyz=[0.1063, 0.0493, -0.0363], rpy=[0, 0, π/2] -->
+        <body name="front_stabilizer" pos="0.1063 0.0493 -0.0363"
+              quat="0.707107 0 0 0.707107">
+          <inertial pos="-0.008107 -0.000955 0.02045" mass="0.0198"
+                    fullinertia="0.00000074776 0.0000118843 0.0000119096 0.000000000071856 0.0000000002764 0.00000001021778"/>
+          <geom class="camera_visual" mesh="front_stabilizer" material="cam_abs_black"/>
+          <geom class="camera_collision" mesh="front_stabilizer"/>
+        </body>
+
+        <!-- Enclosure top: xyz=[0.009925, 0.04099, 0.05442], rpy=[0, 165.4°, π] -->
+        <body name="enclosure_top" pos="0.009925 0.04099 0.05442"
+              quat="0 -0.991894 0 0.127065">
+          <inertial pos="0.041228 0.006275 0.016379" mass="0.046"
+                    fullinertia="0.00005942 0.000085611 0.000126390 -0.000000046193 0.0000091699 0.0000012783"/>
+          <geom class="camera_visual" mesh="enclosure_top" material="cam_abs_black"/>
+          <geom class="camera_collision" mesh="enclosure_top"/>
+
+          <!-- Camera back mount: xyz=[-0.0132, 0, -0.022], rpy=[0, π/2, 0] -->
+          <body name="camera_mount" pos="-0.0132 0 -0.022"
+                quat="0.707107 0 0.707107 0">
+            <inertial pos="-0.007986 0 0.010064" mass="0.004"
+                      fullinertia="0.000002782 0.0000005528 0.000002964 -0.00000000002321 0.000000074385 -0.00000000000178"/>
+            <geom class="camera_visual" mesh="camera_back_mount" material="cam_abs_black"/>
+            <geom class="camera_collision" mesh="camera_back_mount"/>
+
+            <!-- Screw heads (visual only) -->
+            <geom class="camera_visual" mesh="screw_head" material="cam_screw"
+                  pos="0.0165 -0.0225 0" quat="0 1 0 0"/>
+            <geom class="camera_visual" mesh="screw_head" material="cam_screw"
+                  pos="0.0165 0.0225 0" quat="0 1 0 0"/>
+
+            <!-- Intel RealSense D415: xyz=[0.006, 0, 0.013], rpy=[0, -π/2, π]
+                 This places bottom_screw_frame. The D415 camera_link is at
+                 bottom_screw_frame + [0, 0.02, 0.0115]. -->
+            <body name="d415" pos="0.006 0 0.013"
+                  quat="0 0.707107 0 0.707107">
+              <inertial pos="0 0 0.0115" mass="0.0589"
+                        fullinertia="0.00005491 0.00000521068 0.0000554597 -0.0000000249492 0.00000004862028 0.00000000857625"/>
+              <geom class="camera_visual" mesh="d415" material="cam_aluminum"
+                    pos="0.00987 0 0.0115" quat="0.5 0.5 0.5 0.5"/>
+              <geom class="camera_collision" type="box"
+                    size="0.010025 0.0495 0.0115" pos="0 0 0.0115"/>
+            </body>
+
+            <!-- camera_link: calibrated extrinsics from ada.xacro.
+                 Parent is cameraMount, xyz=[0.0194, -0.01606, 0.029014],
+                 rpy=[0.17234, -1.56127, 2.96967]. -->
+            <site name="camera_link" pos="0.0194 -0.01606 0.029014"
+                  quat="0.000429 0.703780 0.000724 0.710417"
+                  size="0.003" rgba="1 0.5 0 0.5"/>
+
+            <!-- color_optical_frame: camera_link rotated by rpy=[-π/2, 0, -π/2].
+                 z points into the scene, x right, y down (OpenCV convention).
+                 This is the frame MuJoCo cameras should use for rendering. -->
+            <site name="color_optical_frame" pos="0.0194 -0.01606 0.029014"
+                  quat="0.706951 -0.003895 -0.002741 0.707246"
+                  size="0.003" rgba="0 1 1 0.5"/>
+
+            <!-- Intel RealSense D415 cameras at the calibrated optical frame.
+
+                 D415 specs (datasheet):
+                   Color: 1920x1080 native, 1280x720 default stream
+                   Depth: 1280x720, range 0.16–10m
+                   Color FOV: 69.4° x 42.5° (H x V)
+                   Depth FOV: 65° x 40° (H x V)
+
+                 Nominal intrinsics (1280x720 color, aligned_depth_to_color):
+                   fx=913.16, fy=911.31, cx=635.49, cy=372.79
+                   distortion: Brown-Conrady (coeffs from RealSense driver)
+
+                 MuJoCo camera limitations:
+                   - Only fovy (vertical FOV), no full intrinsic matrix
+                   - Assumes centered principal point and square pixels
+                   - No native depth min/max clipping (apply in post-processing)
+                   fovy = 2 * atan(360 / 911) ≈ 43°
+
+                 Depth post-processing (ada_mj):
+                   - Clip to [0.16, 10.0] m to match D415 operating range
+                   - Apply intrinsic matrix for pixel-accurate projection -->
+            <camera name="d415_color" pos="0.0194 -0.01606 0.029014"
+                    quat="0.706951 -0.003895 -0.002741 0.707246"
+                    fovy="43" resolution="1280 720"/>
+            <!-- Depth uses aligned_depth_to_color (same frame and FOV as color).
+                 Render with renderer.enable_depth_rendering(True).
+                 Clip output to [0.16, 10.0] m for D415 fidelity. -->
+            <camera name="d415_depth" pos="0.0194 -0.01606 0.029014"
+                    quat="0.706951 -0.003895 -0.002741 0.707246"
+                    fovy="43" resolution="1280 720"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+</mujoco>
