@@ -128,6 +128,17 @@ def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None
             if site.name == "fork_tip":
                 site.pos = [float(x) for x in tip_cfg["tip_pos"].split()]
 
+    # Collect tool body names BEFORE attach (attach modifies the spec in-place)
+    def _collect_body_names(body):
+        names = []
+        for child in body.bodies:
+            if child.name:
+                names.append(child.name)
+            names.extend(_collect_body_names(child))
+        return names
+
+    tool_body_names = _collect_body_names(tool_spec.worldbody)
+
     spec.attach(tool_spec, prefix=f"{tool}/", frame=spec.worldbody.add_frame())
 
     # Weld: tool grasp_site → attachment site on link_6.
@@ -140,6 +151,26 @@ def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None
     weld.name1 = f"{tool}/grasp_site"
     weld.name2 = attach_site
     weld.active = True
+    # Stiff weld — the tool is rigidly held by the fingers.
+    # Small timeconst + high damping makes the constraint nearly rigid.
+    weld.solref = [0.005, 1.0]
+
+    # Exclude collisions between hand/fingers and the welded tool.
+    # The tool is physically held by the weld constraint — the finger
+    # and tool collision meshes intentionally overlap (fingers gripping).
+    hand_bodies = [
+        "j2n6s200_link_2", "j2n6s200_link_3", "j2n6s200_link_4",
+        "j2n6s200_link_5", "j2n6s200_link_6",
+        "j2n6s200_link_finger_1", "j2n6s200_link_finger_tip_1",
+        "j2n6s200_link_finger_2", "j2n6s200_link_finger_tip_2",
+    ]
+    tool_bodies = [f"{tool}/{n}" for n in tool_body_names]
+
+    for hb in hand_bodies:
+        for tb in tool_bodies:
+            ex = spec.add_exclude()
+            ex.bodyname1 = hb
+            ex.bodyname2 = tb
 
 
 def _build_spec(

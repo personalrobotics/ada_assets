@@ -63,7 +63,7 @@
   <worldbody>
     <!-- fork_base = atool_handle (flattened — same origin, no joint between them).
          Combined inertial of handle (0.028 kg) + handle (0.028 kg from xacro). -->
-    <body name="fork_base">
+    <body gravcomp="1" name="fork_base">
       <freejoint name="fork_freejoint"/>
       <inertial pos="0 0 0" mass="0.056"
                 fullinertia="0.00006228 0.000023734 0.000076956 -0.00000101252 0.000000164542 0.0000010801"/>
@@ -77,7 +77,7 @@
             size="0.003" rgba="1 1 0 0.5"/>
 
       <!-- Handle cover + U2D2: xyz=[0.018, 0, 0.011], rpy=[-π/2, 0, -π/2] -->
-      <body name="atool_handle_cover" pos="0.018 0 0.011"
+      <body gravcomp="1" name="atool_handle_cover" pos="0.018 0 0.011"
             quat="0.5 -0.5 0.5 -0.5">
         <inertial pos="0 0 0" mass="0.056" diaginertia="5e-6 5e-6 5e-6"/>
         <geom class="articutool_visual" mesh="handle_cover_kg2" material="abs_black"/>
@@ -90,7 +90,7 @@
       </body>
 
       <!-- Electronics holder: xyz=[-0.015, 0, 0], rpy=[0, -π/2, π] -->
-      <body name="atool_electronics" pos="-0.015 0 0"
+      <body gravcomp="1" name="atool_electronics" pos="-0.015 0 0"
             quat="0 0.707107 0 0.707107">
         <inertial pos="0 0 0" mass="0.091" diaginertia="5e-6 5e-6 5e-6"/>
         <geom class="articutool_visual" mesh="electronics_holder_upper_plate" material="abs_black"/>
@@ -101,19 +101,19 @@
       </body>
 
       <!-- Base bracket fr12_h103: xyz=[0, 0, 0.076472] -->
-      <body name="atool_base" pos="0 0 0.076472">
+      <body gravcomp="1" name="atool_base" pos="0 0 0.076472">
         <inertial pos="0 0 0" mass="0.091" diaginertia="5e-6 5e-6 5e-6"/>
         <geom class="articutool_visual" mesh="fr12_h103" material="robotis_bracket"/>
         <geom class="articutool_collision" mesh="fr12_h103"/>
 
         <!-- Motor 1 (tilt): xyz=[0, 0, 0.055], rpy=[-π/2, 0, 0]
              Joint1: axis=[0,0,-1], range=±π/2, torque=1.4 Nm -->
-        <body name="atool_link1" pos="0 0 0.055"
+        <body gravcomp="1" name="atool_link1" pos="0 0 0.055"
               quat="0.707107 -0.707107 0 0">
           <inertial pos="0.000216 -0.014751 -0.016796" mass="0.065"
                     fullinertia="0.01868 0.009586 0.017347 0.0000013 -0.000045 -0.000845"/>
           <joint name="atool_joint1" type="hinge" axis="0 0 -1"
-                 range="-1.5708 1.5708" limited="true" damping="0.1"/>
+                 range="-1.5708 1.5708" limited="true" damping="0.1" armature="0.01"/>
           <geom class="articutool_visual" mesh="motor_xc430" material="dynamixel_black"/>
           <geom class="articutool_collision" mesh="motor_xc430"/>
           <!-- Motor link bracket fr12_s101 (flattened — same origin as link1) -->
@@ -123,7 +123,7 @@
                 quat="0.5 0.5 0.5 -0.5"/>
 
           <!-- Motor 2: xyz=[0, -0.03825, 0], rpy=[π/2, 0, 0] -->
-          <body name="atool_link2" pos="0 -0.03825 0"
+          <body gravcomp="1" name="atool_link2" pos="0 -0.03825 0"
                 quat="0.707107 0.707107 0 0">
             <inertial pos="0.000216 -0.014751 -0.016796" mass="0.065"
                       fullinertia="0.01868 0.009586 0.017347 0.0000013 -0.000045 -0.000845"/>
@@ -132,16 +132,16 @@
 
             <!-- F/T adapter: xyz=[0, 0, 0.019], rpy=[π/2, 0, 0]
                  Joint2: axis=[0,1,0], range=±π, torque=1.4 Nm -->
-            <body name="atool_ft_adapter" pos="0 0 0.019"
+            <body gravcomp="1" name="atool_ft_adapter" pos="0 0 0.019"
                   quat="0.707107 0.707107 0 0">
               <inertial pos="0 0 0" mass="0.001" diaginertia="5e-6 5e-6 5e-6"/>
               <joint name="atool_joint2" type="hinge" axis="0 1 0"
-                     range="-3.14159 3.14159" limited="true" damping="0.05"/>
+                     range="-3.14159 3.14159" limited="true" damping="0.05" armature="0.01"/>
               <geom class="articutool_visual" mesh="motor_xc430_to_ft_hex21_adapter" material="machined_aluminum"/>
               <geom class="articutool_collision" mesh="motor_xc430_to_ft_hex21_adapter"/>
 
               <!-- F/T sensor (Hex21): xyz=[0, 0.01, 0] -->
-              <body name="atool_ft" pos="0 0.01 0">
+              <body gravcomp="1" name="atool_ft" pos="0 0.01 0">
                 <inertial pos="0 0 0" mass="0.0634"
                           fullinertia="0.000005236 0.000006265 0.000006408 -0.000000313 0.000000014 -0.00000004"/>
                 <geom class="articutool_visual" mesh="ft_hex21" material="ft_aluminum"/>
@@ -149,7 +149,7 @@
                 <site name="ft_sensor_site" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
 
                 <!-- Fork tool: xyz=[0, 0.0109, 0], rpy=[-π/2, 0, 0] -->
-                <body name="fork_tine" pos="0 0.0109 0"
+                <body gravcomp="1" name="fork_tine" pos="0 0.0109 0"
                       quat="0.707107 -0.707107 0 0">
                   <inertial pos="0 0 0" mass="0.024"
                             fullinertia="0.0000098769 0.000009848 0.0000015674 0.000000001 -0.000000003 0.00000058"/>
@@ -170,17 +170,17 @@
   </worldbody>
 
   <!-- Dynamixel XC430-W250-T position actuators.
-       Stall torque 1.4 Nm at 12V, no-load speed 61 RPM (6.4 rad/s).
-       Xacro limits: torque=1.4 Nm, velocity=1 rad/s (conservative).
-       forcerange clamps output at stall torque. -->
+       Stall torque 1.4 Nm at 12V. Gains scaled to geodude ratio.
+       Tool link mass ~0.025 kg → kp=100, kd=3 gives snappy response
+       within the 1.4 Nm forcerange. -->
   <actuator>
     <general name="act_atool_tilt" joint="atool_joint1"
              gaintype="fixed" biastype="affine"
-             gainprm="10" biasprm="0 -10 -1"
+             gainprm="100" biasprm="0 -100 -3"
              forcerange="-1.4 1.4" ctrlrange="-1.5708 1.5708" ctrllimited="true"/>
     <general name="act_atool_roll" joint="atool_joint2"
              gaintype="fixed" biastype="affine"
-             gainprm="5" biasprm="0 -5 -0.5"
+             gainprm="100" biasprm="0 -100 -3"
              forcerange="-1.4 1.4" ctrlrange="-3.14159 3.14159" ctrllimited="true"/>
   </actuator>
 

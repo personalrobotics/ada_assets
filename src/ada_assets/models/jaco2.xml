@@ -10,6 +10,7 @@
      Follows menagerie pattern: same mesh in visual (group=2) and
      collision (group=3) geom groups. -->
 <mujoco model="j2n6s200">
+  <compiler angle="radian"/>
 
   <!-- Lighting that brings out specular highlights on the carbon fiber -->
   <visual>
@@ -68,42 +69,42 @@
 
       <body name="j2n6s200_link_1" pos="0 0 0.15675" quat="0 0 1 0" gravcomp="1">
         <inertial pos="0 -0.002 -0.0605" mass="0.7477" diaginertia="0.00152032 0.00152032 0.00059816"/>
-        <joint name="j2n6s200_joint_1" axis="0 0 1"/>
+        <joint name="j2n6s200_joint_1" axis="0 0 1" armature="0.1"/>
         <geom class="jaco2_visual" mesh="shoulder" material="carbon_fiber"/>
         <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
         <geom class="jaco2_collision" mesh="shoulder"/>
 
         <body name="j2n6s200_link_2" pos="0 0.0016 -0.11875" quat="0 0 -0.707107 0.707107" gravcomp="1">
           <inertial pos="0 -0.2065 -0.01" quat="0.707107 0.707107 0 0" mass="0.99" diaginertia="0.0105022 0.0105022 0.000792"/>
-          <joint name="j2n6s200_joint_2" axis="0 0 1" range="0.820305 5.46288" limited="true"/>
+          <joint name="j2n6s200_joint_2" axis="0 0 1" range="0.820305 5.46288" limited="true" armature="0.1"/>
           <geom class="jaco2_visual" mesh="arm" material="carbon_fiber"/>
           <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
           <geom class="jaco2_collision" mesh="arm"/>
 
           <body name="j2n6s200_link_3" pos="0 -0.41 0" quat="0 0 1 0" gravcomp="1">
             <inertial pos="0 0.081 -0.0086" quat="0.707107 0.707107 0 0" mass="0.6763" diaginertia="0.00142022 0.00142022 0.000304335"/>
-            <joint name="j2n6s200_joint_3" axis="0 0 1" range="0.331613 5.95157" limited="true"/>
+            <joint name="j2n6s200_joint_3" axis="0 0 1" range="0.331613 5.95157" limited="true" armature="0.1"/>
             <geom class="jaco2_visual" mesh="forearm" material="carbon_fiber"/>
             <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
             <geom class="jaco2_collision" mesh="forearm"/>
 
             <body name="j2n6s200_link_4" pos="0 0.2073 -0.0114" quat="0 0 -0.707107 0.707107" gravcomp="1">
               <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
-              <joint name="j2n6s200_joint_4" axis="0 0 1"/>
+              <joint name="j2n6s200_joint_4" axis="0 0 1" armature="0.1"/>
               <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
               <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
               <geom class="jaco2_collision" mesh="wrist"/>
 
               <body name="j2n6s200_link_5" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
                 <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
-                <joint name="j2n6s200_joint_5" axis="0 0 1"/>
+                <joint name="j2n6s200_joint_5" axis="0 0 1" armature="0.1"/>
                 <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
                 <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
                 <geom class="jaco2_collision" mesh="wrist"/>
 
                 <body name="j2n6s200_link_6" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
                   <inertial pos="0 0 -0.06" mass="0.78" diaginertia="0.000624 0.00037 0.00037"/>
-                  <joint name="j2n6s200_joint_6" axis="0 0 1"/>
+                  <joint name="j2n6s200_joint_6" axis="0 0 1" armature="0.1"/>
                   <geom class="jaco2_visual" mesh="hand_2finger" material="carbon_fiber"/>
                   <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
                   <geom class="jaco2_collision" mesh="hand_2finger"/>
@@ -201,12 +202,14 @@
   <actuator>
     <!-- Arm joints -->
     <!-- Effort limits from URDF: J1=40, J2=80, J3=40, J4-6=20 Nm -->
-    <general name="act_j2n6s200_joint_1" joint="j2n6s200_joint_1" gaintype="fixed" biastype="affine" gainprm="50" biasprm="0 -50 -5" forcerange="-40 40"/>
-    <general name="act_j2n6s200_joint_2" joint="j2n6s200_joint_2" gaintype="fixed" biastype="affine" gainprm="80" biasprm="0 -80 -8" ctrlrange="0.820305 5.46288" forcerange="-80 80"/>
-    <general name="act_j2n6s200_joint_3" joint="j2n6s200_joint_3" gaintype="fixed" biastype="affine" gainprm="50" biasprm="0 -50 -5" ctrlrange="0.331613 5.95157" forcerange="-40 40"/>
-    <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
-    <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
-    <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="30" biasprm="0 -30 -3" forcerange="-20 20"/>
+    <!-- Gains scaled to match geodude UR5e stiffness-to-mass ratio.
+         kd = kp/15 balances damping vs position hold within forcerange. -->
+    <general name="act_j2n6s200_joint_1" joint="j2n6s200_joint_1" gaintype="fixed" biastype="affine" gainprm="600" biasprm="0 -600 -40" forcerange="-40 40"/>
+    <general name="act_j2n6s200_joint_2" joint="j2n6s200_joint_2" gaintype="fixed" biastype="affine" gainprm="800" biasprm="0 -800 -53" ctrlrange="0.820305 5.46288" forcerange="-80 80"/>
+    <general name="act_j2n6s200_joint_3" joint="j2n6s200_joint_3" gaintype="fixed" biastype="affine" gainprm="550" biasprm="0 -550 -37" ctrlrange="0.331613 5.95157" forcerange="-40 40"/>
+    <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
     <!-- Finger actuators: each independently drives its proximal joint.
          ctrl range maps to Kinova API 0 (open) → 1.51 (fully closed).
          Effort limit 2 Nm (from URDF). Strong enough to grip firmly. -->
@@ -222,7 +225,7 @@
     <key name="above_plate" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 1.33 0 1.33 0"/>
     <key name="resting" qpos="-1.860 2.181 0.364 -5.187 -0.470 -0.814 1.33 0 1.33 0"/>
     <key name="staging" qpos="-2.122 4.496 4.022 -4.710 -2.493 -1.926 1.33 0 1.33 0"/>
-    <key name="stow" qpos="-1.521 2.601 0.328 -4.000 0.228 3.879 1.33 0 1.33 0"/>
+    <key name="stow" qpos="-1.521 2.601 0.348 -4.000 0.228 3.879 1.33 0 1.33 0"/>
     <key name="open" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 0 0 0 0"/>
   </keyframe>
 </mujoco>

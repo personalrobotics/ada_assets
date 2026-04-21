@@ -33,8 +33,10 @@
          The wheelchair drop test gives z=0.4612 for wheels on floor.
          Body collision must match exactly so it wraps around the chair. -->
     <body name="user_body" pos="0 0 0.4612">
+      <!-- Safety envelope is for motion planning only — no physics contact.
+           The planner uses this to avoid the user's body. -->
       <geom name="body_safety_envelope" type="mesh" mesh="body_collision"
-            material="body_safety" contype="1" conaffinity="1" group="3"/>
+            material="body_safety" contype="0" conaffinity="0" group="3"/>
     </body>
 
     <!-- Head — mocap body (movable via data.mocap_pos/quat).

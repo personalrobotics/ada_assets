@@ -39,7 +39,7 @@
   </asset>
 
   <worldbody>
-    <body name="fork_base">
+    <body gravcomp="1" name="fork_base">
       <freejoint name="fork_freejoint"/>
       <!-- FTArmMount inertial from xacro (mass=0.03783, cog from ada.xacro) -->
       <inertial pos="0.010957 -0.019223 -0.03777" mass="0.03783"
@@ -49,7 +49,7 @@
       <site name="grasp_site" pos="0 0 0" size="0.005" rgba="0 1 0 0.5"/>
 
       <!-- FTMount + FT electronics: xyz=[0, 0, -0.005] -->
-      <body name="ft_mount" pos="0 0 -0.005">
+      <body gravcomp="1" name="ft_mount" pos="0 0 -0.005">
         <inertial pos="0.010934 -0.138522 -0.05066" mass="0.103"
                   fullinertia="0.00017623 0.000068428 0.00021455 0.00000095729 -0.0000000562908 -0.00001757133"/>
         <geom class="forque_visual" mesh="ft_mount" material="abs_plastic"/>
@@ -59,7 +59,7 @@
 
         <!-- forkHandle + cover: xyz=[0, 0.005, 0.0013], rpy=[-0.025, 0, -0.0065]
              Slight rotation from empirical deformation when gripped (per xacro comment). -->
-        <body name="fork_handle" pos="0 0.005 0.0013"
+        <body gravcomp="1" name="fork_handle" pos="0 0.005 0.0013"
               quat="0.999917 -0.012500 0.000041 -0.003250">
           <inertial pos="0.011097 -0.162629 -0.011948" mass="0.028"
                     fullinertia="0.00003114 0.000011867 0.000038478 -0.00000050626 0.000000082271 0.00000054005"/>
@@ -70,7 +70,7 @@
 
           <!-- ATI-9105-TW-NANO25-E sensor body: xyz=[-0.00634, -0.222553, -0.004286]
                rpy=[π/2, π/3, 0] = quat=[0.612372, 0.612372, 0.353553, -0.353553] -->
-          <body name="forque_sensor" pos="-0.00634 -0.222553 -0.004286"
+          <body gravcomp="1" name="forque_sensor" pos="-0.00634 -0.222553 -0.004286"
                 quat="0.612372 0.612372 0.353553 -0.353553">
             <inertial pos="0.0124692 0.0137169 0.010558" mass="0.0634"
                       fullinertia="0.000005235822 0.000006264852 0.00000640797 -0.0000003129932 0.000000013798 -0.00000004033694"/>
@@ -85,7 +85,7 @@
 
             <!-- Fork tine: xyz=[-0.0054, 0.008, 0.093]
                  rpy=[0, π, 240°] = quat=[0, -0.866025, -0.5, 0] -->
-            <body name="fork_tine" pos="-0.0054 0.008 0.093"
+            <body gravcomp="1" name="fork_tine" pos="-0.0054 0.008 0.093"
                   quat="0.000000 -0.866025 -0.500000 0.000000">
               <inertial pos="0.013090 0.0180789 0.0445231" mass="0.024"
                         fullinertia="0.0000098769 0.000009848103 0.0000015674 0.000000000806182 -0.00000000296036 0.00000057639"/>
