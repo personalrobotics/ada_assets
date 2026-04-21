@@ -69,7 +69,8 @@
 
       <body name="j2n6s200_link_1" pos="0 0 0.15675" quat="0 0 1 0" gravcomp="1">
         <inertial pos="0 -0.002 -0.0605" mass="0.7477" diaginertia="0.00152032 0.00152032 0.00059816"/>
-        <joint name="j2n6s200_joint_1" axis="0 0 1" armature="0.1" range="-6.28319 6.28319" limited="true"/>
+        <!-- Continuous joints (xacro type="continuous"): no limits. -->
+        <joint name="j2n6s200_joint_1" axis="0 0 1" armature="0.1"/>
         <geom class="jaco2_visual" mesh="shoulder" material="carbon_fiber"/>
         <geom class="jaco2_ring" mesh="ring_big" material="brushed_aluminum"/>
         <geom class="jaco2_collision" mesh="shoulder"/>
@@ -90,21 +91,21 @@
 
             <body name="j2n6s200_link_4" pos="0 0.2073 -0.0114" quat="0 0 -0.707107 0.707107" gravcomp="1">
               <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
-              <joint name="j2n6s200_joint_4" axis="0 0 1" armature="0.1" range="-6.28319 6.28319" limited="true"/>
+              <joint name="j2n6s200_joint_4" axis="0 0 1" armature="0.1"/>
               <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
               <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
               <geom class="jaco2_collision" mesh="wrist"/>
 
               <body name="j2n6s200_link_5" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
                 <inertial pos="0 -0.037 -0.0642" quat="0.5 0.5 -0.5 0.5" mass="0.426367" diaginertia="0.0001428 7.73497e-05 7.73497e-05"/>
-                <joint name="j2n6s200_joint_5" axis="0 0 1" armature="0.1" range="-6.28319 6.28319" limited="true"/>
+                <joint name="j2n6s200_joint_5" axis="0 0 1" armature="0.1"/>
                 <geom class="jaco2_visual" mesh="wrist" material="carbon_fiber"/>
                 <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
                 <geom class="jaco2_collision" mesh="wrist"/>
 
                 <body name="j2n6s200_link_6" pos="0 -0.03703 -0.06414" quat="0 0 0.5 0.866025" gravcomp="1">
                   <inertial pos="0 0 -0.06" mass="0.78" diaginertia="0.000624 0.00037 0.00037"/>
-                  <joint name="j2n6s200_joint_6" axis="0 0 1" armature="0.1" range="-6.28319 6.28319" limited="true"/>
+                  <joint name="j2n6s200_joint_6" axis="0 0 1" armature="0.1"/>
                   <geom class="jaco2_visual" mesh="hand_2finger" material="carbon_fiber"/>
                   <geom class="jaco2_ring" mesh="ring_small" material="brushed_aluminum"/>
                   <geom class="jaco2_collision" mesh="hand_2finger"/>
