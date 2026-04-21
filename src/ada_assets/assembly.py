@@ -111,6 +111,16 @@ def assemble_ada(
     return model, data
 
 
+def _collect_body_names(body) -> list[str]:
+    """Recursively collect all body names under a parent."""
+    names = []
+    for child in body.bodies:
+        if child.name:
+            names.append(child.name)
+        names.extend(_collect_body_names(child))
+    return names
+
+
 def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None:
     """Attach a tool as a freejoint object with a weld constraint."""
     tool_spec = mujoco.MjSpec.from_file(str(MODELS_DIR / f"{tool}.xml"))
@@ -129,13 +139,6 @@ def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None
                 site.pos = [float(x) for x in tip_cfg["tip_pos"].split()]
 
     # Collect tool body names BEFORE attach (attach modifies the spec in-place)
-    def _collect_body_names(body):
-        names = []
-        for child in body.bodies:
-            if child.name:
-                names.append(child.name)
-            names.extend(_collect_body_names(child))
-        return names
 
     tool_body_names = _collect_body_names(tool_spec.worldbody)
 
