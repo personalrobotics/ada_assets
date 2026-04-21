@@ -55,14 +55,14 @@
 
   <worldbody>
     <!-- nanoMount: attaches to link_6 at xyz=[0.0165, 0, 0.0011], rpy=[3π/2, 0, 3π/2] -->
-    <body name="camera_base">
+    <body gravcomp="1" name="camera_base">
       <inertial pos="-0.0024 0.0047 0.0115" mass="0.008"
                 fullinertia="0.00000095025 0.0000067325 0.0000069433 -0.000000297842 -0.00000000010444 0.000000000470196"/>
       <geom class="camera_visual" mesh="nano_arm_mount" material="cam_abs_black"/>
       <geom class="camera_collision" mesh="nano_arm_mount"/>
 
       <!-- enclosureBottom: xyz=[0.0412, -0.0218, 0.026], rpy=[0, 0, π/2] -->
-      <body name="enclosure_bottom" pos="0.0412 -0.0218 0.026"
+      <body gravcomp="1" name="enclosure_bottom" pos="0.0412 -0.0218 0.026"
             quat="0.707107 0 0 0.707107">
         <inertial pos="0.0546451 0.0472161 0.00043655" mass="0.040"
                   fullinertia="0.000041028 0.000083168 0.000116424 -0.000000324 -0.00000045367 0.0000026243"/>
@@ -70,7 +70,7 @@
         <geom class="camera_collision" mesh="enclosure_bottom"/>
 
         <!-- Jetson Nano: xyz=[0.0105, 0.014, -0.0015] -->
-        <body name="jetson_nano" pos="0.0105 0.014 -0.0015">
+        <body gravcomp="1" name="jetson_nano" pos="0.0105 0.014 -0.0015">
           <inertial pos="0.0435615 0.02502709 0.0091247" mass="0.142"
                     fullinertia="0.000077456 0.0001013 0.0001727 -0.000004935 0.0000015461 0.0000036951"/>
           <geom class="camera_visual" mesh="jetson_nano" material="cam_pcb_green"/>
@@ -78,7 +78,7 @@
         </body>
 
         <!-- Front stabilizer: xyz=[0.1063, 0.0493, -0.0363], rpy=[0, 0, π/2] -->
-        <body name="front_stabilizer" pos="0.1063 0.0493 -0.0363"
+        <body gravcomp="1" name="front_stabilizer" pos="0.1063 0.0493 -0.0363"
               quat="0.707107 0 0 0.707107">
           <inertial pos="-0.008107 -0.000955 0.02045" mass="0.0198"
                     fullinertia="0.00000074776 0.0000118843 0.0000119096 0.000000000071856 0.0000000002764 0.00000001021778"/>
@@ -87,7 +87,7 @@
         </body>
 
         <!-- Enclosure top: xyz=[0.009925, 0.04099, 0.05442], rpy=[0, 165.4°, π] -->
-        <body name="enclosure_top" pos="0.009925 0.04099 0.05442"
+        <body gravcomp="1" name="enclosure_top" pos="0.009925 0.04099 0.05442"
               quat="0 -0.991894 0 0.127065">
           <inertial pos="0.041228 0.006275 0.016379" mass="0.046"
                     fullinertia="0.00005942 0.000085611 0.000126390 -0.000000046193 0.0000091699 0.0000012783"/>
@@ -95,7 +95,7 @@
           <geom class="camera_collision" mesh="enclosure_top"/>
 
           <!-- Camera back mount: xyz=[-0.0132, 0, -0.022], rpy=[0, π/2, 0] -->
-          <body name="camera_mount" pos="-0.0132 0 -0.022"
+          <body gravcomp="1" name="camera_mount" pos="-0.0132 0 -0.022"
                 quat="0.707107 0 0.707107 0">
             <inertial pos="-0.007986 0 0.010064" mass="0.004"
                       fullinertia="0.000002782 0.0000005528 0.000002964 -0.00000000002321 0.000000074385 -0.00000000000178"/>
@@ -111,7 +111,7 @@
             <!-- Intel RealSense D415: xyz=[0.006, 0, 0.013], rpy=[0, -π/2, π]
                  This places bottom_screw_frame. The D415 camera_link is at
                  bottom_screw_frame + [0, 0.02, 0.0115]. -->
-            <body name="d415" pos="0.006 0 0.013"
+            <body gravcomp="1" name="d415" pos="0.006 0 0.013"
                   quat="0 0.707107 0 0.707107">
               <inertial pos="0 0 0.0115" mass="0.0589"
                         fullinertia="0.00005491 0.00000521068 0.0000554597 -0.0000000249492 0.00000004862028 0.00000000857625"/>
