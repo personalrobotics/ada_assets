@@ -207,10 +207,12 @@
          kd = kp/15 balances damping vs position hold within forcerange. -->
     <general name="act_j2n6s200_joint_1" joint="j2n6s200_joint_1" gaintype="fixed" biastype="affine" gainprm="600" biasprm="0 -600 -40" forcerange="-40 40"/>
     <general name="act_j2n6s200_joint_2" joint="j2n6s200_joint_2" gaintype="fixed" biastype="affine" gainprm="800" biasprm="0 -800 -53" ctrlrange="0.820305 5.46288" forcerange="-80 80"/>
-    <general name="act_j2n6s200_joint_3" joint="j2n6s200_joint_3" gaintype="fixed" biastype="affine" gainprm="550" biasprm="0 -550 -37" ctrlrange="0.331613 5.95157" forcerange="-40 40"/>
-    <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
-    <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
-    <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -23" forcerange="-20 20"/>
+    <!-- j3-j6 kv tuned for ζ≈1 critical damping (was ζ=1.5-1.9 overdamped).
+         kv = 2*sqrt(kp*J_eff) at representative configs. See ada_assets#3. -->
+    <general name="act_j2n6s200_joint_3" joint="j2n6s200_joint_3" gaintype="fixed" biastype="affine" gainprm="550" biasprm="0 -550 -25" ctrlrange="0.331613 5.95157" forcerange="-40 40"/>
+    <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -14" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -12" forcerange="-20 20"/>
+    <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -12" forcerange="-20 20"/>
     <!-- Finger actuators: each independently drives its proximal joint.
          ctrl range maps to Kinova API 0 (open) → 1.51 (fully closed).
          Effort limit 2 Nm (from URDF). Strong enough to grip firmly. -->
