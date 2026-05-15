@@ -92,7 +92,29 @@ def assemble_ada(
     if tool_tip not in TOOL_TIPS:
         raise ValueError(f"Unknown tool_tip '{tool_tip}'. Available: {sorted(TOOL_TIPS.keys())}")
 
-    spec = _build_spec(with_human=with_human, with_camera=with_camera, tool=tool, tool_tip=tool_tip, with_floor=with_floor)
+    spec = build_spec(with_human=with_human, with_camera=with_camera, tool=tool, tool_tip=tool_tip, with_floor=with_floor)
+    return compile_and_init(spec, tool=tool)
+
+
+def compile_and_init(
+    spec: mujoco.MjSpec,
+    *,
+    tool: str | None = None,
+) -> tuple[mujoco.MjModel, mujoco.MjData]:
+    """Compile a spec, apply stow keyframe, and initialize the tool freejoint.
+
+    Scenes that extend the base ADA spec (e.g. by adding a table or plate)
+    should call this instead of compiling directly so the post-build init
+    (keyframe + tool pose) stays consistent.
+
+    Args:
+        spec: A spec returned by ``build_spec`` (possibly with extra bodies added).
+        tool: Tool name passed to ``build_spec`` — ``"articutool"``, ``"forque"``,
+              or ``None``. Used to initialize the tool freejoint to its grasp site.
+
+    Returns:
+        Compiled MuJoCo model and data, with the JACO2 at stow keyframe.
+    """
     model = spec.compile()
     data = mujoco.MjData(model)
 
@@ -176,7 +198,7 @@ def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None
             ex.bodyname2 = tb
 
 
-def _build_spec(
+def build_spec(
     *,
     with_human: bool = True,
     with_camera: bool = True,
@@ -261,7 +283,7 @@ def main() -> int:
     print(f"ADA assembled: nbody={model.nbody} ngeom={model.ngeom} njnt={model.njnt} nu={model.nu}")
 
     if args.save:
-        spec = _build_spec(
+        spec = build_spec(
             with_human=not args.no_human,
             with_camera=not args.no_camera,
             tool=tool,
