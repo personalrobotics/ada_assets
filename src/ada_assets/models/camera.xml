@@ -130,7 +130,10 @@
 
             <!-- color_optical_frame: camera_link rotated by rpy=[-π/2, 0, -π/2].
                  z points into the scene, x right, y down (OpenCV convention).
-                 This is the frame MuJoCo cameras should use for rendering. -->
+                 This is the calibrated hardware extrinsic frame. NOTE: MuJoCo
+                 cameras do NOT use this orientation directly — they view down
+                 local -z with +y up (OpenGL), the OpenCV frame rotated 180°
+                 about x. The <camera> elements below bake in that flip. -->
             <site name="color_optical_frame" pos="0.0194 -0.01606 0.029014"
                   quat="0.706951 -0.003895 -0.002741 0.707246"
                   size="0.003" rgba="0 1 1 0.5"/>
@@ -156,14 +159,18 @@
                  Depth post-processing (ada_mj):
                    - Clip to [0.16, 10.0] m to match D415 operating range
                    - Apply intrinsic matrix for pixel-accurate projection -->
+            <!-- quat = color_optical_frame quat ∘ Rx(180°): converts the
+                 OpenCV optical frame (+z forward, +y down) to MuJoCo's camera
+                 convention (-z forward, +y up) so the camera looks along the
+                 real optical axis instead of backwards. See ada_assets#6. -->
             <camera name="d415_color" pos="0.0194 -0.01606 0.029014"
-                    quat="0.706951 -0.003895 -0.002741 0.707246"
+                    quat="0.003895 0.706951 0.707246 0.002741"
                     fovy="43" resolution="1280 720"/>
             <!-- Depth uses aligned_depth_to_color (same frame and FOV as color).
                  Render with renderer.enable_depth_rendering(True).
                  Clip output to [0.16, 10.0] m for D415 fidelity. -->
             <camera name="d415_depth" pos="0.0194 -0.01606 0.029014"
-                    quat="0.706951 -0.003895 -0.002741 0.707246"
+                    quat="0.003895 0.706951 0.707246 0.002741"
                     fovy="43" resolution="1280 720"/>
           </body>
         </body>
