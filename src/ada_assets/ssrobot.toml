@@ -1,0 +1,32 @@
+# Written by `ssrobot init`. Every semantic below is explicit; review it.
+# Commands and channels appear only if a template was chosen.
+schema = "ssrobot.package"
+version = 1
+robot = "ada"
+canonical_model = "mjcf"
+
+[[models]]
+name = "mjcf"
+format = "mjcf"
+path = "models/scene.xml"
+
+[[semantics.groups]]
+name = "arm"
+joints = ["j2n6s200_joint_1", "j2n6s200_joint_2", "j2n6s200_joint_3", "j2n6s200_joint_4", "j2n6s200_joint_5", "j2n6s200_joint_6"]
+
+[[semantics.grippers]]
+name = "gripper"
+frame = "j2n6s200_link_6"
+joints = ["j2n6s200_joint_finger_1", "j2n6s200_joint_finger_tip_1", "j2n6s200_joint_finger_2", "j2n6s200_joint_finger_tip_2"]
+
+[[semantics.manipulators]]
+name = "arm"
+group = "arm"
+base_frame = "j2n6s200_link_base"
+tool_frame = "j2n6s200_link_6"
+end_effector = "end_effector"
+
+[[semantics.end_effectors]]
+name = "end_effector"
+frame = "ee_site"
+gripper = "gripper"
