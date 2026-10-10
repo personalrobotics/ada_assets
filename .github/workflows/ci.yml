@@ -75,6 +75,12 @@ jobs:
               print(f"missing from the wheel: {name}")
           sys.exit(1 if missing or "ada_assets/ssrobot.toml" not in shipped else 0)
           PY
+      - name: ssrobot doctor on the built wheel
+        # The package as ssrobot loads it, from the installed wheel, at a pinned ssrobot.
+        run: >-
+          uvx --python 3.12
+          --from "git+https://github.com/personalrobotics/ssrobot@c17ce05bb12a26b65893e5561ecc451a0444c11d"
+          ssrobot doctor src/ada_assets --wheel "$(ls dist/*.whl)"
 
   notify-robot-code:
     needs: [test, wheel]
