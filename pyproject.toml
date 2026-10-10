@@ -13,7 +13,8 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "mujoco",
+    # 3.14 is the MuJoCo ssrobot requires exactly; the lockfile below tests that version.
+    "mujoco>=3.14",
 ]
 
 [tool.hatch.metadata]
@@ -40,3 +41,7 @@ dev = [
     "pytest",
     "ruff",
 ]
+
+[tool.uv]
+# Develop and test against the exact MuJoCo ssrobot pins, so CI checks what ssrobot runs.
+constraint-dependencies = ["mujoco==3.14.0"]
