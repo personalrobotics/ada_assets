@@ -200,6 +200,9 @@ ada_assets/
 
 All transforms, inertials, joint limits, and mesh files are traced to their original sources:
 
+Each mesh's source commit, changes, original origin, and license are recorded in [`models/assets/PROVENANCE.md`](src/ada_assets/models/assets/PROVENANCE.md). The package's code is MIT-licensed; meshes keep their own licenses, whose texts ship in `models/assets/licenses/`.
+
+
 - **JACO2 arm**: [Kinova JACO2 j2n6s200](https://www.kinovarobotics.com/product/jaco2-702), `ada_ros2/ada_description/urdf/j2n6s200.xacro` + DAE meshes for materials
 - **Wheelchair**: `ada_feeding/ada_planning_scene` + physics drop test for z-height
 - **Seated human**: `ada_feeding/ada_planning_scene` config (positions converted from arm-root frame to floor frame)
