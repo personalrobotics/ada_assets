@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      UV_LOCKED: "1"  # every uv command here must use uv.lock as committed
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          # The uv that wrote uv.lock; another release may write a different lock revision.
+          version: "0.12.15"
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        # --locked: fail if uv.lock no longer matches pyproject.toml, instead of re-resolving.
+        run: uv sync --locked --all-extras --dev
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Pytest
+        run: uv run pytest tests/ -v
+
+  wheel:
+    # The wheel is what users install: it must carry every model, mesh, and ssrobot.toml.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.12.15"
+          python-version: "3.12"
+      - run: uv build --wheel --out-dir dist
+      - name: The wheel contains every package file
+        run: |
+          python3 - <<'PY'
+          import pathlib, sys, zipfile
+          source = pathlib.Path("src")
+          expected = {
+              p.relative_to(source).as_posix()
+              for p in source.rglob("*")
+              if p.is_file() and "__pycache__" not in p.parts
+          }
+          (wheel,) = pathlib.Path("dist").glob("*.whl")
+          shipped = {n for n in zipfile.ZipFile(wheel).namelist() if n.startswith("ada_assets/")}
+          missing = sorted(expected - shipped)
+          print(f"{wheel.name}: {len(shipped)} package files, {len(expected)} in src/")
+          for name in missing:
+              print(f"missing from the wheel: {name}")
+          sys.exit(1 if missing or "ada_assets/ssrobot.toml" not in shipped else 0)
+          PY
+
+  notify-robot-code:
+    needs: [test, wheel]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      ROBOT_CODE_DISPATCH_TOKEN: ${{ secrets.ROBOT_CODE_DISPATCH_TOKEN }}
+    steps:
+      - name: Dispatch integration run
+        if: env.ROBOT_CODE_DISPATCH_TOKEN != ''
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3
+        with:
+          token: ${{ env.ROBOT_CODE_DISPATCH_TOKEN }}
+          repository: personalrobotics/robot-code
+          event-type: sibling-updated
+          client-payload: '{"repo":"${{ github.event.repository.name }}","sha":"${{ github.sha }}"}'
