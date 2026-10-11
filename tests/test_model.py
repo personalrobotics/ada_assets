@@ -109,12 +109,20 @@ def test_every_model_file_is_well_formed_xml():
 def test_generated_models_match_their_sources(tmp_path):
     """The generated models are exactly what the assembly writes from the component
     models, so no change lives only in a generated file."""
+    import difflib
+
     from ada_assets.assembly import generate
 
-    stale = [name for name, path in generate(tmp_path).items() if path.read_text() != (MODELS_DIR / name).read_text()]
-    assert stale == [], (
-        f"{stale} differ from their sources; regenerate with "
-        "`uv run python -c 'from ada_assets.assembly import generate; generate()'`"
+    diffs = []
+    for name, path in generate(tmp_path).items():
+        checked_in = (MODELS_DIR / name).read_text().splitlines()
+        regenerated = path.read_text().splitlines()
+        if checked_in != regenerated:
+            diff = difflib.unified_diff(checked_in, regenerated, f"checked-in {name}", f"regenerated {name}", n=0)
+            diffs.append("\n".join(list(diff)[:12]))
+    assert diffs == [], (
+        "generated models differ from their sources; regenerate with "
+        "`uv run python -c 'from ada_assets.assembly import generate; generate()'`\n" + "\n".join(diffs)
     )
 
 
