@@ -28,8 +28,8 @@ import argparse
 import sys
 from pathlib import Path
 
-import numpy as np
 import mujoco
+import numpy as np
 
 from ada_assets import ASSETS_DIR, MODELS_DIR
 
@@ -47,23 +47,30 @@ TOOL_TIPS = {
 
 
 def _init_tool_pose(
-    model: mujoco.MjModel, data: mujoco.MjData, prefix: str, tool: str,
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    prefix: str,
+    tool: str,
 ) -> None:
     """Set a tool's freejoint qpos so it starts at the grasp site."""
     attach_site = TOOLS[tool]
     site_id = mujoco.mj_name2id(
-        model, mujoco.mjtObj.mjOBJ_SITE, attach_site,
+        model,
+        mujoco.mjtObj.mjOBJ_SITE,
+        attach_site,
     )
     jnt_id = mujoco.mj_name2id(
-        model, mujoco.mjtObj.mjOBJ_JOINT, f"{prefix}/fork_freejoint",
+        model,
+        mujoco.mjtObj.mjOBJ_JOINT,
+        f"{prefix}/fork_freejoint",
     )
     adr = model.jnt_qposadr[jnt_id]
     # Freejoint qpos: [x, y, z, qw, qx, qy, qz]
-    data.qpos[adr:adr + 3] = data.site_xpos[site_id]
+    data.qpos[adr : adr + 3] = data.site_xpos[site_id]
     mat = data.site_xmat[site_id].reshape(3, 3)
     quat = np.zeros(4)
     mujoco.mju_mat2Quat(quat, mat.flatten())
-    data.qpos[adr + 3:adr + 7] = quat
+    data.qpos[adr + 3 : adr + 7] = quat
 
 
 def assemble_ada(
@@ -92,7 +99,9 @@ def assemble_ada(
     if tool_tip not in TOOL_TIPS:
         raise ValueError(f"Unknown tool_tip '{tool_tip}'. Available: {sorted(TOOL_TIPS.keys())}")
 
-    spec = build_spec(with_human=with_human, with_camera=with_camera, tool=tool, tool_tip=tool_tip, with_floor=with_floor)
+    spec = build_spec(
+        with_human=with_human, with_camera=with_camera, tool=tool, tool_tip=tool_tip, with_floor=with_floor
+    )
     return compile_and_init(spec, tool=tool)
 
 
@@ -184,10 +193,15 @@ def _attach_tool(spec: mujoco.MjSpec, tool: str, tool_tip: str = "fork") -> None
     # The tool is physically held by the weld constraint — the finger
     # and tool collision meshes intentionally overlap (fingers gripping).
     hand_bodies = [
-        "j2n6s200_link_2", "j2n6s200_link_3", "j2n6s200_link_4",
-        "j2n6s200_link_5", "j2n6s200_link_6",
-        "j2n6s200_link_finger_1", "j2n6s200_link_finger_tip_1",
-        "j2n6s200_link_finger_2", "j2n6s200_link_finger_tip_2",
+        "j2n6s200_link_2",
+        "j2n6s200_link_3",
+        "j2n6s200_link_4",
+        "j2n6s200_link_5",
+        "j2n6s200_link_6",
+        "j2n6s200_link_finger_1",
+        "j2n6s200_link_finger_tip_1",
+        "j2n6s200_link_finger_2",
+        "j2n6s200_link_finger_tip_2",
     ]
     tool_bodies = [f"{tool}/{n}" for n in tool_body_names]
 
@@ -264,11 +278,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Assemble the ADA robot model.")
     parser.add_argument("--no-human", action="store_true", help="Exclude seated human.")
     parser.add_argument("--no-camera", action="store_true", help="Exclude wrist camera.")
-    parser.add_argument("--tool", choices=sorted(TOOLS.keys()), default="articutool",
-                        help="Tool to attach (default: articutool). Use --no-tool for none.")
+    parser.add_argument(
+        "--tool",
+        choices=sorted(TOOLS.keys()),
+        default="articutool",
+        help="Tool to attach (default: articutool). Use --no-tool for none.",
+    )
     parser.add_argument("--no-tool", action="store_true", help="Exclude tool.")
-    parser.add_argument("--tool-tip", choices=sorted(TOOL_TIPS.keys()), default="fork",
-                        help="Articutool tip: fork or spoon (default: fork).")
+    parser.add_argument(
+        "--tool-tip",
+        choices=sorted(TOOL_TIPS.keys()),
+        default="fork",
+        help="Articutool tip: fork or spoon (default: fork).",
+    )
     parser.add_argument("--save", type=Path, help="Save assembled XML to this path.")
     parser.add_argument("--view", action="store_true", help="Launch mj_viser viewer.")
     args = parser.parse_args()
