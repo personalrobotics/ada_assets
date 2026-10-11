@@ -240,10 +240,12 @@
 
   <!-- qpos order: 6 arm + finger_1_proximal + finger_tip_1 + finger_2_proximal + finger_tip_2
        Distal joints at 0 (spring holds them straight in free space). -->
+  <!-- Each keyframe's ctrl holds its pose: the joint servos at their joint positions,
+       and each finger servo at its tendon length (proximal + 0.5 * distal). -->
   <keyframe>
-    <key name="above_plate" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 1.33 0 1.33 0"/>
-    <key name="resting" qpos="-1.860 2.181 0.364 -5.187 -0.470 -0.814 1.33 0 1.33 0"/>
-    <key name="staging" qpos="-2.122 4.496 4.022 -4.710 -2.493 -1.926 1.33 0 1.33 0"/>
-    <key name="stow" qpos="-1.521 2.601 0.348 -4.000 0.228 3.879 1.33 0 1.33 0"/>
+    <key name="above_plate" qpos="-2.579 3.010 1.770 -2.076 -1.791 2.858 1.33 0 1.33 0" ctrl="-2.579 3.010 1.770 -2.076 -1.791 2.858 1.33 1.33"/>
+    <key name="resting" qpos="-1.860 2.181 0.364 -5.187 -0.470 -0.814 1.33 0 1.33 0" ctrl="-1.860 2.181 0.364 -5.187 -0.470 -0.814 1.33 1.33"/>
+    <key name="staging" qpos="-2.122 4.496 4.022 -4.710 -2.493 -1.926 1.33 0 1.33 0" ctrl="-2.122 4.496 4.022 -4.710 -2.493 -1.926 1.33 1.33"/>
+    <key name="stow" qpos="-1.521 2.601 0.348 -4.000 0.228 3.879 1.33 0 1.33 0" ctrl="-1.521 2.601 0.348 -4.000 0.228 3.879 1.33 1.33"/>
   </keyframe>
 </mujoco>
