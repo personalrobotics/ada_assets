@@ -66,6 +66,28 @@ uv run python -m ada_assets.assembly --view --no-tool                    # bare 
 uv run python -m ada_assets.assembly --save assembled.xml                # save XML
 ```
 
+## Generated models
+
+Three models are generated from the components by `ada_assets.assembly.generate()` and checked in. Don't edit them; edit the components and regenerate:
+
+```bash
+uv run python -c 'from ada_assets.assembly import generate; generate()'
+```
+
+A test fails if any generated file differs from what its sources produce.
+
+| File | Contents | Use |
+| --- | --- | --- |
+| `models/ada.xml` | The robot: wheelchair, JACO2, wrist camera, and the articutool mounted rigidly in the hand | The canonical model of the ssrobot package (`ssrobot.toml`) |
+| `models/scene.xml` | The robot, the seated user, and the floor | Viewing and simulation |
+| `models/seated_user_scene.xml` | The seated user and the floor, without the robot | A task scene to compose with the robot |
+
+In the generated models the articutool is **rigidly mounted**: its tilt and roll joints and its sensors are part of the robot. On the real robot the tool is set down to charge. `assemble_ada()` keeps the releasable form, a free tool held by a weld (`tool_mount="weld"`, the default), and `build_spec(tool_mount="rigid")` builds the mounted form.
+
+`seated_user_scene.xml` uses the human mesh, so ssrobot can compose it with `MujocoRuntime(..., scene=...)` only once ssrobot scenes may reference meshes (personalrobotics/ssrobot#111).
+
+The models start at a keyframe (`resting`, `staging`, `above_plate`, or `stow`). Each keyframe's controls hold its pose.
+
 ## Components
 
 Each component is a standalone MuJoCo XML that can be loaded independently or composed via the assembly API. All meshes live in a single flat `models/assets/` directory.
@@ -81,7 +103,7 @@ Kinova JACO2 j2n6s200 — 6-DOF arm with 2 underactuated fingers.
 - **Gravity compensation**: Enabled on all moving bodies (`gravcomp="1"`)
 - **Effort limits**: From URDF — J1/J3 ±40 Nm, J2 ±80 Nm, J4-6 ±20 Nm, fingers ±2 Nm
 - **Sites**: `base_mount_site`, `tool_attachment_site`, `ee_site`, `forque_attachment_site`, `articutool_attachment_site`, `camera_attachment_site`
-- **Keyframes**: `above_plate`, `resting`, `staging`, `stow`, `open` (fingers)
+- **Keyframes**: `above_plate`, `resting`, `staging`, `stow`. Each carries the `ctrl` that holds it: the joint servos at their positions, and each finger servo at its tendon length (proximal + 0.5 × distal)
 
 ### Wheelchair (`wheelchair.xml`)
 
@@ -147,10 +169,8 @@ The Python assembly (`assembly.py`) uses MuJoCo's `MjSpec` API:
 2. Attach JACO2 at `arm_attachment_site` via `spec.attach()`
 3. Attach wrist camera at `camera_attachment_site` on link_6
 4. Attach seated human on worldbody
-5. Attach tool (articutool or forque) on worldbody as a freejoint object
-6. Add a weld equality constraint from the tool's `grasp_site` to the attachment site on link_6
-7. Initialize the tool's freejoint qpos to the attachment site pose so it starts in the hand
-8. Add floor and lighting
+5. Attach the tool (articutool or forque). With `tool_mount="weld"` (the default), it is a freejoint object on the worldbody: a weld equality constraint holds its `grasp_site` at the attachment site on link_6, and `compile_and_init` places it there in the initial state and in every keyframe. With `tool_mount="rigid"`, it is mounted at the attachment site with no free joint.
+6. Add floor and lighting
 
 Each component XML has no `meshdir` — the assembly sets it once to the shared `assets/` directory.
 
@@ -188,8 +208,9 @@ ada_assets/
 │       ├── articutool.xml   # 2-DOF motorized tool
 │       ├── forque.xml       # Rigid fork + F/T sensor
 │       ├── camera.xml       # Wrist camera (D415 + Jetson Nano)
-│       ├── ada.xml          # Include-based assembly (for reference)
-│       ├── scene.xml        # Full scene with floor/lighting
+│       ├── ada.xml          # Generated: the robot (canonical ssrobot model)
+│       ├── scene.xml        # Generated: robot + seated user + floor
+│       ├── seated_user_scene.xml  # Generated: seated user + floor
 │       └── assets/          # 41 STL mesh files (single flat directory)
 ├── pyproject.toml
 ├── LICENSE
