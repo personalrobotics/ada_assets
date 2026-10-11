@@ -243,3 +243,27 @@ def test_closed_gripper_touches_only_fingertip_to_fingertip():
         [("j2n6s200_link_finger_tip_1", "j2n6s200_link_finger_tip_2")],
     )
     assert np.all(np.isfinite(data.qpos))
+
+
+def _touches_wheelchair(model, q):
+    """Whether the robot touches the wheelchair with the arm at ``q``, from ``resting``."""
+    data = mujoco.MjData(model)
+    mujoco.mj_resetDataKeyframe(model, data, model.key("resting").id)
+    for i, value in enumerate(q, start=1):
+        data.qpos[model.jnt_qposadr[model.joint(f"j2n6s200_joint_{i}").id]] = value
+    mujoco.mj_forward(model, data)
+    chair = {
+        g
+        for g in range(model.ngeom)
+        if _name(model, mujoco.mjtObj.mjOBJ_BODY, model.geom_bodyid[g]) == "wheelchair_base"
+    }
+    return any(c.geom1 in chair or c.geom2 in chair for c in data.contact[: data.ncon])
+
+
+def test_wheelchair_collides_as_its_shape_not_its_convex_hull():
+    """#14: a pose that only the wheelchair's convex hull reaches is free; a pose that
+    reaches the real chair still collides. Both come from 4,000 seeded random poses: the
+    first's nearest point on the real chair is 20 cm from where the hull reported contact."""
+    model = mujoco.MjModel.from_xml_path(str(MODELS_DIR / "ada.xml"))
+    assert not _touches_wheelchair(model, (-0.6, 1.742, 0.842, 0.505, -1.265, 1.081))
+    assert _touches_wheelchair(model, (-1.03, 1.518, 2.863, 1.862, -1.692, -2.815))
