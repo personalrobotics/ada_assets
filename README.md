@@ -86,7 +86,7 @@ In the generated models the articutool is **rigidly mounted**: its tilt and roll
 
 `seated_user_scene.xml` uses the human mesh, so ssrobot can compose it with `MujocoRuntime(..., scene=...)` only once ssrobot scenes may reference meshes (personalrobotics/ssrobot#111).
 
-The models start at a keyframe (`resting`, `staging`, `above_plate`, or `stow`). Each keyframe's controls hold its pose.
+**Start at a keyframe.** MuJoCo's default state, every joint at zero, is the JACO2's mathematical zero, not a pose the arm can reach: joints 2 and 3 are outside their ranges (`[0.82, 5.46]` and `[0.33, 5.95]` rad), and the links interpenetrate. Making it valid would mean changing the joints' reference angles, and with them the arm's kinematics. So a simulation starts at a keyframe instead: `resting`, `staging`, `above_plate`, or `stow`. Each is within the joint limits, contact-free, and held by its own controls, and tests guard all three properties. `assemble_ada()` starts at `stow`; ssrobot's MuJoCo profile names its start keyframe.
 
 ## Components
 
