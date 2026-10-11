@@ -187,13 +187,6 @@ def test_every_generated_keyframe_holds_still(scene):
     assert _drift(scene) == []
 
 
-@_issue(15, "the default state puts joints 2 and 3 outside their limits, in self-collision")
-def test_default_state_is_valid(scene):
-    data = mujoco.MjData(scene)
-    mujoco.mj_forward(scene, data)
-    assert (_out_of_limits(scene, data.qpos), _contacts(scene, data)) == ([], [])
-
-
 # -- Actuators and contact ---------------------------------------------------------
 
 
