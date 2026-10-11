@@ -105,6 +105,18 @@ def assemble_ada(
     return compile_and_init(spec, tool=tool)
 
 
+def _place_tool_in_keyframes(model: mujoco.MjModel, tool: str) -> None:
+    """Write each keyframe's tool freejoint pose: at its grasp site for that arm pose."""
+    data = mujoco.MjData(model)
+    joint = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, f"{tool}/fork_freejoint")
+    address = model.jnt_qposadr[joint]
+    for key in range(model.nkey):
+        mujoco.mj_resetDataKeyframe(model, data, key)
+        mujoco.mj_forward(model, data)
+        _init_tool_pose(model, data, tool, tool)
+        model.key_qpos[key][address : address + 7] = data.qpos[address : address + 7]
+
+
 def compile_and_init(
     spec: mujoco.MjSpec,
     *,
@@ -134,8 +146,11 @@ def compile_and_init(
 
     mujoco.mj_forward(model, data)
 
-    # Initialize tool freejoint to the grasp site on link_6.
+    # Initialize tool freejoint to the grasp site on link_6, in the initial state and in
+    # every keyframe. MuJoCo pads keyframes with zeros for joints they don't mention, which
+    # would put the tool at the world origin.
     if tool is not None:
+        _place_tool_in_keyframes(model, tool)
         _init_tool_pose(model, data, tool, tool)
         mujoco.mj_forward(model, data)
 

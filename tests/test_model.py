@@ -130,39 +130,42 @@ def test_canonical_keyframes_are_free_of_contact(scene):
     assert _keyframe_contacts(scene) == {}
 
 
-@pytest.mark.parametrize(
-    "variant",
-    [
-        pytest.param(name, marks=_issue(13, "keyframes leave the attached tool at the world origin"))
-        if ASSEMBLIES[name].get("tool", "articutool") is not None
-        else name
-        for name in ASSEMBLIES
-    ],
-)
+@pytest.mark.parametrize("variant", ASSEMBLIES)
 def test_assembled_keyframes_are_free_of_contact(variant):
     model, _ = assemble_ada(**ASSEMBLIES[variant])
     assert _keyframe_contacts(model) == {}
 
 
-@_issue(13, "every keyframe's ctrl is zero, so the joint servos drive the arm toward zero")
-def test_every_keyframe_holds_still(scene):
-    """From each keyframe, the joint servos hold the arm still for a second, within
-    1 mrad."""
+def _drift(model):
+    """Joints that move more than 1 mrad in a second from a keyframe, servos holding it."""
     problems = []
-    data = mujoco.MjData(scene)
-    for key in range(scene.nkey):
-        key_name = _name(scene, mujoco.mjtObj.mjOBJ_KEY, key)
-        mujoco.mj_resetDataKeyframe(scene, data, key)
+    data = mujoco.MjData(model)
+    for key in range(model.nkey):
+        key_name = _name(model, mujoco.mjtObj.mjOBJ_KEY, key)
+        mujoco.mj_resetDataKeyframe(model, data, key)
         for _ in range(500):
-            mujoco.mj_step(scene, data)
-        for a in range(scene.nu):
-            if scene.actuator_trntype[a] != mujoco.mjtTrn.mjTRN_JOINT:
+            mujoco.mj_step(model, data)
+        for a in range(model.nu):
+            if model.actuator_trntype[a] != mujoco.mjtTrn.mjTRN_JOINT:
                 continue
-            address = scene.jnt_qposadr[scene.actuator_trnid[a][0]]
-            drift = abs(data.qpos[address] - scene.key_qpos[key][address])
+            address = model.jnt_qposadr[model.actuator_trnid[a][0]]
+            drift = abs(data.qpos[address] - model.key_qpos[key][address])
             if drift > 1e-3:
-                problems.append(f"{key_name}: {_name(scene, mujoco.mjtObj.mjOBJ_ACTUATOR, a)} drifted {drift:.4g}")
-    assert problems == []
+                problems.append(f"{key_name}: {_name(model, mujoco.mjtObj.mjOBJ_ACTUATOR, a)} drifted {drift:.4g}")
+    return problems
+
+
+@pytest.mark.parametrize("variant", ASSEMBLIES)
+def test_every_assembled_keyframe_holds_still(variant):
+    """From each keyframe, the servos hold the arm still for a second: each keyframe's
+    ctrl holds its own pose."""
+    model, _ = assemble_ada(**ASSEMBLIES[variant])
+    assert _drift(model) == []
+
+
+@_issue(16, "scene.xml mounts the arm inside the wheelchair, whose contact pushes it")
+def test_every_canonical_keyframe_holds_still(scene):
+    assert _drift(scene) == []
 
 
 @_issue(15, "the default state puts joints 2 and 3 outside their limits, in self-collision")
