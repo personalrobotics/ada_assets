@@ -9,9 +9,10 @@ Components (each a standalone XML, composable via <include>):
   - seated  — Seated human (tom visual, body collision, mocap head)
   - fork    — Articutool fork end-effector (2-DOF: tilt + roll)
 
-Pre-assembled:
-  - ada     — Wheelchair + JACO2 + human (+ optionally fork)
-  - scene   — Full scene with floor, lighting, camera
+Generated (by ada_assets.assembly.generate(); do not edit):
+  - ada     — The robot: wheelchair + JACO2 + wrist camera + articutool, mounted
+  - scene   — The robot, the seated user, and the floor
+  - seated_user_scene — The seated user and the floor alone
 
 All meshes live in models/assets/ (single flat directory, no duplication).
 Component XMLs have no meshdir — the assembly or scene sets it once.
@@ -40,7 +41,7 @@ ASSETS_DIR = MODELS_DIR / "assets"
 COMPONENTS = ["jaco2", "wheelchair", "seated", "forque", "articutool", "camera"]
 
 # Available assembled models
-ASSEMBLIES = ["ada", "scene"]
+ASSEMBLIES = ["ada", "scene", "seated_user_scene"]
 
 AVAILABLE_MODELS = COMPONENTS + ASSEMBLIES
 

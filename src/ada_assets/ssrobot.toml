@@ -8,7 +8,7 @@ canonical_model = "mjcf"
 [[models]]
 name = "mjcf"
 format = "mjcf"
-path = "models/scene.xml"
+path = "models/ada.xml"
 
 [[semantics.groups]]
 name = "arm"

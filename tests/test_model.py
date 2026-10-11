@@ -14,7 +14,8 @@ import pytest
 from ada_assets import MODELS_DIR
 from ada_assets.assembly import assemble_ada
 
-SCENE = MODELS_DIR / "scene.xml"
+# The generated models: the canonical robot ssrobot loads, and the full scene.
+GENERATED = ("ada.xml", "scene.xml")
 KEYFRAMES = {"above_plate", "resting", "staging", "stow"}
 ARM_CHAIN = [
     "j2n6s200_link_base",
@@ -42,9 +43,9 @@ def _issue(number: int, reason: str) -> pytest.MarkDecorator:
     )
 
 
-@pytest.fixture(scope="module")
-def scene():
-    return mujoco.MjModel.from_xml_path(str(SCENE))
+@pytest.fixture(scope="module", params=GENERATED)
+def scene(request):
+    return mujoco.MjModel.from_xml_path(str(MODELS_DIR / request.param))
 
 
 def _name(model, kind, i):
@@ -105,7 +106,19 @@ def test_every_model_file_is_well_formed_xml():
     assert malformed == []
 
 
-def test_canonical_scene_compiles_with_its_keyframes(scene):
+def test_generated_models_match_their_sources(tmp_path):
+    """The generated models are exactly what the assembly writes from the component
+    models, so no change lives only in a generated file."""
+    from ada_assets.assembly import generate
+
+    stale = [name for name, path in generate(tmp_path).items() if path.read_text() != (MODELS_DIR / name).read_text()]
+    assert stale == [], (
+        f"{stale} differ from their sources; regenerate with "
+        "`uv run python -c 'from ada_assets.assembly import generate; generate()'`"
+    )
+
+
+def test_generated_model_compiles_with_its_keyframes(scene):
     assert {_name(scene, mujoco.mjtObj.mjOBJ_KEY, k) for k in range(scene.nkey)} == KEYFRAMES
 
 
@@ -125,8 +138,7 @@ def test_every_keyframe_is_within_joint_limits(scene):
     assert {k: v for k, v in problems.items() if v} == {}
 
 
-@_issue(16, "scene.xml mounts the arm at the world origin, inside the wheelchair")
-def test_canonical_keyframes_are_free_of_contact(scene):
+def test_generated_keyframes_are_free_of_contact(scene):
     assert _keyframe_contacts(scene) == {}
 
 
@@ -163,8 +175,7 @@ def test_every_assembled_keyframe_holds_still(variant):
     assert _drift(model) == []
 
 
-@_issue(16, "scene.xml mounts the arm inside the wheelchair, whose contact pushes it")
-def test_every_canonical_keyframe_holds_still(scene):
+def test_every_generated_keyframe_holds_still(scene):
     assert _drift(scene) == []
 
 
