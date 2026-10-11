@@ -336,10 +336,21 @@ GENERATED = {
 def _generated_xml(spec: mujoco.MjSpec, name: str) -> str:
     spec.modelname = name
     spec.meshdir = "assets"
-    # MuJoCo writes a mesh's content_type only the first time a process writes a spec, so
-    # drop it: the type follows from the file extension, and the output is then the same
-    # however it was produced.
-    return GENERATED_HEADER + re.sub(r' content_type="[^"]*"', "", spec.to_xml())
+    # Make the output the same however and wherever it was produced:
+    # - MuJoCo writes a mesh's content_type only the first time a process writes a spec;
+    #   the type follows from the file extension.
+    # - Whether a body or geom's zero position or identity orientation is written out
+    #   differs by platform. Both are the defaults, so drop them from the worldbody's
+    #   bodies, geoms, sites, cameras, and frames, where they are optional. (An inertial
+    #   requires its pos.) No default class sets a pose these could be overriding.
+    xml = re.sub(r' content_type="[^"]*"', "", spec.to_xml())
+    head, body = xml.split("<worldbody>", 1)
+    body = re.sub(
+        r"<(body|geom|site|camera|frame)\b[^>]*>",
+        lambda tag: re.sub(r' (pos="0 0 0"|quat="1 0 0 0")', "", tag.group(0)),
+        body,
+    )
+    return GENERATED_HEADER + head + "<worldbody>" + body
 
 
 def seated_user_spec() -> mujoco.MjSpec:

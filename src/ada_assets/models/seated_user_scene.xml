@@ -14,10 +14,10 @@
     <geom name="floor" size="3 3 0.05" type="plane" rgba="0.9 0.9 0.9 1"/>
     <light pos="0 0 3"/>
     <body name="user_body" pos="0 0 0.4612">
-      <geom name="body_safety_envelope" pos="0 0 0" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="3" material="body_safety" mesh="body_collision"/>
+      <geom name="body_safety_envelope" type="mesh" contype="0" conaffinity="0" group="3" material="body_safety" mesh="body_collision"/>
     </body>
     <body name="head" pos="0.269 0.34 1.3112" quat="0.716409 -0.0626772 -0.0626772 -0.692027" mocap="true">
-      <geom name="head_visual" pos="0 0 0" quat="1 0 0 0" type="mesh" contype="0" conaffinity="0" group="2" material="skin" mesh="tom"/>
+      <geom name="head_visual" type="mesh" contype="0" conaffinity="0" group="2" material="skin" mesh="tom"/>
       <geom name="head_collision" size="0.137 0.133 0.207" pos="-0.12 0 0.014" type="box" group="3" rgba="0.7 0.5 0.4 0.15"/>
       <geom name="face_wall_geom" size="0.005 0.225 0.2" pos="0.15 0 0" type="box" contype="0" conaffinity="0" group="3" rgba="1 0.3 0.3 0.1"/>
       <site name="mouth" size="0.001" pos="0.02 0 0"/>
