@@ -1,0 +1,15 @@
+# MujocoRuntime settings for ADA (see ssrobot's docs/mujoco.md). The model's default
+# state is not a valid pose (README), so MujocoRuntime starts at the "resting" keyframe.
+# Each finger is driven through its tendon actuator, whose control runs from 0 (open) to
+# 1.51. The fingertips meet at a tendon length of about 1.356, short of 1.51, so "closed"
+# is 1.35: the fingers fully closed, just short of touching.
+schema = "ssrobot.MujocoProfile"
+version = 1
+keyframe = "resting"
+
+[[grippers]]
+gripper = "gripper"
+actuators = [
+  { actuator = "act_finger_1", closed = 1.35, open = 0.0 },
+  { actuator = "act_finger_2", closed = 1.35, open = 0.0 },
+]
