@@ -88,6 +88,23 @@ In the generated models the articutool is **rigidly mounted**: its tilt and roll
 
 **Start at a keyframe.** MuJoCo's default state, every joint at zero, is the JACO2's mathematical zero, not a pose the arm can reach: joints 2 and 3 are outside their ranges (`[0.82, 5.46]` and `[0.33, 5.95]` rad), and the links interpenetrate. Making it valid would mean changing the joints' reference angles, and with them the arm's kinematics. So a simulation starts at a keyframe instead: `resting`, `staging`, `above_plate`, or `stow`. Each is within the joint limits, contact-free, and held by its own controls, and tests guard all three properties. `assemble_ada()` starts at `stow`; ssrobot's MuJoCo profile names its start keyframe.
 
+## ssrobot package
+
+`ssrobot.toml` makes this an [ssrobot](https://github.com/personalrobotics/ssrobot) robot package, with `models/ada.xml` as its canonical model.
+
+- **MuJoCo profile** (`mujoco.toml`): ssrobot's `MujocoRuntime` starts at the `resting` keyframe. It drives the gripper through the finger tendon actuators, from 0 (open) to 1.35, just short of the fingertips meeting.
+- **Groups**: `arm` (the six JACO2 joints) and `articutool` (tilt and roll).
+- **Commands**: joint position and trajectory for `arm` and `articutool`, and `gripper`.
+- **Channels**:
+  - joint position, velocity, and effort for `arm`;
+  - the gripper opening;
+  - `articutool` joint position;
+  - the poses of `ee_site` and the fork tip;
+  - the tool's wrench;
+  - the wrist camera's RGB and depth, at 640x360.
+- **Named configurations**: `resting`, `staging`, `above_plate`, `stow`, equal to the keyframes of the same names.
+- **Joint limits**: the JACO2's velocity and effort, and the articutool's, from their URDFs in ada_ros2 and articutool_ros2. Kinova publishes no acceleration limit, so ADA's operating limits are declared instead, as ada_mj uses: each joint's velocity limit reached in 0.1 s. The sources are in comments in `ssrobot.toml`.
+
 ## Components
 
 Each component is a standalone MuJoCo XML that can be loaded independently or composed via the assembly API. All meshes live in a single flat `models/assets/` directory.

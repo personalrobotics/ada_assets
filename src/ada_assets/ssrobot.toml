@@ -1,5 +1,6 @@
 # Written by `ssrobot init`. Every semantic below is explicit; review it.
-# Commands and channels appear only if a template was chosen.
+# Limits, configurations, sensors, commands, channels, and the MuJoCo profile were added
+# by hand; see the comments on each.
 schema = "ssrobot.package"
 version = 1
 robot = "ada"
@@ -9,6 +10,11 @@ canonical_model = "mjcf"
 name = "mjcf"
 format = "mjcf"
 path = "models/ada.xml"
+
+[[profiles]]
+name = "sim"
+runtime = "mujoco"
+path = "mujoco.toml"
 
 [[semantics.groups]]
 name = "arm"
@@ -30,3 +36,197 @@ end_effector = "end_effector"
 name = "end_effector"
 frame = "ee_site"
 gripper = "gripper"
+
+[[semantics.groups]]
+name = "articutool"
+joints = ["articutool/atool_joint1", "articutool/atool_joint2"]
+
+
+# ADA's named poses, equal to the keyframes of the same name; MujocoRuntime checks that
+# the keyframe it starts in agrees with its configuration.
+[[semantics.configurations]]
+name = "resting"
+group = "arm"
+positions = [-1.86, 2.181, 0.364, -5.187, -0.47, -0.814]
+
+[[semantics.configurations]]
+name = "staging"
+group = "arm"
+positions = [-2.122, 4.496, 4.022, -4.71, -2.493, -1.926]
+
+[[semantics.configurations]]
+name = "above_plate"
+group = "arm"
+positions = [-2.579, 3.01, 1.77, -2.076, -1.791, 2.858]
+
+[[semantics.configurations]]
+name = "stow"
+group = "arm"
+positions = [-1.521, 2.601, 0.348, -4.0, 0.228, 3.879]
+
+# Joint limits the MJCF cannot express. These are hardware limits; planning more
+# conservatively is a planning-request choice in ssrobot, not a lower limit here.
+#
+# JACO2 (j2n6s200): 36 deg/s on joints 1-3 and 48 deg/s on joints 4-6, and 40, 80, 40, 20,
+# 20, 20 N m, from ada_ros2's ada_description/urdf/j2n6s200.xacro (the same velocities as
+# ada_moveit's joint_limits.yaml). Kinova publishes no joint acceleration limit; 6.28 and
+# 8.38 rad/s^2 are ADA's operating limits, each joint's velocity limit reached in 0.1 s,
+# as ada_mj uses.
+#
+# Articutool: 1 rad/s and 1.4 N m per joint, from articutool_ros2's
+# articutool_description/urdf/articutool.xacro (DYNAMIXEL XC430). No acceleration limit
+# is published, so none is declared.
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_1"
+velocity = 0.6283185307179586
+acceleration = 6.28
+effort = 40.0
+
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_2"
+velocity = 0.6283185307179586
+acceleration = 6.28
+effort = 80.0
+
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_3"
+velocity = 0.6283185307179586
+acceleration = 6.28
+effort = 40.0
+
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_4"
+velocity = 0.8377580409572781
+acceleration = 8.38
+effort = 20.0
+
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_5"
+velocity = 0.8377580409572781
+acceleration = 8.38
+effort = 20.0
+
+[[semantics.joint_limits]]
+joint = "j2n6s200_joint_6"
+velocity = 0.8377580409572781
+acceleration = 8.38
+effort = 20.0
+
+[[semantics.joint_limits]]
+joint = "articutool/atool_joint1"
+velocity = 1.0
+effort = 1.4
+
+[[semantics.joint_limits]]
+joint = "articutool/atool_joint2"
+velocity = 1.0
+effort = 1.4
+
+# The wrist RealSense D415, at its color camera (depth is aligned to color), and the
+# articutool's Resense Hex21 force-torque sensor.
+[[semantics.sensors]]
+name = "wrist_camera"
+kind = "camera"
+frame = "camera/d415_color"
+
+[[semantics.sensors]]
+name = "tool_ft"
+kind = "force_torque"
+frame = "articutool/ft_sensor_site"
+
+# A runtime must confirm each of these.
+[[semantics.commands]]
+component = "arm"
+kind = "joint"
+mode = "position"
+
+[[semantics.commands]]
+component = "arm"
+kind = "joint_trajectory"
+
+[[semantics.commands]]
+component = "gripper"
+kind = "gripper"
+
+[[semantics.commands]]
+component = "articutool"
+kind = "joint"
+mode = "position"
+
+[[semantics.commands]]
+component = "articutool"
+kind = "joint_trajectory"
+
+[[semantics.channels]]
+name = "arm_q"
+quantity = "joint_position"
+source = "arm"
+shape = [6]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "arm_qd"
+quantity = "joint_velocity"
+source = "arm"
+shape = [6]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "arm_qf"
+quantity = "joint_effort"
+source = "arm"
+shape = [6]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "gripper_opening"
+quantity = "gripper_opening"
+source = "gripper"
+shape = [1]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "articutool_q"
+quantity = "joint_position"
+source = "articutool"
+shape = [2]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "end_effector_pose"
+quantity = "pose"
+source = "ee_site"
+frame = "world"
+shape = [7]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "fork_tip_pose"
+quantity = "pose"
+source = "articutool/fork_tip"
+frame = "world"
+shape = [7]
+dtype = "float64"
+
+[[semantics.channels]]
+name = "tool_wrench"
+quantity = "wrench"
+source = "tool_ft"
+shape = [6]
+dtype = "float64"
+
+# The D415 streams 1280x720; simulated images are half that, within MuJoCo's default
+# 640x480 offscreen buffer, with the same 16:9 aspect.
+[[semantics.channels]]
+name = "wrist_rgb"
+quantity = "rgb_image"
+source = "wrist_camera"
+shape = [360, 640, 3]
+dtype = "uint8"
+
+[[semantics.channels]]
+name = "wrist_depth"
+quantity = "depth_image"
+source = "wrist_camera"
+shape = [360, 640]
+dtype = "float32"
