@@ -110,6 +110,7 @@ Kinova JACO2 j2n6s200 — 6-DOF arm with 2 underactuated fingers.
 Permobil wheelchair — static body with visual and collision meshes.
 
 - **Position**: `z = 0.4612` (from physics drop test — wheels on floor)
+- **Collision**: 38 convex parts (`wheelchair_collision_NN.stl`), a CoACD decomposition of the visual mesh made by `scripts/decompose_wheelchair.py`. A single mesh geom would collide as its convex hull, which fills the space between seat, back, and armrests: over 4,000 random arm poses, the hull reported 395 contacts the real chair does not make
 - **Site**: `arm_attachment_site` at the JACO2 mounting point
 
 ### Seated human (`seated.xml`)

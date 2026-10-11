@@ -10,6 +10,9 @@
   <size nkey="4"/>
 
   <default>
+    <default class="wheelchair_collision">
+      <geom type="mesh" group="3" rgba="0.3 0.5 0.3 0.2"/>
+    </default>
     <default class="jaco2_main">
       <default class="jaco2">
         <joint damping="0.5"/>
@@ -63,6 +66,44 @@
     <material name="articutool/ft_aluminum" specular="0.6" shininess="0.4" reflectance="0.1" rgba="0.45 0.47 0.5 1"/>
     <material name="articutool/fork_steel" specular="0.8" shininess="0.7" reflectance="0.2" rgba="0.75 0.75 0.78 1"/>
     <mesh name="wheelchair" file="wheelchair.stl"/>
+    <mesh name="wheelchair_collision_00" file="wheelchair_collision_00.stl"/>
+    <mesh name="wheelchair_collision_01" file="wheelchair_collision_01.stl"/>
+    <mesh name="wheelchair_collision_02" file="wheelchair_collision_02.stl"/>
+    <mesh name="wheelchair_collision_03" file="wheelchair_collision_03.stl"/>
+    <mesh name="wheelchair_collision_04" file="wheelchair_collision_04.stl"/>
+    <mesh name="wheelchair_collision_05" file="wheelchair_collision_05.stl"/>
+    <mesh name="wheelchair_collision_06" file="wheelchair_collision_06.stl"/>
+    <mesh name="wheelchair_collision_07" file="wheelchair_collision_07.stl"/>
+    <mesh name="wheelchair_collision_08" file="wheelchair_collision_08.stl"/>
+    <mesh name="wheelchair_collision_09" file="wheelchair_collision_09.stl"/>
+    <mesh name="wheelchair_collision_10" file="wheelchair_collision_10.stl"/>
+    <mesh name="wheelchair_collision_11" file="wheelchair_collision_11.stl"/>
+    <mesh name="wheelchair_collision_12" file="wheelchair_collision_12.stl"/>
+    <mesh name="wheelchair_collision_13" file="wheelchair_collision_13.stl"/>
+    <mesh name="wheelchair_collision_14" file="wheelchair_collision_14.stl"/>
+    <mesh name="wheelchair_collision_15" file="wheelchair_collision_15.stl"/>
+    <mesh name="wheelchair_collision_16" file="wheelchair_collision_16.stl"/>
+    <mesh name="wheelchair_collision_17" file="wheelchair_collision_17.stl"/>
+    <mesh name="wheelchair_collision_18" file="wheelchair_collision_18.stl"/>
+    <mesh name="wheelchair_collision_19" file="wheelchair_collision_19.stl"/>
+    <mesh name="wheelchair_collision_20" file="wheelchair_collision_20.stl"/>
+    <mesh name="wheelchair_collision_21" file="wheelchair_collision_21.stl"/>
+    <mesh name="wheelchair_collision_22" file="wheelchair_collision_22.stl"/>
+    <mesh name="wheelchair_collision_23" file="wheelchair_collision_23.stl"/>
+    <mesh name="wheelchair_collision_24" file="wheelchair_collision_24.stl"/>
+    <mesh name="wheelchair_collision_25" file="wheelchair_collision_25.stl"/>
+    <mesh name="wheelchair_collision_26" file="wheelchair_collision_26.stl"/>
+    <mesh name="wheelchair_collision_27" file="wheelchair_collision_27.stl"/>
+    <mesh name="wheelchair_collision_28" file="wheelchair_collision_28.stl"/>
+    <mesh name="wheelchair_collision_29" file="wheelchair_collision_29.stl"/>
+    <mesh name="wheelchair_collision_30" file="wheelchair_collision_30.stl"/>
+    <mesh name="wheelchair_collision_31" file="wheelchair_collision_31.stl"/>
+    <mesh name="wheelchair_collision_32" file="wheelchair_collision_32.stl"/>
+    <mesh name="wheelchair_collision_33" file="wheelchair_collision_33.stl"/>
+    <mesh name="wheelchair_collision_34" file="wheelchair_collision_34.stl"/>
+    <mesh name="wheelchair_collision_35" file="wheelchair_collision_35.stl"/>
+    <mesh name="wheelchair_collision_36" file="wheelchair_collision_36.stl"/>
+    <mesh name="wheelchair_collision_37" file="wheelchair_collision_37.stl"/>
     <mesh name="base" file="base.stl"/>
     <mesh name="shoulder" file="shoulder.stl"/>
     <mesh name="arm" file="arm.stl"/>
@@ -103,7 +144,44 @@
     <light pos="0 0 3"/>
     <body name="wheelchair_base" pos="0 0 0.4612">
       <geom name="wheelchair_visual" type="mesh" contype="0" conaffinity="0" group="2" material="wheelchair_metal" mesh="wheelchair"/>
-      <geom name="wheelchair_collision" type="mesh" group="3" rgba="0.3 0.5 0.3 0.2" mesh="wheelchair"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_00"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_01"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_02"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_03"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_04"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_05"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_06"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_07"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_08"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_09"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_10"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_11"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_12"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_13"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_14"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_15"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_16"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_17"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_18"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_19"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_20"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_21"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_22"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_23"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_24"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_25"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_26"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_27"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_28"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_29"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_30"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_31"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_32"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_33"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_34"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_35"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_36"/>
+      <geom class="wheelchair_collision" mesh="wheelchair_collision_37"/>
       <site name="arm_attachment_site" size="0.01" pos="-0.02 0.02 0.05" rgba="0 0 1 0.3"/>
       <frame pos="-0.02 0.02 0.05">
         <body name="j2n6s200_link_base" childclass="jaco2">
