@@ -72,7 +72,7 @@
       <geom class="articutool_collision" mesh="handle_kg2"/>
 
       <!-- IMU (ICM-20948): rpy=[0, -π/2, -π] from xacro atool_imu_frame. -->
-      <site name="imu_site" pos="0 0 0"
+      <site name="imu_site" group="4" pos="0 0 0"
             quat="0 -0.707107 0 -0.707107"
             size="0.003" rgba="1 1 0 0.5"/>
 
@@ -146,7 +146,7 @@
                           fullinertia="0.000005236 0.000006265 0.000006408 -0.000000313 0.000000014 -0.00000004"/>
                 <geom class="articutool_visual" mesh="ft_hex21" material="ft_aluminum"/>
                 <geom class="articutool_collision" mesh="ft_hex21"/>
-                <site name="ft_sensor_site" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
+                <site name="ft_sensor_site" group="4" pos="0 0 0" size="0.005" rgba="0 0 1 0.5"/>
 
                 <!-- Fork tool: xyz=[0, 0.0109, 0], rpy=[-π/2, 0, 0] -->
                 <body gravcomp="1" name="fork_tine" pos="0 0.0109 0"

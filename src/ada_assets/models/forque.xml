@@ -81,7 +81,7 @@
                  ATI Nano25-E gage origin from the datasheet drawing. Current
                  pos="0 0 -0.009" is the mesh midplane, not the actual sensing
                  reference point. -->
-            <site name="ft_sensor_site" pos="0 0 -0.009" size="0.005" rgba="0 0 1 0.5"/>
+            <site name="ft_sensor_site" group="4" pos="0 0 -0.009" size="0.005" rgba="0 0 1 0.5"/>
 
             <!-- Fork tine: xyz=[-0.0054, 0.008, 0.093]
                  rpy=[0, π, 240°] = quat=[0, -0.866025, -0.5, 0] -->

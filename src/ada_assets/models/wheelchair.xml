@@ -110,7 +110,7 @@
            wheelchair is at [0.02, -0.02, -0.05] FROM root (arm base).
            Inverse: arm base is at [-0.02, 0.02, 0.05] FROM wheelchair mesh origin.
            The JACO2 link_base body attaches here via MjSpec.attach. -->
-      <site name="arm_attachment_site" pos="-0.02 0.02 0.05" size="0.01" rgba="0 0 1 0.3"/>
+      <site name="arm_attachment_site" group="4" pos="-0.02 0.02 0.05" size="0.01" rgba="0 0 1 0.3"/>
     </body>
   </worldbody>
 </mujoco>
