@@ -124,7 +124,7 @@
             <!-- camera_link: calibrated extrinsics from ada.xacro.
                  Parent is cameraMount, xyz=[0.0194, -0.01606, 0.029014],
                  rpy=[0.17234, -1.56127, 2.96967]. -->
-            <site name="camera_link" pos="0.0194 -0.01606 0.029014"
+            <site name="camera_link" group="4" pos="0.0194 -0.01606 0.029014"
                   quat="0.000429 0.703780 0.000724 0.710417"
                   size="0.003" rgba="1 0.5 0 0.5"/>
 
@@ -134,7 +134,7 @@
                  cameras do NOT use this orientation directly — they view down
                  local -z with +y up (OpenGL), the OpenCV frame rotated 180°
                  about x. The <camera> elements below bake in that flip. -->
-            <site name="color_optical_frame" pos="0.0194 -0.01606 0.029014"
+            <site name="color_optical_frame" group="4" pos="0.0194 -0.01606 0.029014"
                   quat="0.706951 -0.003895 -0.002741 0.707246"
                   size="0.003" rgba="0 1 1 0.5"/>
 

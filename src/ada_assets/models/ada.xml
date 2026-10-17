@@ -175,13 +175,13 @@
       <geom class="wheelchair_collision" mesh="wheelchair_collision_35"/>
       <geom class="wheelchair_collision" mesh="wheelchair_collision_36"/>
       <geom class="wheelchair_collision" mesh="wheelchair_collision_37"/>
-      <site name="arm_attachment_site" size="0.01" pos="-0.02 0.02 0.05" rgba="0 0 1 0.3"/>
+      <site name="arm_attachment_site" size="0.01" pos="-0.02 0.02 0.05" group="4" rgba="0 0 1 0.3"/>
       <frame pos="-0.02 0.02 0.05">
         <body name="j2n6s200_link_base" childclass="jaco2">
           <inertial pos="0 0 0.1255" mass="0.46784" diaginertia="0.000951 0.000951 0.000374"/>
           <geom class="jaco2_visual" material="matte_black" mesh="base"/>
           <geom class="jaco2_collision" mesh="base"/>
-          <site name="base_mount_site" size="0.01" rgba="0 0 1 0.3"/>
+          <site name="base_mount_site" size="0.01" group="4" rgba="0 0 1 0.3"/>
           <body name="j2n6s200_link_1" pos="0 0 0.15675" quat="0 0 1 0" gravcomp="1">
             <inertial pos="0 -0.002 -0.0605" mass="0.7477" diaginertia="0.00152032 0.00152032 0.00059816"/>
             <joint name="j2n6s200_joint_1" armature="0.1"/>
@@ -218,10 +218,10 @@
                       <geom class="jaco2_visual" material="carbon_fiber" mesh="hand_2finger"/>
                       <geom class="jaco2_ring" material="brushed_aluminum" mesh="ring_small"/>
                       <geom class="jaco2_collision" mesh="hand_2finger"/>
-                      <site name="tool_attachment_site" size="0.01" pos="0 0 -0.16" quat="0 1 0 0" rgba="1 0 0 0.3"/>
-                      <site name="forque_attachment_site" pos="0.0065 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5" rgba="0 0 1 0.3"/>
-                      <site name="articutool_attachment_site" pos="-0.00225 0 -0.159" quat="0 1 0 0" rgba="0 0 1 0.3"/>
-                      <site name="camera_attachment_site" pos="0.0165 0 0.0011" quat="0.5 -0.5 0.5 -0.5" rgba="1 0.5 0 0.3"/>
+                      <site name="tool_attachment_site" size="0.01" pos="0 0 -0.16" quat="0 1 0 0" group="4" rgba="1 0 0 0.3"/>
+                      <site name="forque_attachment_site" pos="0.0065 -0.011 -0.0075" quat="0.5 0.5 0.5 0.5" group="4" rgba="0 0 1 0.3"/>
+                      <site name="articutool_attachment_site" pos="-0.00225 0 -0.159" quat="0 1 0 0" group="4" rgba="0 0 1 0.3"/>
+                      <site name="camera_attachment_site" pos="0.0165 0 0.0011" quat="0.5 -0.5 0.5 -0.5" group="4" rgba="1 0.5 0 0.3"/>
                       <site name="ee_site" pos="0 0 -0.16" quat="0 0.707107 0.707107 0" rgba="0 1 0 1"/>
                       <body name="j2n6s200_link_finger_1" pos="-0.0025 0.03095 -0.11482" quat="0.314405 -0.633364 -0.314405 0.633364" gravcomp="1">
                         <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
@@ -276,8 +276,8 @@
                                 <geom class="camera/camera_collision" mesh="camera/camera_back_mount"/>
                                 <geom class="camera/camera_visual" pos="0.0165 -0.0225 0" quat="0 1 0 0" material="camera/cam_screw" mesh="camera/screw_head"/>
                                 <geom class="camera/camera_visual" pos="0.0165 0.0225 0" quat="0 1 0 0" material="camera/cam_screw" mesh="camera/screw_head"/>
-                                <site name="camera/camera_link" size="0.003" pos="0.0194 -0.01606 0.029014" quat="0.000429 0.70378 0.000724 0.710417" rgba="1 0.5 0 0.5"/>
-                                <site name="camera/color_optical_frame" size="0.003" pos="0.0194 -0.01606 0.029014" quat="0.706951 -0.003895 -0.002741 0.707246" rgba="0 1 1 0.5"/>
+                                <site name="camera/camera_link" size="0.003" pos="0.0194 -0.01606 0.029014" quat="0.000429 0.70378 0.000724 0.710417" group="4" rgba="1 0.5 0 0.5"/>
+                                <site name="camera/color_optical_frame" size="0.003" pos="0.0194 -0.01606 0.029014" quat="0.706951 -0.003895 -0.002741 0.707246" group="4" rgba="0 1 1 0.5"/>
                                 <camera name="camera/d415_color" quat="0.003895 0.706951 0.707246 0.002741" resolution="1280 720" pos="0.0194 -0.01606 0.029014" fovy="43"/>
                                 <camera name="camera/d415_depth" quat="0.003895 0.706951 0.707246 0.002741" resolution="1280 720" pos="0.0194 -0.01606 0.029014" fovy="43"/>
                                 <body name="camera/d415" pos="0.006 0 0.013" quat="0 0.707107 0 0.707107" gravcomp="1">
@@ -296,7 +296,7 @@
                           <geom class="articutool/articutool_visual" material="articutool/abs_black" mesh="articutool/handle_kg2"/>
                           <geom class="articutool/articutool_collision" mesh="articutool/handle_kg2"/>
                           <site name="articutool/grasp_site" rgba="0 1 0 0.5"/>
-                          <site name="articutool/imu_site" size="0.003" quat="0 -0.707107 0 -0.707107" rgba="1 1 0 0.5"/>
+                          <site name="articutool/imu_site" size="0.003" quat="0 -0.707107 0 -0.707107" group="4" rgba="1 1 0 0.5"/>
                           <body name="articutool/atool_handle_cover" pos="0.018 0 0.011" quat="0.5 -0.5 0.5 -0.5" gravcomp="1">
                             <inertial pos="0 0 0" mass="0.056" diaginertia="5e-06 5e-06 5e-06"/>
                             <geom class="articutool/articutool_visual" material="articutool/abs_black" mesh="articutool/handle_cover_kg2"/>
@@ -336,7 +336,7 @@
                                     <inertial pos="0 0 0" quat="-0.265009 0.703474 -0.0786894 0.654754" mass="0.0634" diaginertia="6.43089e-06 6.32984e-06 5.14827e-06"/>
                                     <geom class="articutool/articutool_visual" material="articutool/ft_aluminum" mesh="articutool/ft_hex21"/>
                                     <geom class="articutool/articutool_collision" mesh="articutool/ft_hex21"/>
-                                    <site name="articutool/ft_sensor_site" rgba="0 0 1 0.5"/>
+                                    <site name="articutool/ft_sensor_site" group="4" rgba="0 0 1 0.5"/>
                                     <body name="articutool/fork_tine" pos="0 0.0109 0" quat="0.707107 -0.707107 0 0" gravcomp="1">
                                       <inertial pos="0 0 0" quat="0.730297 0.0255464 -0.0236143 0.682243" mass="0.024" diaginertia="9.88848e-06 9.87685e-06 1.52697e-06"/>
                                       <geom class="articutool/articutool_visual" material="articutool/fork_steel" mesh="articutool/fork_tool"/>
