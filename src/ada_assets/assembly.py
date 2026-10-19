@@ -365,17 +365,45 @@ def seated_user_spec() -> mujoco.MjSpec:
     return spec
 
 
+SEATED_USER_FIXTURES_NOTE = (
+    "\n     The seated user alone, as an ssrobot scene for models/ada.xml: user_body and head are\n"
+    "     fixtures (no joints, no mocap), and there is no floor or light, which an application's\n"
+    "     scene supplies. Its meshes are under this directory, so the scene root is models/.\n"
+    "     Planners avoid the head: head_collision collides, and the mouth site lies 3 mm in front\n"
+    "     of it, so the fork can reach the mouth without touching the face. Two safety geoms do\n"
+    "     not collide, as in seated.xml:\n"
+    "     - face_wall_geom stands 13 cm in front of the mouth, across the approach: colliding,\n"
+    "       it would make every feeding approach invalid.\n"
+    "     - body_safety_envelope encloses the arm's mount: colliding, it would touch\n"
+    "       j2n6s200_link_1 and j2n6s200_link_2 at every named configuration, so no configuration\n"
+    "       would be valid. A body obstacle needs an envelope clear of the arm."
+)
+
+
+def seated_user_fixtures_spec() -> mujoco.MjSpec:
+    """The seated user alone, its head a fixture rather than a mocap body: a scene ssrobot
+    composes with the robot."""
+    spec = mujoco.MjSpec.from_file(str(MODELS_DIR / "seated.xml"))
+    spec.meshdir = str(ASSETS_DIR)
+    spec.body("head").mocap = False
+    return spec
+
+
 def generate(models_dir: Path = MODELS_DIR) -> dict[str, Path]:
     """Write the generated models from the component models; return their paths.
 
-    ``ada.xml`` is the canonical robot, ``scene.xml`` the full scene, and
-    ``seated_user_scene.xml`` the user and floor alone.
+    ``ada.xml`` is the canonical robot, ``scene.xml`` the full scene,
+    ``seated_user_scene.xml`` the user and floor alone, and ``seated_user_fixtures.xml``
+    the user alone as an ssrobot scene.
     """
     texts = {
         name: _generated_xml(build_spec(tool_mount="rigid", **options), Path(name).stem, START_NOTE)
         for name, options in GENERATED.items()
     }
     texts["seated_user_scene.xml"] = _generated_xml(seated_user_spec(), "seated_user_scene")
+    texts["seated_user_fixtures.xml"] = _generated_xml(
+        seated_user_fixtures_spec(), "seated_user_fixtures", SEATED_USER_FIXTURES_NOTE
+    )
     paths = {}
     for name, text in texts.items():
         paths[name] = models_dir / name

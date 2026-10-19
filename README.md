@@ -80,11 +80,12 @@ A test fails if any generated file differs from what its sources produce.
 | --- | --- | --- |
 | `models/ada.xml` | The robot: wheelchair, JACO2, wrist camera, and the articutool mounted rigidly in the hand | The canonical model of the ssrobot package (`ssrobot.toml`) |
 | `models/scene.xml` | The robot, the seated user, and the floor | Viewing and simulation |
-| `models/seated_user_scene.xml` | The seated user and the floor, without the robot | A task scene to compose with the robot |
+| `models/seated_user_scene.xml` | The seated user and the floor, without the robot; the head is a mocap body | A task scene to compose with the robot in MuJoCo |
+| `models/seated_user_fixtures.xml` | The seated user alone, `user_body` and `head` as fixtures | An ssrobot scene: `MujocoRuntime(package, scene=...)` |
 
 In the generated models the articutool is **rigidly mounted**: its tilt and roll joints and its sensors are part of the robot. On the real robot the tool is set down to charge. `assemble_ada()` keeps the releasable form, a free tool held by a weld (`tool_mount="weld"`, the default), and `build_spec(tool_mount="rigid")` builds the mounted form.
 
-`seated_user_scene.xml` uses the human mesh, so ssrobot can compose it with `MujocoRuntime(..., scene=...)` only once ssrobot scenes may reference meshes (personalrobotics/ssrobot#111).
+`seated_user_fixtures.xml` is the seated user as ssrobot composes a scene: no floor or light, and no mocap body, which ssrobot scenes cannot have. Its meshes are under `models/`, the scene's root. Planners avoid the head, whose collision box collides; the mouth is outside the box, so the fork can reach it. The face wall and the body envelope do not collide: the face wall stands across every feeding approach, and the body envelope encloses the arm's mount, so it would touch the arm at every configuration. The file's header gives the details.
 
 **Start at a keyframe.** MuJoCo's default state, every joint at zero, is the JACO2's mathematical zero, not a pose the arm can reach: joints 2 and 3 are outside their ranges (`[0.82, 5.46]` and `[0.33, 5.95]` rad), and the links interpenetrate. Making it valid would mean changing the joints' reference angles, and with them the arm's kinematics. So a simulation starts at a keyframe instead: `resting`, `staging`, `above_plate`, or `stow`. Each is within the joint limits, contact-free, and held by its own controls, and tests guard all three properties. `assemble_ada()` starts at `stow`; ssrobot's MuJoCo profile names its start keyframe.
 
