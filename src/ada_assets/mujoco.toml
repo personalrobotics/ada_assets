@@ -13,3 +13,11 @@ actuators = [
   { actuator = "act_finger_1", closed = 1.35, open = 0.0 },
   { actuator = "act_finger_2", closed = 1.35, open = 0.0 },
 ]
+# A gripper command ends when its fingers' motion ends (personalrobotics/ssrobot#219), by
+# this completion detector on the opening: it reached its target once within
+# goal_tolerance of it; it stopped short once its openings over stall_dwell_ns vary by no
+# more than stall_delta. The values are the defaults of Kinova's own finger action for
+# the JACO2 (kinova-ros kinova_fingers_action.cpp, 924781d): a tolerance of 64 and a
+# stall threshold of 1 over the fingers' 0 to 6400 range, and a 0.5 s stall interval. In
+# MuJoCo, an empty close and an unobstructed open each reach their target with them.
+completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns = 500_000_000 }
