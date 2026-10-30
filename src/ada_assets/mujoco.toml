@@ -22,9 +22,10 @@ object_resolution = { translation_m = 0.001, rotation_rad = 0.01 }
 # longer than the longest interval it looked still and then moved (104 ms). The cylinder
 # is the only object these traces cover; other objects may need their own. MuJoCo
 # source's values; the hardware is unmeasured. Calibrated by ssrobot
-# scripts/calibrate_rest.py at d748b314db6a, artifact artifacts/calibrate-rest/ada.json
-# (sha256 f24de581b8215485).
-object_rest = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 106000000, translation_m = 0.002, rotation_rad = 0.02, source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at d748b314db6a on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json: bounds one step above the largest stationary chatter after settling (2 steps of 0.001 m, 2 of 0.01 rad); dwell one tick longer than the longest interval that looked still and then moved, 104000000 ns, from drops of the reference scene's cylinder, the only object available, judged from the release; one sample per control tick; the hardware is unmeasured" }
+# scripts/calibrate_rest.py at ssrobot 337554288706 on this repository at 4d168d6437f4,
+# artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7;
+# reproduced by rerunning the script at those commits.
+object_rest = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 106000000, translation_m = 0.002, rotation_rad = 0.02, source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: bounds one step above the largest stationary chatter after settling (2 steps of 0.001 m, 2 of 0.01 rad); dwell one tick longer than the longest interval that looked still and then moved, 104000000 ns, from drops of the reference scene's cylinder, the only object available, judged from the release; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7" }
 
 [[grippers]]
 gripper = "gripper"
@@ -55,8 +56,10 @@ step = [4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 
 # longest interval the arm looked still and then moved (160 ms), over traces of reaches,
 # out-and-backs through zero velocity, pauses, and single-joint moves judged from each
 # trajectory's end. MuJoCo source's values; the hardware is unmeasured. Calibrated by
-# ssrobot scripts/calibrate_rest.py at d748b314db6a, artifact
-# artifacts/calibrate-rest/ada.json (sha256 f24de581b8215485).
+# ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on this repository at
+# 4d168d6437f4, artifact sha256
+# f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7; reproduced by
+# rerunning the script at those commits.
 [[rest]]
 channel = "arm_q"
-criteria = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 162000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at d748b314db6a on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured" }
+criteria = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 162000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7" }
