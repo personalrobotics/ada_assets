@@ -4,7 +4,7 @@
 # 1.51. The fingertips meet at a tendon length of about 1.356, short of 1.51, so "closed"
 # is 1.35: the fingers fully closed, just short of touching.
 schema = "ssrobot.MujocoProfile"
-version = 1
+version = 2
 keyframe = "resting"
 
 [[grippers]]
