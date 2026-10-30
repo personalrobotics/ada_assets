@@ -8,21 +8,23 @@ version = 1
 keyframe = "resting"
 
 # The simulated sensors (personalrobotics/ssrobot#221). MuJoCo's state carries no sensor
-# noise: a held joint converges exactly, or to a limit cycle set by the constraint
-# solver's tolerance. So this profile declares the resolution its readings are reported
-# at, as a modelling choice of the simulated sensor, not a measurement. The physical
-# robot's drivers declare their own, and until they are measured, none. Each object pose
-# is reported to 0.001 m per coordinate and 0.01 rad per rotation-vector component,
-# perception grade.
+# noise, so this profile declares the resolution its readings are reported at, a
+# modelling choice of the simulated sensor, not a measurement: each object pose to 0.001
+# m per coordinate and 0.01 rad per rotation-vector component. These are the MuJoCo
+# source's values; the physical robot's drivers declare their own, and the hardware is
+# unmeasured.
 object_resolution = { translation_m = 0.001, rotation_rad = 0.01 }
 
-# The signal of every scene object's pose, for rest watches: one sample per 2 ms control
-# tick, a dropped tick breaking continuity, and readings within one step of the object
-# resolution. No dwell: how long an object must stay still is the object's own, and each
-# rest watch on an object supplies it (for a standing cylinder, its rocking period about
-# its rim). Derived and verified by ssrobot scripts/calibrate_rest.py at 759876521d91,
-# artifact artifacts/calibrate-rest/ada.json (sha256 48bb246f6ebddd5e).
-object_rest = { cadence_ns = 2000000, max_gap_ns = 2000000, translation_m = 0.001, rotation_rad = 0.01, source = "bounds: one step of this profile's declared object resolution, 0.001 m and 0.01 rad, a perception-grade modelling choice of the simulated sensor, not a measurement; the hardware is unmeasured. cadence and largest gap: one 2 ms control tick. No dwell: each object supplies its own; verified in MuJoCo 3.14.0 by ssrobot scripts/calibrate_rest.py at 759876521d91 on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json" }
+# When a scene object's pose counts as at rest in this simulation: within 0.002 m per
+# coordinate and 0.02 rad of turn for 106 ms, one sample per 2 ms control tick with no
+# tick dropped. The bounds are one resolution step above the largest stationary chatter
+# of the reference scene's cylinder after it settles from a drop, and the dwell one tick
+# longer than the longest interval it looked still and then moved (104 ms). The cylinder
+# is the only object these traces cover; other objects may need their own. MuJoCo
+# source's values; the hardware is unmeasured. Calibrated by ssrobot
+# scripts/calibrate_rest.py at d748b314db6a, artifact artifacts/calibrate-rest/ada.json
+# (sha256 f24de581b8215485).
+object_rest = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 106000000, translation_m = 0.002, rotation_rad = 0.02, source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at d748b314db6a on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json: bounds one step above the largest stationary chatter after settling (2 steps of 0.001 m, 2 of 0.01 rad); dwell one tick longer than the longest interval that looked still and then moved, 104000000 ns, from drops of the reference scene's cylinder, the only object available, judged from the release; one sample per control tick; the hardware is unmeasured" }
 
 [[grippers]]
 gripper = "gripper"
@@ -39,22 +41,22 @@ actuators = [
 # MuJoCo, an empty close and an unobstructed open each reach their target with them.
 completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns = 500_000_000 }
 
-# How finely this simulation reports arm_q, its 6 revolute joints: 2*pi/2^17 rad, a
-# 17-bit encoder's step, per revolute joint. A declared modelling choice of the
-# simulated sensor; the hardware is unmeasured.
+# How finely this simulation reports arm_q: 2*pi/2^17 rad, a 17-bit encoder's step, per
+# revolute joint. A declared modelling choice of the simulated sensor; the hardware is
+# unmeasured.
 [[resolution]]
 channel = "arm_q"
 step = [4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05]
 
-# When arm_q counts as at rest in this simulation: every joint within one step of its
-# resolution for 438 ms, sampled every 2 ms control tick with no tick dropped. The dwell
-# is the slowest response of the channel's servos, from the compiled model:
-# j2n6s200_joint_2 (kp 800, c 53.5, largest joint inertia 1.402 over the calibration's
-# configurations, zeta 0.799) overshoots by 1.57 steps from its largest arrival error, a
-# visible oscillation, so its dwell is one damped period, 0.4372 s: readings within one
-# step for a whole period leave less than half a step of amplitude. Derived and verified
-# by ssrobot scripts/calibrate_rest.py at 759876521d91, artifact
-# artifacts/calibrate-rest/ada.json (sha256 48bb246f6ebddd5e).
+# When arm_q counts as at rest in this simulation: every joint within its variation (2,
+# 2, 2, 2, 2, 2 resolution steps, in joint order) for 162 ms, one sample per 2 ms
+# control tick with no tick dropped. Each variation is one step above the largest
+# stationary chatter of that joint once settled, and the dwell one tick longer than the
+# longest interval the arm looked still and then moved (160 ms), over traces of reaches,
+# out-and-backs through zero velocity, pauses, and single-joint moves judged from each
+# trajectory's end. MuJoCo source's values; the hardware is unmeasured. Calibrated by
+# ssrobot scripts/calibrate_rest.py at d748b314db6a, artifact
+# artifacts/calibrate-rest/ada.json (sha256 f24de581b8215485).
 [[rest]]
 channel = "arm_q"
-criteria = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 438000000, variation = [4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05], source = "variation: one step of this profile's declared resolution per element (2*pi/2^17 rad per revolute joint, 1e-06 m per prismatic joint), a modelling choice of the simulated sensor, not a measurement; the hardware is unmeasured. dwell: j2n6s200_joint_2's servo, damped period 0.437181 s (kp 800, c 53.5, largest M 1.40186 over the trials, zeta 0.799, first overshoot 1.57 steps from its largest arrival error 0.00487), the largest over the channel's joints, from the compiled model, rounded up to 219 ticks. cadence and largest gap: one 2 ms control tick; verified in MuJoCo 3.14.0 by ssrobot scripts/calibrate_rest.py at 759876521d91 on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json" }
+criteria = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 162000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at d748b314db6a on personalrobotics/ada_assets@4d168d6437f4, artifact ssrobot artifacts/calibrate-rest/ada.json: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured" }
