@@ -7,6 +7,26 @@ schema = "ssrobot.MujocoProfile"
 version = 1
 keyframe = "resting"
 
+# The simulated sensors (personalrobotics/ssrobot#221). MuJoCo's state carries no sensor
+# noise, so this profile declares the resolution its readings are reported at, a
+# modelling choice of the simulated sensor, not a measurement: each object pose to 0.001
+# m per coordinate and 0.01 rad per rotation-vector component. These are the MuJoCo
+# source's values; the physical robot's drivers declare their own, and the hardware is
+# unmeasured.
+object_resolution = { translation_m = 0.001, rotation_rad = 0.01 }
+
+# When a scene object's pose counts as at rest in this simulation: within 0.002 m per
+# coordinate and 0.02 rad of turn for 106 ms, one sample per 2 ms control tick with no
+# tick dropped. The bounds are one resolution step above the largest stationary chatter
+# of the reference scene's cylinder after it settles from a drop, and the dwell one tick
+# longer than the longest interval it looked still and then moved (104 ms). The cylinder
+# is the only object these traces cover; other objects may need their own. MuJoCo
+# source's values; the hardware is unmeasured. Calibrated by ssrobot
+# scripts/calibrate_rest.py at ssrobot 337554288706 on this repository at 4d168d6437f4,
+# artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7;
+# reproduced by rerunning the script at those commits.
+object_rest = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 106000000, translation_m = 0.002, rotation_rad = 0.02, source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: bounds one step above the largest stationary chatter after settling (2 steps of 0.001 m, 2 of 0.01 rad); dwell one tick longer than the longest interval that looked still and then moved, 104000000 ns, from drops of the reference scene's cylinder, the only object available, judged from the release; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7" }
+
 [[grippers]]
 gripper = "gripper"
 actuators = [
@@ -21,3 +41,25 @@ actuators = [
 # stall threshold of 1 over the fingers' 0 to 6400 range, and a 0.5 s stall interval. In
 # MuJoCo, an empty close and an unobstructed open each reach their target with them.
 completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns = 500_000_000 }
+
+# How finely this simulation reports arm_q: 2*pi/2^17 rad, a 17-bit encoder's step, per
+# revolute joint. A declared modelling choice of the simulated sensor; the hardware is
+# unmeasured.
+[[resolution]]
+channel = "arm_q"
+step = [4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05, 4.7936899621426287e-05]
+
+# When arm_q counts as at rest in this simulation: every joint within its variation (2,
+# 2, 2, 2, 2, 2 resolution steps, in joint order) for 162 ms, one sample per 2 ms
+# control tick with no tick dropped. Each variation is one step above the largest
+# stationary chatter of that joint once settled, and the dwell one tick longer than the
+# longest interval the arm looked still and then moved (160 ms), over traces of reaches,
+# out-and-backs through zero velocity, pauses, and single-joint moves judged from each
+# trajectory's end. MuJoCo source's values; the hardware is unmeasured. Calibrated by
+# ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on this repository at
+# 4d168d6437f4, artifact sha256
+# f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7; reproduced by
+# rerunning the script at those commits.
+[[rest]]
+channel = "arm_q"
+criteria = { cadence_ns = 2000000, max_gap_ns = 2000000, dwell_ns = 162000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7" }
