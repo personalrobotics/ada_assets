@@ -22,17 +22,19 @@ actuators = [
 # MuJoCo, an empty close and an unobstructed open each reach their target with them.
 completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns = 500_000_000 }
 
-# When arm_q counts as at rest in this simulation: every joint within its variation (2,
-# 2, 2, 2, 2, 2 resolution steps, in joint order) for 162 ms, one sample per 2 ms
-# control tick with no tick dropped. Each variation is one step above the largest
-# stationary chatter of that joint once settled, and the dwell one tick longer than the
-# longest interval the arm looked still and then moved (160 ms), over traces of reaches,
-# out-and-backs through zero velocity, pauses, and single-joint moves judged from each
-# trajectory's end. MuJoCo source's values; the hardware is unmeasured. Calibrated by
-# ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on this repository at
-# 4d168d6437f4, artifact sha256
-# f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7; reproduced by
-# rerunning the script at those commits.
+# When arm_q counts as at rest in this simulation: every joint within its variation for
+# 378 ms, read every 2 ms control tick with none dropped. The variation is declared, the
+# bound on what counts as still: each joint within (2, 2, 2, 2, 2, 2) steps of 2*pi/2^17
+# rad, in joint order, carried over from personalrobotics/ssrobot#223. MuJoCo's settled
+# state converges to solver or float tolerance, so it has no chatter to set a bound by
+# (personalrobotics/ssrobot#224). The dwell is measured against it on the readings
+# exactly as observed: one tick longer than the longest interval they stayed within it
+# and then moved (376 ms), over reaches, out-and-backs through zero velocity, pauses,
+# and single-joint moves, judged from each trajectory's end. MuJoCo source's values; the
+# hardware is unmeasured. Evidence: evidence/mujoco-rest.json (sha256
+# bd059c9c0613799339f49aed981645fb06feb6d02e92183dd608979c6ca4b2e9), written by
+# ssrobot's scripts/calibrate_rest.py --robot ada --commit ada=55a02bdb43be at ssrobot
+# ebecbcb5f810, 28 of 28 judged trials passing.
 [[rest]]
 channel = "arm_q"
-criteria = { max_gap_ns = 2000000, dwell_ns = 162000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7" }
+criteria = { max_gap_ns = 2000000, dwell_ns = 378000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ebecbcb5f810 on personalrobotics/ada_assets@55a02bdb43be; the hardware is unmeasured; evidence/mujoco-rest.json sha256 bd059c9c0613799339f49aed981645fb06feb6d02e92183dd608979c6ca4b2e9" }

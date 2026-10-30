@@ -1,0 +1,1689 @@
+{
+  "robot": "ada",
+  "provenance": {
+    "ssrobot_commit": "ebecbcb5f810ba71f03661f30be4ccc28b7163dd",
+    "ssrobot_clean": false,
+    "script": "scripts/calibrate_rest.py",
+    "repository": "personalrobotics/ada_assets",
+    "commit": "55a02bdb43bed5d737eb094b5e57af7782967a26",
+    "archive_sha256": "7556917084842a35d393f8677583b4974ecedb99f572b426ff1b7e77329556bf",
+    "python": "3.14.7",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "mujoco": "3.14.0",
+    "numpy": "2.5.3",
+    "numpy_blas": {
+      "name": "accelerate",
+      "version": "unknown"
+    }
+  },
+  "procedure": {
+    "pre_hold_s": 2.0,
+    "hold_s": 10.0,
+    "waypoint_ns": 10000000,
+    "speed_fraction": 0.5,
+    "limit_margin": 0.05,
+    "substeps": 1,
+    "readings": "exactly as observe returns them",
+    "judged_from": "the end of the trajectory's execution",
+    "out_of_envelope": [
+      "slow_creep"
+    ]
+  },
+  "channels": {
+    "arm_q": {
+      "group": "arm",
+      "joints": [
+        "j2n6s200_joint_1",
+        "j2n6s200_joint_2",
+        "j2n6s200_joint_3",
+        "j2n6s200_joint_4",
+        "j2n6s200_joint_5",
+        "j2n6s200_joint_6"
+      ],
+      "declared": {
+        "variation": [
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05
+        ],
+        "source": "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7"
+      },
+      "criteria": {
+        "max_gap_ns": 2000000,
+        "dwell_ns": 378000000,
+        "variation": [
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05,
+          9.587379924285257e-05
+        ],
+        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ebecbcb5f810 on personalrobotics/ada_assets@55a02bdb43be; the hardware is unmeasured"
+      },
+      "longest_false_still": {
+        "span_ns": 376000000,
+        "from_ns": 4714000000,
+        "to_ns": 5090000000
+      },
+      "summary": {
+        "trials": 32,
+        "judged": 28,
+        "passed": 28,
+        "all_passed": true,
+        "delay_ns": [
+          418000000,
+          614000000
+        ],
+        "failures": []
+      },
+      "trials": [
+        {
+          "name": "keyframe/reach_toward_middle",
+          "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              2.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 4002000000
+          },
+          "end_ns": 4000000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 274000000,
+            "from_ns": 4174000000,
+            "to_ns": 4448000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 4002000000,
+            "fired_ns": 4554000000,
+            "delay_ns": 552000000,
+            "range_after": [
+              9.357560738454396e-05,
+              6.643112524873374e-05,
+              2.063205419799985e-05,
+              7.274720335459506e-06,
+              1.2600017153044374e-05,
+              1.3005157044609916e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/reach_away",
+          "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                -0.25,
+                -0.25,
+                0.0,
+                -0.25,
+                -0.25,
+                -0.25
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 3502000000
+          },
+          "end_ns": 3500000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 232000000,
+            "from_ns": 3680000000,
+            "to_ns": 3912000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 3502000000,
+            "fired_ns": 4060000000,
+            "delay_ns": 558000000,
+            "range_after": [
+              9.443494588934342e-05,
+              7.644930658390336e-05,
+              5.484454522808324e-06,
+              1.8804570354191696e-06,
+              4.325587374620632e-06,
+              2.0050655358261338e-07
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/out_and_back",
+          "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 6002000000
+          },
+          "end_ns": 6000000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 232000000,
+            "from_ns": 6176000000,
+            "to_ns": 6408000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 6002000000,
+            "fired_ns": 6556000000,
+            "delay_ns": 554000000,
+            "range_after": [
+              9.446976052274181e-05,
+              8.442321750967707e-05,
+              6.011730933508375e-06,
+              4.64692755297591e-06,
+              1.4237734138999869e-05,
+              1.4450754903805318e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/out_and_back_fast",
+          "describe": "every joint 0.15 rad out and back, at half the limits",
+          "legs": [
+            [
+              "back",
+              [
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 3502000000
+          },
+          "end_ns": 3500000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 204000000,
+            "from_ns": 3730000000,
+            "to_ns": 3934000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 3502000000,
+            "fired_ns": 4110000000,
+            "delay_ns": 608000000,
+            "range_after": [
+              9.569828898325916e-05,
+              8.12580911309091e-05,
+              1.3105144727354467e-05,
+              4.281286654972405e-06,
+              1.7644922521042883e-05,
+              1.91527289583604e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/slow_creep",
+          "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
+          "legs": [
+            [
+              "move",
+              [
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01
+              ],
+              5.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 7002000000
+          },
+          "end_ns": 7000000000,
+          "valid": true,
+          "out_of_envelope": true,
+          "judged": false,
+          "longest_false_still": {
+            "span_ns": 0,
+            "from_ns": 7004000000,
+            "to_ns": 7004000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 7002000000,
+            "fired_ns": 7382000000,
+            "delay_ns": 380000000,
+            "range_after": [
+              7.385091973732827e-06,
+              7.2322344797370874e-06,
+              2.5383975506554357e-06,
+              2.1748310121694203e-06,
+              1.3014054335847014e-06,
+              1.3443612342234346e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/pause",
+          "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
+          "legs": [
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ],
+            [
+              "pause",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              0.5
+            ],
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 4502000000
+          },
+          "end_ns": 4500000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 376000000,
+            "from_ns": 4714000000,
+            "to_ns": 5090000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 4502000000,
+            "fired_ns": 5094000000,
+            "delay_ns": 592000000,
+            "range_after": [
+              9.281831123697515e-05,
+              5.6845067563759955e-05,
+              2.691658533449104e-05,
+              6.8269271524812325e-06,
+              1.2822293488173875e-05,
+              1.4684725829217093e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/single_first",
+          "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 6002000000
+          },
+          "end_ns": 6000000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 236000000,
+            "from_ns": 6178000000,
+            "to_ns": 6414000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 6002000000,
+            "fired_ns": 6558000000,
+            "delay_ns": 556000000,
+            "range_after": [
+              9.440625214351961e-05,
+              1.0060131825362362e-06,
+              8.986809038602495e-07,
+              5.6113372561839014e-06,
+              7.345238465850112e-06,
+              4.505875328408848e-08
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "keyframe/single_last",
+          "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4
+              ],
+              3.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 5002000000
+          },
+          "end_ns": 5000000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 34000000,
+            "from_ns": 5040000000,
+            "to_ns": 5074000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 5002000000,
+            "fired_ns": 5420000000,
+            "delay_ns": 418000000,
+            "range_after": [
+              4.853826496287184e-07,
+              9.905977586655013e-06,
+              1.1522069603642215e-05,
+              6.0184528660300884e-05,
+              3.0152462685284487e-05,
+              8.791860725865241e-05
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/reach_toward_middle",
+          "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                0.4,
+                -0.4,
+                -0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              2.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9960000000
+          },
+          "end_ns": 9958000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 74000000,
+            "from_ns": 10098000000,
+            "to_ns": 10172000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9960000000,
+            "fired_ns": 10478000000,
+            "delay_ns": 518000000,
+            "range_after": [
+              7.153926665592891e-05,
+              9.246028985643306e-05,
+              8.202561886294646e-05,
+              5.223259602171737e-05,
+              1.1428053868556276e-05,
+              6.960330417804528e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/reach_away",
+          "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                -0.25,
+                0.25,
+                0.25,
+                -0.25,
+                -0.25,
+                -0.25
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9460000000
+          },
+          "end_ns": 9458000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 146000000,
+            "from_ns": 9596000000,
+            "to_ns": 9742000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9460000000,
+            "fired_ns": 9976000000,
+            "delay_ns": 516000000,
+            "range_after": [
+              7.074864483902488e-05,
+              9.418541000982827e-05,
+              5.850918508709668e-05,
+              2.956351039795635e-05,
+              1.010881502860883e-05,
+              4.225513515976331e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/out_and_back",
+          "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                -0.4,
+                -0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 11960000000
+          },
+          "end_ns": 11958000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 104000000,
+            "from_ns": 12092000000,
+            "to_ns": 12196000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 11960000000,
+            "fired_ns": 12472000000,
+            "delay_ns": 512000000,
+            "range_after": [
+              6.982354862206108e-05,
+              9.301062938948945e-05,
+              6.485347341911307e-05,
+              4.102416034079681e-05,
+              1.01279683231148e-05,
+              6.709427327278306e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/out_and_back_fast",
+          "describe": "every joint 0.15 rad out and back, at half the limits",
+          "legs": [
+            [
+              "back",
+              [
+                0.15,
+                -0.15,
+                -0.15,
+                0.15,
+                0.15,
+                0.15
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9460000000
+          },
+          "end_ns": 9458000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 138000000,
+            "from_ns": 9636000000,
+            "to_ns": 9774000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9460000000,
+            "fired_ns": 10016000000,
+            "delay_ns": 556000000,
+            "range_after": [
+              5.585228844706691e-05,
+              6.282334867258044e-05,
+              9.532406541001848e-05,
+              7.29157224368393e-05,
+              2.5566055428694057e-05,
+              8.10933350470222e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/slow_creep",
+          "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
+          "legs": [
+            [
+              "move",
+              [
+                0.01,
+                -0.01,
+                -0.01,
+                0.01,
+                0.01,
+                0.01
+              ],
+              5.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 12960000000
+          },
+          "end_ns": 12958000000,
+          "valid": true,
+          "out_of_envelope": true,
+          "judged": false,
+          "longest_false_still": {
+            "span_ns": 0,
+            "from_ns": 12962000000,
+            "to_ns": 12962000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 12960000000,
+            "fired_ns": 13340000000,
+            "delay_ns": 380000000,
+            "range_after": [
+              6.2723396681008126e-06,
+              6.712223786564664e-06,
+              3.2714051858562243e-06,
+              1.996493087297324e-06,
+              1.1681474312297269e-06,
+              1.4615423984398745e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/pause",
+          "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
+          "legs": [
+            [
+              "move",
+              [
+                0.2,
+                -0.2,
+                -0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ],
+            [
+              "pause",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              0.5
+            ],
+            [
+              "move",
+              [
+                0.2,
+                -0.2,
+                -0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 10460000000
+          },
+          "end_ns": 10458000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 156000000,
+            "from_ns": 10652000000,
+            "to_ns": 10808000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 10460000000,
+            "fired_ns": 11032000000,
+            "delay_ns": 572000000,
+            "range_after": [
+              5.7900926727860735e-05,
+              2.5284927676061386e-05,
+              9.448350224472435e-05,
+              7.141873759142214e-05,
+              2.1435736099029157e-05,
+              7.641336527752784e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/single_first",
+          "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 11960000000
+          },
+          "end_ns": 11958000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 140000000,
+            "from_ns": 12068000000,
+            "to_ns": 12208000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 11960000000,
+            "fired_ns": 12448000000,
+            "delay_ns": 488000000,
+            "range_after": [
+              9.094249880936545e-05,
+              2.5156461147979314e-05,
+              2.3578057718687262e-05,
+              4.652289729190073e-05,
+              3.3566476558277714e-06,
+              4.086591784968618e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "staging/single_last",
+          "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4
+              ],
+              3.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 10960000000
+          },
+          "end_ns": 10958000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 34000000,
+            "from_ns": 10998000000,
+            "to_ns": 11032000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 10960000000,
+            "fired_ns": 11378000000,
+            "delay_ns": 418000000,
+            "range_after": [
+              1.085275750289938e-05,
+              2.0838343629314693e-05,
+              2.7906330409166458e-05,
+              2.6728830830435868e-05,
+              2.7746986310361876e-05,
+              8.854049889261972e-05
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/reach_toward_middle",
+          "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              2.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 7902000000
+          },
+          "end_ns": 7900000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 180000000,
+            "from_ns": 8040000000,
+            "to_ns": 8220000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 7902000000,
+            "fired_ns": 8420000000,
+            "delay_ns": 518000000,
+            "range_after": [
+              2.8534542905855886e-05,
+              7.173081610378773e-05,
+              9.554364752561995e-05,
+              3.611771232847616e-05,
+              2.6683675611538504e-05,
+              4.5177187160128085e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/reach_away",
+          "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                -0.25,
+                -0.25,
+                -0.25,
+                -0.25,
+                -0.25,
+                -0.25
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 7402000000
+          },
+          "end_ns": 7400000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 248000000,
+            "from_ns": 7582000000,
+            "to_ns": 7830000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 7402000000,
+            "fired_ns": 7962000000,
+            "delay_ns": 560000000,
+            "range_after": [
+              9.433765410360451e-05,
+              5.041070341915699e-05,
+              1.9992685382108633e-05,
+              6.562162200296484e-06,
+              8.781478846753288e-06,
+              3.625961470632433e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/out_and_back",
+          "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9902000000
+          },
+          "end_ns": 9900000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 302000000,
+            "from_ns": 10062000000,
+            "to_ns": 10364000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9902000000,
+            "fired_ns": 10442000000,
+            "delay_ns": 540000000,
+            "range_after": [
+              9.321967112541074e-05,
+              5.474606012212391e-05,
+              4.251353722284357e-05,
+              1.7845985777142914e-05,
+              1.2613313794984649e-05,
+              1.974218713396425e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/out_and_back_fast",
+          "describe": "every joint 0.15 rad out and back, at half the limits",
+          "legs": [
+            [
+              "back",
+              [
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 7402000000
+          },
+          "end_ns": 7400000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 198000000,
+            "from_ns": 7616000000,
+            "to_ns": 7814000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 7402000000,
+            "fired_ns": 7996000000,
+            "delay_ns": 594000000,
+            "range_after": [
+              9.551001188157215e-05,
+              3.143449485243366e-05,
+              5.373852805745649e-05,
+              6.898467644234074e-06,
+              1.9109209538070715e-05,
+              1.232031701103864e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/slow_creep",
+          "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
+          "legs": [
+            [
+              "move",
+              [
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01
+              ],
+              5.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 10902000000
+          },
+          "end_ns": 10900000000,
+          "valid": true,
+          "out_of_envelope": true,
+          "judged": false,
+          "longest_false_still": {
+            "span_ns": 0,
+            "from_ns": 10904000000,
+            "to_ns": 10904000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 10902000000,
+            "fired_ns": 11282000000,
+            "delay_ns": 380000000,
+            "range_after": [
+              6.8737114382599884e-06,
+              6.753500160439074e-06,
+              2.8760433450347733e-06,
+              1.6377621872010195e-06,
+              1.1746190213823837e-06,
+              1.4946913990954158e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/pause",
+          "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
+          "legs": [
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ],
+            [
+              "pause",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              0.5
+            ],
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 8402000000
+          },
+          "end_ns": 8400000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 142000000,
+            "from_ns": 8600000000,
+            "to_ns": 8742000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 8402000000,
+            "fired_ns": 8980000000,
+            "delay_ns": 578000000,
+            "range_after": [
+              1.6486034619678236e-05,
+              2.2138079533107202e-05,
+              9.355910622099728e-05,
+              1.6261416414309338e-05,
+              2.387251911617483e-05,
+              4.721098309623528e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/single_first",
+          "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9902000000
+          },
+          "end_ns": 9900000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 246000000,
+            "from_ns": 10068000000,
+            "to_ns": 10314000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9902000000,
+            "fired_ns": 10448000000,
+            "delay_ns": 546000000,
+            "range_after": [
+              9.383724809808314e-05,
+              2.312332703091613e-07,
+              2.506206260965982e-06,
+              2.51325391360524e-05,
+              1.1360774569979526e-06,
+              4.677480432757619e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "above_plate/single_last",
+          "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4
+              ],
+              3.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 8902000000
+          },
+          "end_ns": 8900000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 34000000,
+            "from_ns": 8940000000,
+            "to_ns": 8974000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 8902000000,
+            "fired_ns": 9320000000,
+            "delay_ns": 418000000,
+            "range_after": [
+              3.3861278661895255e-05,
+              2.1212596683639617e-05,
+              2.1669609544749946e-05,
+              1.1538671884636642e-06,
+              2.947698329625048e-05,
+              8.844375395611337e-05
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/reach_toward_middle",
+          "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              2.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 6006000000
+          },
+          "end_ns": 6004000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 194000000,
+            "from_ns": 6166000000,
+            "to_ns": 6360000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 6006000000,
+            "fired_ns": 6546000000,
+            "delay_ns": 540000000,
+            "range_after": [
+              9.494539231158505e-05,
+              8.41263741109266e-05,
+              2.9863172920752135e-05,
+              2.2401999942189832e-05,
+              2.7819713429466653e-05,
+              1.4205217864216024e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/reach_away",
+          "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
+          "legs": [
+            [
+              "move",
+              [
+                -0.25,
+                -0.25,
+                0.0,
+                -0.25,
+                -0.25,
+                -0.25
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 5506000000
+          },
+          "end_ns": 5504000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 202000000,
+            "from_ns": 5686000000,
+            "to_ns": 5888000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 5506000000,
+            "fired_ns": 6066000000,
+            "delay_ns": 560000000,
+            "range_after": [
+              9.569638965123417e-05,
+              8.177144727206098e-05,
+              1.3062495006432862e-05,
+              5.054054299513666e-06,
+              3.582934932376547e-06,
+              2.0623858070223378e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/out_and_back",
+          "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4,
+                0.4
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 8006000000
+          },
+          "end_ns": 8004000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 298000000,
+            "from_ns": 8184000000,
+            "to_ns": 8482000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 8006000000,
+            "fired_ns": 8564000000,
+            "delay_ns": 558000000,
+            "range_after": [
+              9.335759306572378e-05,
+              8.300403689842639e-05,
+              1.9381873641088898e-05,
+              8.41727286138294e-06,
+              1.3066175112014244e-05,
+              1.4529498697513077e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/out_and_back_fast",
+          "describe": "every joint 0.15 rad out and back, at half the limits",
+          "legs": [
+            [
+              "back",
+              [
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15,
+                0.15
+              ],
+              1.5
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 5506000000
+          },
+          "end_ns": 5504000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 354000000,
+            "from_ns": 5740000000,
+            "to_ns": 6094000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 5506000000,
+            "fired_ns": 6120000000,
+            "delay_ns": 614000000,
+            "range_after": [
+              9.292309959363365e-05,
+              7.554709636981016e-05,
+              3.338257271201517e-05,
+              6.684172732196458e-06,
+              1.6213086066974025e-05,
+              1.0964548140535157e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/slow_creep",
+          "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
+          "legs": [
+            [
+              "move",
+              [
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01,
+                0.01
+              ],
+              5.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 9006000000
+          },
+          "end_ns": 9004000000,
+          "valid": true,
+          "out_of_envelope": true,
+          "judged": false,
+          "longest_false_still": {
+            "span_ns": 0,
+            "from_ns": 9008000000,
+            "to_ns": 9008000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 9006000000,
+            "fired_ns": 9386000000,
+            "delay_ns": 380000000,
+            "range_after": [
+              7.495272106305961e-06,
+              7.492997030400517e-06,
+              2.217812948901443e-06,
+              2.485204260604945e-06,
+              1.2043334229328018e-06,
+              1.3719934042200066e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/pause",
+          "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
+          "legs": [
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ],
+            [
+              "pause",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              0.5
+            ],
+            [
+              "move",
+              [
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2,
+                0.2
+              ],
+              1.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 6506000000
+          },
+          "end_ns": 6504000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 274000000,
+            "from_ns": 6704000000,
+            "to_ns": 6978000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 6506000000,
+            "fired_ns": 7084000000,
+            "delay_ns": 578000000,
+            "range_after": [
+              9.302003176347995e-05,
+              6.764922015101149e-05,
+              5.326436959163239e-05,
+              1.8250135116471e-05,
+              4.265281110882313e-05,
+              1.797262687563972e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/single_first",
+          "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.4,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              4.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 8006000000
+          },
+          "end_ns": 8004000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 234000000,
+            "from_ns": 8184000000,
+            "to_ns": 8418000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 8006000000,
+            "fired_ns": 8564000000,
+            "delay_ns": 558000000,
+            "range_after": [
+              9.460376409742288e-05,
+              2.5140173027793367e-06,
+              9.74300623290958e-07,
+              8.861618630451318e-06,
+              6.181509335706492e-06,
+              2.2819592184752935e-06
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        },
+        {
+          "name": "stow/single_last",
+          "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
+          "legs": [
+            [
+              "back",
+              [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.4
+              ],
+              3.0
+            ]
+          ],
+          "execution": {
+            "state": "succeeded",
+            "ended_ns": 7006000000
+          },
+          "end_ns": 7004000000,
+          "valid": true,
+          "out_of_envelope": false,
+          "judged": true,
+          "longest_false_still": {
+            "span_ns": 34000000,
+            "from_ns": 7044000000,
+            "to_ns": 7078000000
+          },
+          "check": {
+            "outcome": "at_rest",
+            "watched_from_ns": 7006000000,
+            "fired_ns": 7424000000,
+            "delay_ns": 418000000,
+            "range_after": [
+              2.1505825198664397e-05,
+              4.8768152089984085e-06,
+              7.76285937048593e-06,
+              6.354950322329245e-05,
+              2.8064382104425745e-05,
+              8.787351583805503e-05
+            ],
+            "stays_within": true,
+            "passed": true
+          }
+        }
+      ]
+    }
+  },
+  "all_passed": true
+}
