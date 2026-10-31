@@ -1,12 +1,12 @@
 {
   "robot": "ada",
   "provenance": {
-    "ssrobot_commit": "ebecbcb5f810ba71f03661f30be4ccc28b7163dd",
-    "ssrobot_clean": false,
+    "ssrobot_commit": "ce33e8f1e667992175bb0fa58150a6088b63fd87",
+    "ssrobot_clean": true,
     "script": "scripts/calibrate_rest.py",
     "repository": "personalrobotics/ada_assets",
-    "commit": "55a02bdb43bed5d737eb094b5e57af7782967a26",
-    "archive_sha256": "7556917084842a35d393f8677583b4974ecedb99f572b426ff1b7e77329556bf",
+    "commit": "efeeb63a48a094d952245837a85251f765e8f7ab",
+    "archive_sha256": "d2345bb81b75d4f307bf7eb7e2dbc26c114329ef1abba5f80294ad2dd622956e",
     "python": "3.14.7",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "machine": "arm64",
@@ -50,7 +50,7 @@
           9.587379924285257e-05,
           9.587379924285257e-05
         ],
-        "source": "MuJoCo source's values, calibrated from recorded traces by ssrobot scripts/calibrate_rest.py at ssrobot 337554288706 on personalrobotics/ada_assets@4d168d6437f4: variation one step above the largest stationary chatter after settling, per element ([2, 2, 2, 2, 2, 2] steps of this profile's resolution); dwell one tick longer than the longest interval that looked still and then moved, 160000000 ns, judged from each trajectory's end; one sample per control tick; the hardware is unmeasured; reproduced by rerunning the script at those commits; artifact sha256 f60e2749fd33455a32e6deea79c7c628aba8c4447c58856b415adeb6f14ec8e7"
+        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ebecbcb5f810 on personalrobotics/ada_assets@55a02bdb43be; the hardware is unmeasured; evidence/mujoco-rest.json sha256 bd059c9c0613799339f49aed981645fb06feb6d02e92183dd608979c6ca4b2e9"
       },
       "criteria": {
         "max_gap_ns": 2000000,
@@ -63,7 +63,7 @@
           9.587379924285257e-05,
           9.587379924285257e-05
         ],
-        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ebecbcb5f810 on personalrobotics/ada_assets@55a02bdb43be; the hardware is unmeasured"
+        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ce33e8f1e667 on personalrobotics/ada_assets@efeeb63a48a0; the hardware is unmeasured"
       },
       "longest_false_still": {
         "span_ns": 376000000,

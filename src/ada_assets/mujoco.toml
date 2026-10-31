@@ -32,9 +32,9 @@ completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns =
 # and then moved (376 ms), over reaches, out-and-backs through zero velocity, pauses,
 # and single-joint moves, judged from each trajectory's end. MuJoCo source's values; the
 # hardware is unmeasured. Evidence: evidence/mujoco-rest.json (sha256
-# bd059c9c0613799339f49aed981645fb06feb6d02e92183dd608979c6ca4b2e9), written by
-# ssrobot's scripts/calibrate_rest.py --robot ada --commit ada=55a02bdb43be at ssrobot
-# ebecbcb5f810, 28 of 28 judged trials passing.
+# ab79773309c53d74dcc5dcab80137a035d20be8eb99cf961433e003652a98916), written by
+# ssrobot's scripts/calibrate_rest.py --robot ada --commit ada=efeeb63a48a0 at ssrobot
+# ce33e8f1e667, 28 of 28 judged trials passing.
 [[rest]]
 channel = "arm_q"
-criteria = { max_gap_ns = 2000000, dwell_ns = 378000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ebecbcb5f810 on personalrobotics/ada_assets@55a02bdb43be; the hardware is unmeasured; evidence/mujoco-rest.json sha256 bd059c9c0613799339f49aed981645fb06feb6d02e92183dd608979c6ca4b2e9" }
+criteria = { max_gap_ns = 2000000, dwell_ns = 378000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 376000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot ce33e8f1e667 on personalrobotics/ada_assets@efeeb63a48a0; the hardware is unmeasured; evidence/mujoco-rest.json sha256 ab79773309c53d74dcc5dcab80137a035d20be8eb99cf961433e003652a98916" }
