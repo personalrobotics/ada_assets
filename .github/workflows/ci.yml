@@ -48,7 +48,8 @@ jobs:
         run: uv run pytest tests/ -v
 
   wheel:
-    # The wheel is what users install: it must carry every model, mesh, and ssrobot.toml.
+    # The wheel is what users install: it must carry every model, mesh, and both packages'
+    # ssrobot.toml, and regenerate the committed models.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -73,14 +74,38 @@ jobs:
           print(f"{wheel.name}: {len(shipped)} package files, {len(expected)} in src/")
           for name in missing:
               print(f"missing from the wheel: {name}")
-          sys.exit(1 if missing or "ada_assets/ssrobot.toml" not in shipped else 0)
+          manifests = {"ada_assets/ssrobot.toml", "ada_assets/models/ssrobot.toml"}
+          sys.exit(1 if missing or not manifests <= shipped else 0)
+          PY
+      - name: The installed wheel regenerates the committed models
+        # The wheel alone in a clean environment, at the MuJoCo uv.lock pins, run outside the
+        # checkout so nothing is imported from src/.
+        working-directory: ${{ runner.temp }}
+        run: |
+          uv venv --python 3.12 wheel-env
+          uv pip install --python wheel-env "$(ls "$GITHUB_WORKSPACE"/dist/*.whl)" "mujoco==3.14.0"
+          wheel-env/bin/python - "$GITHUB_WORKSPACE/src/ada_assets/models" <<'PY'
+          import pathlib, sys, tempfile
+          import ada_assets
+          from ada_assets.assembly import generate
+          committed = pathlib.Path(sys.argv[1])
+          assert "site-packages" in ada_assets.__file__, ada_assets.__file__
+          with tempfile.TemporaryDirectory() as out:
+              regenerated = generate(pathlib.Path(out))
+              differ = sorted(n for n, p in regenerated.items() if p.read_bytes() != (committed / n).read_bytes())
+          print(f"{len(regenerated)} models regenerated from {ada_assets.__file__}: {sorted(regenerated)}")
+          for name in differ:
+              print(f"differs from the committed model: {name}")
+          sys.exit(1 if differ else 0)
           PY
       - name: ssrobot doctor on the built wheel
-        # The package as ssrobot loads it, from the installed wheel, at a pinned ssrobot.
-        run: >-
-          uvx --python 3.12
-          --from "git+https://github.com/personalrobotics/ssrobot@c17ce05bb12a26b65893e5561ecc451a0444c11d"
-          ssrobot doctor src/ada_assets --wheel "$(ls dist/*.whl)"
+        # Each package as ssrobot loads it, from the installed wheel, at a pinned ssrobot.
+        run: |
+          for package in src/ada_assets src/ada_assets/models; do
+            uvx --python 3.12 \
+              --from "git+https://github.com/personalrobotics/ssrobot@c17ce05bb12a26b65893e5561ecc451a0444c11d" \
+              ssrobot doctor "$package" --wheel "$(ls dist/*.whl)"
+          done
 
   notify-robot-code:
     needs: [test, wheel]

@@ -43,7 +43,7 @@ model, data = assemble_ada(tool_tip="spoon")
 # Forque (rigid fork, no motors)
 model, data = assemble_ada(tool="forque")
 
-# No tool
+# No tool: the hand is empty, and every keyframe opens the fingers
 model, data = assemble_ada(tool=None)
 
 # No camera
@@ -68,7 +68,7 @@ uv run python -m ada_assets.assembly --save assembled.xml                # save 
 
 ## Generated models
 
-Three models are generated from the components by `ada_assets.assembly.generate()` and checked in. Don't edit them; edit the components and regenerate:
+Five models are generated from the components by `ada_assets.assembly.generate()` and checked in. Don't edit them; edit the components and regenerate:
 
 ```bash
 uv run python -c 'from ada_assets.assembly import generate; generate()'
@@ -79,11 +79,14 @@ A test fails if any generated file differs from what its sources produce.
 | File | Contents | Use |
 | --- | --- | --- |
 | `models/ada.xml` | The robot: wheelchair, JACO2, wrist camera, and the articutool mounted rigidly in the hand | The canonical model of the ssrobot package (`ssrobot.toml`) |
+| `models/ada_hand.xml` | The same robot with an empty hand, its fingers open in every keyframe | The canonical model of the bare-hand ssrobot package (`models/ssrobot.toml`) |
 | `models/scene.xml` | The robot, the seated user, and the floor | Viewing and simulation |
 | `models/seated_user_scene.xml` | The seated user and the floor, without the robot; the head is a mocap body | A task scene to compose with the robot in MuJoCo |
 | `models/seated_user_fixtures.xml` | The seated user alone, `user_body` and `head` as fixtures | An ssrobot scene: `MujocoRuntime(package, scene=...)` |
 
 In the generated models the articutool is **rigidly mounted**: its tilt and roll joints and its sensors are part of the robot. On the real robot the tool is set down to charge. `assemble_ada()` keeps the releasable form, a free tool held by a weld (`tool_mount="weld"`, the default), and `build_spec(tool_mount="rigid")` builds the mounted form.
+
+`ada_hand.xml` is `assemble_ada(tool=None)`'s robot. jaco2.xml's keyframes close the fingers on the tool's handle; with no tool, the assembly opens them in every keyframe, so the empty hand starts ready to close on an object.
 
 `seated_user_fixtures.xml` is the seated user as ssrobot composes a scene: no floor or light, and no mocap body, which ssrobot scenes cannot have. Its meshes are under `models/`, the scene's root. Planners avoid the head, whose collision box collides; the mouth is outside the box, so the fork can reach it. The face wall and the body envelope do not collide: the face wall stands across every feeding approach, and the body envelope encloses the arm's mount, so it would touch the arm at every configuration. The file's header gives the details.
 
@@ -105,6 +108,26 @@ In the generated models the articutool is **rigidly mounted**: its tilt and roll
   - the wrist camera's RGB and depth, at 640x360.
 - **Named configurations**: `resting`, `staging`, `above_plate`, `stow`, equal to the keyframes of the same names.
 - **Joint limits**: the JACO2's velocity and effort, and the articutool's, from their URDFs in ada_ros2 and articutool_ros2. Kinova publishes no acceleration limit, so ADA's operating limits are declared instead, as ada_mj uses: each joint's velocity limit reached in 0.1 s. The sources are in comments in `ssrobot.toml`.
+
+### Bare-hand package
+
+`models/ssrobot.toml` is a second ssrobot package, `ada_hand`: ADA with an empty hand, for grasping objects with the fingers. Its root is `models/`, which holds its canonical model, `models/ada_hand.xml`, and the meshes, so every file it needs is inside it.
+
+```python
+import ssrobot
+
+package = ssrobot.load_installed_package("ada_assets.models")  # the bare-hand ADA
+package = ssrobot.load_installed_package("ada_assets")         # ADA with the articutool
+```
+
+- **Same as ADA's**: the `arm` group and manipulator, the `gripper`, the named configurations, the JACO2's joint limits, and the gripper's controls and completion detector in its MuJoCo profile (`models/mujoco.toml`).
+- **End effector** `hand`, at `palm_grasp_site` (see the JACO2 sites below), with the gripper.
+- **Commands**: joint position and trajectory for `arm`, and `gripper`.
+- **Channels**: joint position, velocity, and effort for `arm`, and the gripper opening.
+- **No** articutool, tool wrench, or wrist camera sensor. The camera is still on the model.
+- **No rest criteria**: ADA's were measured on the articutool model. Until they are measured on this one, a rest watch on `arm_q` must bring its own.
+
+`tests/test_hand_package.py` opens it with ssrobot's `MujocoRuntime`, puts a cylinder of ADA's size (r 25 mm, h 100 mm) in the open hand where sstsr's `KinovaJaco2TwoFinger` side grasp places it relative to `palm_grasp_site`, and closes the gripper: both fingers touch the cylinder and the palm does not. It also checks, with the fingers open, that the finger pads lie on either side of the site's z axis, along its y. Its record, `artifacts/test_hand_package/hand_grasp.json`, is written twice and must be byte-identical. The test needs Python 3.11 or later, as ssrobot does.
 
 ## Components
 
@@ -229,6 +252,9 @@ ada_assets/
 │       ├── forque.xml       # Rigid fork + F/T sensor
 │       ├── camera.xml       # Wrist camera (D415 + Jetson Nano)
 │       ├── ada.xml          # Generated: the robot (canonical ssrobot model)
+│       ├── ada_hand.xml     # Generated: the robot with an empty hand (bare-hand package)
+│       ├── ssrobot.toml     # The bare-hand ssrobot package; models/ is its root
+│       ├── mujoco.toml      # Its MuJoCo profile
 │       ├── scene.xml        # Generated: robot + seated user + floor
 │       ├── seated_user_scene.xml  # Generated: seated user + floor
 │       └── assets/          # 41 STL mesh files (single flat directory)
