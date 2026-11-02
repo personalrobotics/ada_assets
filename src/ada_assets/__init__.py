@@ -11,6 +11,7 @@ Components (each a standalone XML, composable via <include>):
 
 Generated (by ada_assets.assembly.generate(); do not edit):
   - ada     — The robot: wheelchair + JACO2 + wrist camera + articutool, mounted
+  - ada_hand — The same robot with an empty hand
   - scene   — The robot, the seated user, and the floor
   - seated_user_scene — The seated user and the floor alone
   - seated_user_fixtures — The seated user alone, as fixtures: an ssrobot scene
@@ -42,7 +43,7 @@ ASSETS_DIR = MODELS_DIR / "assets"
 COMPONENTS = ["jaco2", "wheelchair", "seated", "forque", "articutool", "camera"]
 
 # Available assembled models
-ASSEMBLIES = ["ada", "scene", "seated_user_scene", "seated_user_fixtures"]
+ASSEMBLIES = ["ada", "ada_hand", "scene", "seated_user_scene", "seated_user_fixtures"]
 
 AVAILABLE_MODELS = COMPONENTS + ASSEMBLIES
 

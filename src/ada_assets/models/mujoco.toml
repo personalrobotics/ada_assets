@@ -1,0 +1,20 @@
+# MujocoRuntime settings for the bare-hand ADA (ssrobot.toml here; see ssrobot's
+# docs/mujoco.md). It starts at the "resting" keyframe, where this model's fingers are
+# open, and drives the fingers exactly as ../mujoco.toml does, whose comments give the
+# controls' and the completion detector's sources: the fingers and their actuators are the
+# same in both models.
+#
+# No [[rest]] criteria: ../mujoco.toml's were measured on the articutool model, and this
+# model's arm carries a different load, so they are not evidence for it. Until they are
+# measured here, a rest watch on arm_q needs criteria of its own.
+schema = "ssrobot.MujocoProfile"
+version = 2
+keyframe = "resting"
+
+[[grippers]]
+gripper = "gripper"
+actuators = [
+  { actuator = "act_finger_1", closed = 1.35, open = 0.0 },
+  { actuator = "act_finger_2", closed = 1.35, open = 0.0 },
+]
+completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns = 500_000_000 }

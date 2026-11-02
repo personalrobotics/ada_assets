@@ -37,9 +37,14 @@ line-length = 120
 select = ["F", "E", "W", "I"]
 
 [dependency-groups]
+# The bare-hand package's test opens it with ssrobot's MujocoRuntime and grasps with
+# sstsr's JACO2 hand. Both are test fixtures only, never runtime dependencies. ssrobot is
+# not on an index, so it is pinned to a commit, and it needs Python 3.11.
 dev = [
     "pytest",
     "ruff",
+    "sstsr==4.2.0",
+    "ssrobot @ git+https://github.com/personalrobotics/ssrobot@2d8285e6822fe72fd3cbe82902df229678b4ef75 ; python_full_version >= '3.11'",
 ]
 
 [tool.uv]

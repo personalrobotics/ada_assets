@@ -277,6 +277,8 @@ def build_spec(
     # Attached without a prefix, the arm's main default class would lose its name, and
     # MuJoCo's XML writer would emit an unnamed nested class it cannot read back.
     jaco2_spec.default.name = "jaco2_main"
+    if tool is None:
+        _open_hand_in_keyframes(jaco2_spec)
     arm_site = spec.site("arm_attachment_site")
     spec.attach(jaco2_spec, prefix="", site=arm_site)
 
@@ -302,6 +304,19 @@ def build_spec(
         _add_floor(spec)
 
     return spec
+
+
+def _open_hand_in_keyframes(jaco2_spec: mujoco.MjSpec) -> None:
+    """Open the fingers in every keyframe of the arm's spec. jaco2.xml's keyframes close
+    them on the tool's handle; an empty hand starts open, ready to close on an object."""
+    model = jaco2_spec.compile()
+    joints = [model.jnt_qposadr[model.joint(f"j2n6s200_joint_finger{s}_{i}").id] for s in ("", "_tip") for i in (1, 2)]
+    actuators = [model.actuator(f"act_finger_{i}").id for i in (1, 2)]
+    for key in jaco2_spec.keys:
+        qpos, ctrl = np.array(key.qpos), np.array(key.ctrl)
+        qpos[joints] = 0.0
+        ctrl[actuators] = 0.0
+        key.qpos, key.ctrl = qpos, ctrl
 
 
 def _add_floor(spec: mujoco.MjSpec) -> None:
@@ -332,6 +347,9 @@ GENERATED = {
     # The robot ssrobot loads: wheelchair, JACO2, wrist camera, and the articutool
     # mounted in the hand. No person or floor: those are a scene.
     "ada.xml": dict(with_human=False, with_camera=True, tool="articutool", with_floor=False),
+    # The same robot with an empty hand, for grasping with the fingers: the canonical model
+    # of the bare-hand ssrobot package (models/ssrobot.toml).
+    "ada_hand.xml": dict(with_human=False, with_camera=True, tool=None, with_floor=False),
     # Everything, for viewing and simulation: the robot, the seated user, and the floor.
     "scene.xml": dict(with_human=True, with_camera=True, tool="articutool", with_floor=True),
 }

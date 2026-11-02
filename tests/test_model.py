@@ -14,8 +14,8 @@ import pytest
 from ada_assets import MODELS_DIR
 from ada_assets.assembly import assemble_ada
 
-# The generated models: the canonical robot ssrobot loads, and the full scene.
-GENERATED = ("ada.xml", "scene.xml")
+# The generated models: the canonical robots ssrobot loads, and the full scene.
+GENERATED = ("ada.xml", "ada_hand.xml", "scene.xml")
 KEYFRAMES = {"above_plate", "resting", "staging", "stow"}
 ARM_CHAIN = [
     "j2n6s200_link_base",
