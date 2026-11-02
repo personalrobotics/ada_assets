@@ -120,7 +120,8 @@ Kinova JACO2 j2n6s200 — 6-DOF arm with 2 underactuated fingers.
 - **Materials**: Carbon fiber (arm links), brushed aluminum (rings), rubber (finger pads) — from the original DAE files.
 - **Gravity compensation**: Enabled on all moving bodies (`gravcomp="1"`)
 - **Effort limits**: From URDF — J1/J3 ±40 Nm, J2 ±80 Nm, J4-6 ±20 Nm, fingers ±2 Nm
-- **Sites**: `base_mount_site`, `tool_attachment_site`, `ee_site`, `forque_attachment_site`, `articutool_attachment_site`, `camera_attachment_site`
+- **Sites**: `base_mount_site`, `tool_attachment_site`, `ee_site`, `palm_grasp_site`, `forque_attachment_site`, `articutool_attachment_site`, `camera_attachment_site`
+- **Palm grasp site** (`palm_grasp_site`): the frame sstsr's parallel-jaw grasp templates constrain. Its origin is the palm, 125 mm along link_6's −z and at the finger mounts' x (−2.5 mm); its z is the approach, y the fingers' opening, and x the palm normal (link_6 rotated 180° about x). These are sstsr 4.2.0's `KinovaJaco2TwoFinger.PALM_OFFSET_FROM_LINK_6` and `PALM_X_IN_LINK_6`, measured from this model.
 - **Keyframes**: `above_plate`, `resting`, `staging`, `stow`. Each carries the `ctrl` that holds it: the joint servos at their positions, and each finger servo at its tendon length (proximal + 0.5 × distal)
 
 ### Wheelchair (`wheelchair.xml`)

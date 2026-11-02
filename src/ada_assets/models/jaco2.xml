@@ -134,6 +134,14 @@
                   <!-- EE site for IK (at the URDF end_effector frame) -->
                   <site name="ee_site" pos="0 0 -0.16" quat="0 0.707107 0.707107 0" size="0.005" rgba="0 1 0 1"/>
 
+                  <!-- Palm grasp site: sstsr's canonical parallel-jaw frame (z along the
+                       approach, y along the fingers' opening, x the palm normal), for grasp
+                       TSRs. From sstsr 4.2.0 KinovaJaco2TwoFinger, measured on this model:
+                       the palm is PALM_OFFSET_FROM_LINK_6 = 0.125 m along link_6's -z, at the
+                       finger mounts' x, PALM_X_IN_LINK_6 = -0.0025 m; the frame is link_6's
+                       rotated 180 deg about x. tests/test_hand_package.py checks both. -->
+                  <site name="palm_grasp_site" pos="-0.0025 0 -0.125" quat="0 1 0 0" size="0.005" rgba="1 0 1 1"/>
+
                   <!-- Fingers — underactuated: 1 motor per finger drives
                        proximal (revolute) + distal (revolute with spring).
                        The distal spring biases it straight; when the proximal
