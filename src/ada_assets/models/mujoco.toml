@@ -24,12 +24,16 @@ completion = { goal_tolerance = 0.01, stall_delta = 0.00015625, stall_dwell_ns =
 # interval the readings, exactly as observed, stayed within the variation and then moved
 # (368 ms), over reaches, out-and-backs through zero velocity, pauses, and single-joint
 # moves from the keyframe and the four named configurations, judged from each
-# trajectory's end. The arm cannot raise the cylinder by its first joint, so no payload
-# trial is judged. MuJoCo source's values; the hardware is unmeasured. Evidence:
-# evidence/ada_hand-mujoco-rest.json (sha256
-# 65a9494032daa5454a442b1baef20db7c4b1b3e947a6e17119223e418933d1dc), written by
-# ssrobot's scripts/calibrate_rest.py --robot ada_hand at ssrobot 8711dd8bf5bd on this
-# repository at 8ddf90643bd1, 28 of 28 judged trials passing.
+# trajectory's end. These unloaded trials set the dwell. It also covers the arm
+# holding the reference cylinder, raised 0.09 m by a Cartesian lift. Its motions start
+# once the simulator's pose of the cylinder has settled in the hand, which is privileged
+# calibration evidence, not a runtime gripper-rest event. The two judged loaded motions,
+# an out-and-back and a pause, need at most 88 ms; the slow creep is valid but outside
+# the measurement envelope, so it is not judged. MuJoCo source's values; the hardware
+# is unmeasured. Evidence: evidence/ada_hand-mujoco-rest.json
+# (sha256 dc0580d22b346812a9291388091ae54ec69de32a2e0e84307452f1d182136597),
+# written by ssrobot's scripts/calibrate_rest.py --robot ada_hand at ssrobot
+# c5c0d4040c73 on this repository at 794631b98691, 30 of 30 judged trials passing.
 [[rest]]
 channel = "arm_q"
-criteria = { max_gap_ns = 2000000, dwell_ns = 370000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 368000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot 8711dd8bf5bd on personalrobotics/ada_assets@8ddf90643bd1; the hardware is unmeasured; evidence/ada_hand-mujoco-rest.json sha256 65a9494032daa5454a442b1baef20db7c4b1b3e947a6e17119223e418933d1dc" }
+criteria = { max_gap_ns = 2000000, dwell_ns = 370000000, variation = [9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05], source = "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 368000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot c5c0d4040c73 on personalrobotics/ada_assets@794631b98691; the hardware is unmeasured; evidence/ada_hand-mujoco-rest.json sha256 dc0580d22b346812a9291388091ae54ec69de32a2e0e84307452f1d182136597" }

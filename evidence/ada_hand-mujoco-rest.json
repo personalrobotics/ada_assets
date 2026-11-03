@@ -1,12 +1,12 @@
 {
   "robot": "ada_hand",
   "provenance": {
-    "ssrobot_commit": "8711dd8bf5bdcbbb68acbec5f4acfc4f0f6afe57",
+    "ssrobot_commit": "c5c0d4040c73cba5d6a6b7cda32b27e971e7d713",
     "ssrobot_clean": true,
     "script": "scripts/calibrate_rest.py",
     "repository": "personalrobotics/ada_assets",
-    "commit": "8ddf90643bd1793f7de130ea10963fcf0b6ca8df",
-    "archive_sha256": "d2bcf275040707b018be532995b7a425b4ff29f2df1af0fbaaaffcf54b28910d",
+    "commit": "794631b98691dad990974b8bb241fc832d25c142",
+    "archive_sha256": "802fd2bdb7eb4d38c92619f6d8497fac655855d42e1693231d6cc16c9b2805b3",
     "python": "3.14.7",
     "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
     "machine": "arm64",
@@ -50,7 +50,7 @@
           9.587379924285257e-05,
           9.587379924285257e-05
         ],
-        "source": "references/robots.toml"
+        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 368000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot 8711dd8bf5bd on personalrobotics/ada_assets@8ddf90643bd1; the hardware is unmeasured; evidence/ada_hand-mujoco-rest.json sha256 65a9494032daa5454a442b1baef20db7c4b1b3e947a6e17119223e418933d1dc"
       },
       "criteria": {
         "max_gap_ns": 2000000,
@@ -63,17 +63,52 @@
           9.587379924285257e-05,
           9.587379924285257e-05
         ],
-        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 368000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot 8711dd8bf5bd on personalrobotics/ada_assets@8ddf90643bd1; the hardware is unmeasured"
+        "source": "MuJoCo source's values: variation declared per joint ([9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05, 9.587379924285257e-05]), the bound on what counts as still; dwell one tick longer than the longest interval that looked still and then moved, 368000000 ns, judged from each trajectory's end; measured by ssrobot scripts/calibrate_rest.py at ssrobot c5c0d4040c73 on personalrobotics/ada_assets@794631b98691; the hardware is unmeasured"
       },
       "longest_false_still": {
         "span_ns": 368000000,
         "from_ns": 8230000000,
         "to_ns": 8598000000
       },
+      "sets": {
+        "unloaded": {
+          "trials": 32,
+          "judged": 28,
+          "longest_span_ns": 368000000,
+          "dwell_ns": 370000000,
+          "longest_in": [
+            {
+              "set": "unloaded",
+              "index": 17,
+              "name": "above_plate/reach_away"
+            }
+          ]
+        },
+        "loaded": {
+          "trials": 3,
+          "judged": 2,
+          "longest_span_ns": 86000000,
+          "dwell_ns": 88000000,
+          "longest_in": [
+            {
+              "set": "loaded",
+              "index": 2,
+              "name": "payload/pause"
+            }
+          ]
+        }
+      },
+      "determined_by": [
+        {
+          "set": "unloaded",
+          "index": 17,
+          "name": "above_plate/reach_away"
+        }
+      ],
       "summary": {
         "trials": 35,
-        "judged": 28,
-        "passed": 28,
+        "judged": 30,
+        "passed": 30,
         "all_passed": true,
         "delay_ns": [
           418000000,
@@ -83,6 +118,8 @@
       },
       "trials": [
         {
+          "set": "unloaded",
+          "index": 0,
           "name": "keyframe/reach_toward_middle",
           "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
           "legs": [
@@ -104,6 +141,7 @@
             "ended_ns": 4002000000
           },
           "end_ns": 4000000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -118,18 +156,20 @@
             "fired_ns": 4558000000,
             "delay_ns": 556000000,
             "range_after": [
-              9.583458950102042e-05,
-              6.175354696935642e-05,
-              7.530929625021443e-06,
-              4.90309160028346e-06,
-              3.837566322523189e-06,
-              3.114590221287017e-07
+              9.583497073051284e-05,
+              6.1754534608216e-05,
+              7.530395029764492e-06,
+              4.903182876603296e-06,
+              3.837827351804712e-06,
+              3.114629405498448e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 1,
           "name": "keyframe/reach_away",
           "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
           "legs": [
@@ -151,6 +191,7 @@
             "ended_ns": 3502000000
           },
           "end_ns": 3500000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -165,18 +206,20 @@
             "fired_ns": 4062000000,
             "delay_ns": 560000000,
             "range_after": [
-              9.331424864233995e-05,
-              7.98511317243733e-05,
-              2.786819949807118e-07,
-              7.887301549658332e-07,
-              2.11691113138901e-06,
-              8.734249457020837e-08
+              9.331429610082154e-05,
+              7.985116386066693e-05,
+              2.785677925554175e-07,
+              7.886295696479806e-07,
+              2.1170156144778574e-06,
+              8.734612766403416e-08
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 2,
           "name": "keyframe/out_and_back",
           "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
           "legs": [
@@ -198,6 +241,7 @@
             "ended_ns": 6002000000
           },
           "end_ns": 6000000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -212,18 +256,20 @@
             "fired_ns": 6558000000,
             "delay_ns": 556000000,
             "range_after": [
-              9.52523662229865e-05,
-              7.736902875343787e-05,
-              9.174194381955658e-07,
-              1.454638653086704e-06,
-              1.931343738992286e-06,
-              3.073769856420938e-07
+              9.525237482499449e-05,
+              7.736905989874643e-05,
+              9.174123797861533e-07,
+              1.454673228096226e-06,
+              1.93137174764324e-06,
+              3.0737760869925523e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 3,
           "name": "keyframe/out_and_back_fast",
           "describe": "every joint 0.15 rad out and back, at half the limits",
           "legs": [
@@ -245,6 +291,7 @@
             "ended_ns": 3502000000
           },
           "end_ns": 3500000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -259,18 +306,20 @@
             "fired_ns": 4116000000,
             "delay_ns": 614000000,
             "range_after": [
-              9.339400268459919e-05,
-              7.251903721439135e-05,
-              2.8011224567636717e-07,
-              9.904492035417434e-07,
-              2.340823836710637e-06,
-              3.338055265533768e-07
+              9.33940915230913e-05,
+              7.251912194794485e-05,
+              2.801119823314657e-07,
+              9.904952671391243e-07,
+              2.340871968264935e-06,
+              3.338058228719021e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 4,
           "name": "keyframe/slow_creep",
           "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
           "legs": [
@@ -292,6 +341,7 @@
             "ended_ns": 7002000000
           },
           "end_ns": 7000000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": true,
           "judged": false,
@@ -306,18 +356,20 @@
             "fired_ns": 7374000000,
             "delay_ns": 372000000,
             "range_after": [
-              7.729360847363864e-06,
-              7.31335284909207e-06,
-              2.6291988191595728e-06,
-              2.3466645213687798e-06,
-              1.6750183826075293e-06,
-              1.6041517820752915e-06
+              7.729361133357315e-06,
+              7.313353048488125e-06,
+              2.6291984373538746e-06,
+              2.346664096819495e-06,
+              1.6750172616153414e-06,
+              1.6041517880704959e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 5,
           "name": "keyframe/pause",
           "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
           "legs": [
@@ -363,6 +415,7 @@
             "ended_ns": 4502000000
           },
           "end_ns": 4500000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -377,18 +430,20 @@
             "fired_ns": 5100000000,
             "delay_ns": 598000000,
             "range_after": [
-              9.413489441967293e-05,
-              5.539968792511729e-05,
-              7.587105139483796e-06,
-              4.178784865693785e-06,
-              3.831964751233041e-06,
-              2.60904506055315e-07
+              9.413503344202212e-05,
+              5.5401161294987844e-05,
+              7.584832741547309e-06,
+              4.179100443479911e-06,
+              3.832603231002096e-06,
+              2.6092455746029586e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 6,
           "name": "keyframe/single_first",
           "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
           "legs": [
@@ -410,6 +465,7 @@
             "ended_ns": 6002000000
           },
           "end_ns": 6000000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -424,18 +480,20 @@
             "fired_ns": 6558000000,
             "delay_ns": 556000000,
             "range_after": [
-              9.497190169827086e-05,
-              1.1613670025667489e-08,
-              3.800142012178043e-08,
-              9.423566798005822e-07,
-              6.719831615598082e-07,
-              5.159120131104089e-08
+              9.497217508980249e-05,
+              1.1397839561055889e-08,
+              3.80026656254806e-08,
+              9.421979800805502e-07,
+              6.718672033723116e-07,
+              5.159274263366598e-08
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 7,
           "name": "keyframe/single_last",
           "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
           "legs": [
@@ -457,6 +515,7 @@
             "ended_ns": 5002000000
           },
           "end_ns": 5000000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -471,18 +530,20 @@
             "fired_ns": 5420000000,
             "delay_ns": 418000000,
             "range_after": [
-              4.5329479680944473e-07,
-              2.119459822758074e-06,
-              1.1417673895786074e-06,
-              7.215090226608822e-06,
-              8.459214279610272e-07,
-              9.423580718059821e-05
+              4.5330836773160854e-07,
+              2.119450252635602e-06,
+              1.1417671725855172e-06,
+              7.215114722569638e-06,
+              8.458897336471871e-07,
+              9.423580758449734e-05
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 8,
           "name": "staging/reach_toward_middle",
           "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
           "legs": [
@@ -504,6 +565,7 @@
             "ended_ns": 9994000000
           },
           "end_ns": 9992000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -518,18 +580,20 @@
             "fired_ns": 10516000000,
             "delay_ns": 522000000,
             "range_after": [
-              9.320343528429476e-05,
-              5.668824306148679e-05,
-              6.541294935669129e-05,
-              3.9374757394128324e-05,
-              4.738908232493344e-06,
-              1.3602485091634975e-06
+              9.320342781338198e-05,
+              5.668804398162308e-05,
+              6.541293995399045e-05,
+              3.9374046659546025e-05,
+              4.738296158990352e-06,
+              1.36024923835798e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 9,
           "name": "staging/reach_away",
           "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
           "legs": [
@@ -551,6 +615,7 @@
             "ended_ns": 9494000000
           },
           "end_ns": 9492000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -565,18 +630,20 @@
             "fired_ns": 10010000000,
             "delay_ns": 516000000,
             "range_after": [
-              7.876893422986697e-05,
-              9.197180371156577e-05,
-              4.922644601546011e-05,
-              3.33646661703213e-05,
-              5.299656884005799e-06,
-              2.781637122417635e-06
+              7.87686121634934e-05,
+              9.197114420711472e-05,
+              4.9226311464423134e-05,
+              3.336399662678957e-05,
+              5.298860433544661e-06,
+              2.7816664518454104e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 10,
           "name": "staging/out_and_back",
           "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
           "legs": [
@@ -598,6 +665,7 @@
             "ended_ns": 11994000000
           },
           "end_ns": 11992000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -612,18 +680,20 @@
             "fired_ns": 12500000000,
             "delay_ns": 506000000,
             "range_after": [
-              9.49445907232338e-05,
-              9.54557820476154e-05,
-              6.436877088411563e-05,
-              4.467291103615878e-05,
-              6.400998117328527e-06,
-              2.6804426960236327e-06
+              9.49456138550353e-05,
+              9.545197642424341e-05,
+              6.437135614056899e-05,
+              4.4673808226036726e-05,
+              6.401212303774884e-06,
+              2.6805335766599825e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 11,
           "name": "staging/out_and_back_fast",
           "describe": "every joint 0.15 rad out and back, at half the limits",
           "legs": [
@@ -645,6 +715,7 @@
             "ended_ns": 9494000000
           },
           "end_ns": 9492000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -659,18 +730,20 @@
             "fired_ns": 10042000000,
             "delay_ns": 548000000,
             "range_after": [
-              9.47892060598754e-05,
-              8.938491663812442e-05,
-              7.812473852464308e-05,
-              5.225944288778095e-05,
-              7.834771738046697e-06,
-              3.7422312624268983e-06
+              9.479061195438732e-05,
+              8.938160542015794e-05,
+              7.812451282429578e-05,
+              5.225673807629505e-05,
+              7.831830711957366e-06,
+              3.74226285604351e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 12,
           "name": "staging/slow_creep",
           "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
           "legs": [
@@ -692,6 +765,7 @@
             "ended_ns": 12994000000
           },
           "end_ns": 12992000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": true,
           "judged": false,
@@ -706,18 +780,20 @@
             "fired_ns": 13366000000,
             "delay_ns": 372000000,
             "range_after": [
-              6.625448560448888e-06,
-              6.689191835107522e-06,
-              3.5434573568693395e-06,
-              2.785395857962669e-06,
-              1.5794362444587762e-06,
-              1.598900950749993e-06
+              6.625447866781542e-06,
+              6.689192140640898e-06,
+              3.5434565743841517e-06,
+              2.7853952282441696e-06,
+              1.579435533027862e-06,
+              1.5989009902739326e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 13,
           "name": "staging/pause",
           "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
           "legs": [
@@ -763,6 +839,7 @@
             "ended_ns": 10494000000
           },
           "end_ns": 10492000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -777,18 +854,20 @@
             "fired_ns": 11050000000,
             "delay_ns": 556000000,
             "range_after": [
-              9.486686249338128e-05,
-              3.9934066735192175e-05,
-              7.275573098253219e-05,
-              4.240558817514284e-05,
-              5.532175980427212e-06,
-              1.7273028773967525e-06
+              9.486759136079215e-05,
+              3.993412070268931e-05,
+              7.275526451522296e-05,
+              4.240354685336456e-05,
+              5.530719506818826e-06,
+              1.7272877677054765e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 14,
           "name": "staging/single_first",
           "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
           "legs": [
@@ -810,6 +889,7 @@
             "ended_ns": 11994000000
           },
           "end_ns": 11992000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -824,18 +904,20 @@
             "fired_ns": 12486000000,
             "delay_ns": 492000000,
             "range_after": [
-              9.511648730864408e-05,
-              1.0665375246965425e-05,
-              9.354941396644278e-06,
-              4.2581365550908856e-05,
-              9.952773164290107e-06,
-              2.9390238343030006e-06
+              9.512025717839379e-05,
+              1.0661965974101406e-05,
+              9.350694743837096e-06,
+              4.2578404785942325e-05,
+              9.951313778788773e-06,
+              2.9390350895219797e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 15,
           "name": "staging/single_last",
           "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
           "legs": [
@@ -857,6 +939,7 @@
             "ended_ns": 10994000000
           },
           "end_ns": 10992000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -871,18 +954,20 @@
             "fired_ns": 11412000000,
             "delay_ns": 418000000,
             "range_after": [
-              8.956826000883211e-06,
-              5.787040978866287e-06,
-              6.137989231547181e-06,
-              6.7819248839029456e-06,
-              3.2328215437971153e-07,
-              9.419481795380769e-05
+              8.956803215109943e-06,
+              5.787064185192037e-06,
+              6.138045857362329e-06,
+              6.781998015625845e-06,
+              3.2319772103051037e-07,
+              9.419481949124453e-05
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 16,
           "name": "above_plate/reach_toward_middle",
           "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
           "legs": [
@@ -904,6 +989,7 @@
             "ended_ns": 8542000000
           },
           "end_ns": 8540000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -918,18 +1004,20 @@
             "fired_ns": 9052000000,
             "delay_ns": 510000000,
             "range_after": [
-              9.462706306795354e-05,
-              7.624657630556086e-05,
-              7.508138573486534e-05,
-              1.1912538147251794e-05,
-              5.68999032690698e-06,
-              8.791799062102257e-07
+              9.464033998307642e-05,
+              7.624853141408039e-05,
+              7.508111431331344e-05,
+              1.1905842778547893e-05,
+              5.690076092745855e-06,
+              8.792555834524762e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 17,
           "name": "above_plate/reach_away",
           "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
           "legs": [
@@ -951,6 +1039,7 @@
             "ended_ns": 8042000000
           },
           "end_ns": 8040000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -965,18 +1054,20 @@
             "fired_ns": 8602000000,
             "delay_ns": 560000000,
             "range_after": [
-              9.303316216024982e-05,
-              4.90924902276646e-05,
-              1.0199627303864034e-05,
-              7.082584766671118e-06,
-              5.100714865147182e-06,
-              5.04081664409739e-07
+              9.30331291080222e-05,
+              4.90924294718198e-05,
+              1.0199031318824936e-05,
+              7.0822444508955584e-06,
+              5.100987172657057e-06,
+              5.040799346822666e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 18,
           "name": "above_plate/out_and_back",
           "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
           "legs": [
@@ -998,6 +1089,7 @@
             "ended_ns": 10542000000
           },
           "end_ns": 10540000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1012,18 +1104,20 @@
             "fired_ns": 11086000000,
             "delay_ns": 544000000,
             "range_after": [
-              9.547435335388599e-05,
-              5.1325195975504556e-05,
-              2.2740352510153272e-05,
-              1.0121924681971706e-05,
-              3.80405818511953e-06,
-              2.8852204891904876e-07
+              9.54743608643227e-05,
+              5.13252121443486e-05,
+              2.2740331773851707e-05,
+              1.0121916756755667e-05,
+              3.8040544247941455e-06,
+              2.885212566638984e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 19,
           "name": "above_plate/out_and_back_fast",
           "describe": "every joint 0.15 rad out and back, at half the limits",
           "legs": [
@@ -1045,6 +1139,7 @@
             "ended_ns": 8042000000
           },
           "end_ns": 8040000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1059,18 +1154,20 @@
             "fired_ns": 8642000000,
             "delay_ns": 600000000,
             "range_after": [
-              9.38559082839241e-05,
-              4.008923598952663e-05,
-              2.0408355351886343e-05,
-              1.0273787370174148e-05,
-              3.1314899988643674e-06,
-              2.2207388417072593e-07
+              9.38560426484436e-05,
+              4.0089336639681505e-05,
+              2.0408649626046937e-05,
+              1.027377900575388e-05,
+              3.131478569562418e-06,
+              2.2208776062626612e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 20,
           "name": "above_plate/slow_creep",
           "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
           "legs": [
@@ -1092,6 +1189,7 @@
             "ended_ns": 11542000000
           },
           "end_ns": 11540000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": true,
           "judged": false,
@@ -1106,18 +1204,20 @@
             "fired_ns": 11914000000,
             "delay_ns": 372000000,
             "range_after": [
-              7.297391133587183e-06,
-              6.759037856518546e-06,
-              3.227304377961815e-06,
-              1.999222957405067e-06,
-              1.385847021362352e-06,
-              1.607878902021298e-06
+              7.297391440452827e-06,
+              6.759038172265974e-06,
+              3.227302874497795e-06,
+              1.999208201652891e-06,
+              1.385849049739818e-06,
+              1.6078788429574331e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 21,
           "name": "above_plate/pause",
           "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
           "legs": [
@@ -1163,13 +1263,14 @@
             "ended_ns": 9042000000
           },
           "end_ns": 9040000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
           "longest_false_still": {
-            "span_ns": 190000000,
+            "span_ns": 188000000,
             "from_ns": 9214000000,
-            "to_ns": 9404000000
+            "to_ns": 9402000000
           },
           "check": {
             "outcome": "at_rest",
@@ -1177,18 +1278,20 @@
             "fired_ns": 9586000000,
             "delay_ns": 544000000,
             "range_after": [
-              9.405011191532253e-05,
-              5.919299975953862e-05,
-              8.335699329720114e-05,
-              1.240304854932539e-05,
-              6.17537704150628e-06,
-              1.4650293760354316e-06
+              9.406685079804689e-05,
+              5.9198462603937685e-05,
+              8.335419413807443e-05,
+              1.2399042438548946e-05,
+              6.175054617196807e-06,
+              1.4650750927991396e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 22,
           "name": "above_plate/single_first",
           "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
           "legs": [
@@ -1210,6 +1313,7 @@
             "ended_ns": 10542000000
           },
           "end_ns": 10540000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1224,18 +1328,20 @@
             "fired_ns": 11092000000,
             "delay_ns": 550000000,
             "range_after": [
-              9.369060122210726e-05,
-              4.977699274988368e-07,
-              1.8093905085336814e-07,
-              1.0780598648452155e-05,
-              1.077720263698012e-06,
-              7.848455347847505e-07
+              9.369063937336719e-05,
+              4.979918806213846e-07,
+              1.8101204735110343e-07,
+              1.078056159675711e-05,
+              1.0777248242721527e-06,
+              7.848446332836545e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 23,
           "name": "above_plate/single_last",
           "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
           "legs": [
@@ -1257,6 +1363,7 @@
             "ended_ns": 9542000000
           },
           "end_ns": 9540000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1271,18 +1378,20 @@
             "fired_ns": 9960000000,
             "delay_ns": 418000000,
             "range_after": [
-              6.102298923948979e-06,
-              7.2820467718059945e-06,
-              1.7032523507154451e-06,
-              2.4295125031770226e-06,
-              2.8270240259864465e-06,
-              9.421571676204721e-05
+              6.10230729769512e-06,
+              7.282089311111406e-06,
+              1.7032781673975705e-06,
+              2.429541285042802e-06,
+              2.8270458087842343e-06,
+              9.421571766754511e-05
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 24,
           "name": "stow/reach_toward_middle",
           "describe": "every joint 0.4 rad (0.1 m) toward mid-range",
           "legs": [
@@ -1304,6 +1413,7 @@
             "ended_ns": 6006000000
           },
           "end_ns": 6004000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1318,18 +1428,20 @@
             "fired_ns": 6554000000,
             "delay_ns": 548000000,
             "range_after": [
-              9.393381800482103e-05,
-              7.146614739594881e-05,
-              5.321201397512354e-06,
-              9.969194721737296e-06,
-              3.322404876215934e-06,
-              1.6571247263286182e-07
+              9.393513091815464e-05,
+              7.146735352936417e-05,
+              5.321299562655035e-06,
+              9.969151153477185e-06,
+              3.3211502095120693e-06,
+              1.6569808414246268e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 25,
           "name": "stow/reach_away",
           "describe": "every joint 0.25 rad (0.0625 m) away from mid-range",
           "legs": [
@@ -1351,6 +1463,7 @@
             "ended_ns": 5506000000
           },
           "end_ns": 5504000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1365,18 +1478,20 @@
             "fired_ns": 6068000000,
             "delay_ns": 562000000,
             "range_after": [
-              9.562758914949399e-05,
-              7.884003913227744e-05,
-              7.819149748233833e-07,
-              2.9180777607606956e-06,
-              6.656904435603517e-07,
-              1.6950702352858116e-07
+              9.562757780501308e-05,
+              7.884002343550023e-05,
+              7.818300828410507e-07,
+              2.9180911731430115e-06,
+              6.657655603099777e-07,
+              1.6950525472125832e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 26,
           "name": "stow/out_and_back",
           "describe": "every joint 0.4 rad (0.1 m) out and back over 3 s",
           "legs": [
@@ -1398,6 +1513,7 @@
             "ended_ns": 8006000000
           },
           "end_ns": 8004000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1412,18 +1528,20 @@
             "fired_ns": 8564000000,
             "delay_ns": 558000000,
             "range_after": [
-              9.401395905084264e-05,
-              7.577846826478662e-05,
-              2.6055388032131255e-06,
-              4.962175890632636e-06,
-              2.220987815604314e-07,
-              2.4021866407153425e-07
+              9.401387381835491e-05,
+              7.577854218920876e-05,
+              2.605558697355015e-06,
+              4.962253127516192e-06,
+              2.2217470263541372e-07,
+              2.402162588843737e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 27,
           "name": "stow/out_and_back_fast",
           "describe": "every joint 0.15 rad out and back, at half the limits",
           "legs": [
@@ -1445,6 +1563,7 @@
             "ended_ns": 5506000000
           },
           "end_ns": 5504000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1459,18 +1578,20 @@
             "fired_ns": 6120000000,
             "delay_ns": 614000000,
             "range_after": [
-              9.573081425995333e-05,
-              7.356830584459573e-05,
-              1.3847161879909642e-06,
-              3.911767950892653e-06,
-              2.221552545811356e-07,
-              2.776242342683588e-07
+              9.573085214542587e-05,
+              7.356853630868798e-05,
+              1.384757323752428e-06,
+              3.911853861726655e-06,
+              2.2203257893371742e-07,
+              2.776246543767513e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 28,
           "name": "stow/slow_creep",
           "describe": "every joint 0.01 rad (2.5 mm) over 5 s",
           "legs": [
@@ -1492,6 +1613,7 @@
             "ended_ns": 9006000000
           },
           "end_ns": 9004000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": true,
           "judged": false,
@@ -1506,18 +1628,20 @@
             "fired_ns": 9378000000,
             "delay_ns": 372000000,
             "range_after": [
-              7.752878036670907e-06,
-              7.353839946322438e-06,
-              2.472662965657957e-06,
-              2.632512958289368e-06,
-              1.4582718662614624e-06,
-              1.6082818223850381e-06
+              7.752878304012611e-06,
+              7.353840162149794e-06,
+              2.4726621058457354e-06,
+              2.6325126118997844e-06,
+              1.4582568179100086e-06,
+              1.6082818228291273e-06
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 29,
           "name": "stow/pause",
           "describe": "every joint 0.2 rad, a 0.5 s pause, then 0.2 rad more",
           "legs": [
@@ -1563,6 +1687,7 @@
             "ended_ns": 6506000000
           },
           "end_ns": 6504000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1577,18 +1702,20 @@
             "fired_ns": 7094000000,
             "delay_ns": 588000000,
             "range_after": [
-              9.298120611367366e-05,
-              6.626239660079136e-05,
-              5.767978172865895e-06,
-              8.55084005246809e-06,
-              3.674215943383352e-06,
-              2.246780228531975e-07
+              9.298200634977327e-05,
+              6.626458431036042e-05,
+              5.764974225441755e-06,
+              8.551992051852864e-06,
+              3.671273187788593e-06,
+              2.2460942794566563e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 30,
           "name": "stow/single_first",
           "describe": "j2n6s200_joint_1 alone 0.4 rad (0.1 m) out and back",
           "legs": [
@@ -1610,6 +1737,7 @@
             "ended_ns": 8006000000
           },
           "end_ns": 8004000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1624,18 +1752,20 @@
             "fired_ns": 8566000000,
             "delay_ns": 560000000,
             "range_after": [
-              9.365048505749485e-05,
-              1.9752484465840325e-06,
-              1.4305119938051725e-06,
-              3.0345118302577134e-06,
-              1.2171597470467255e-06,
-              4.427939281903548e-07
+              9.365067267652627e-05,
+              1.9754059352727893e-06,
+              1.430508766053773e-06,
+              3.0344581394281533e-06,
+              1.217069970249618e-06,
+              4.4279654609624686e-07
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "unloaded",
+          "index": 31,
           "name": "stow/single_last",
           "describe": "j2n6s200_joint_6 alone 0.4 rad out and back",
           "legs": [
@@ -1657,6 +1787,7 @@
             "ended_ns": 7006000000
           },
           "end_ns": 7004000000,
+          "invalid": [],
           "valid": true,
           "out_of_envelope": false,
           "judged": true,
@@ -1671,18 +1802,20 @@
             "fired_ns": 7424000000,
             "delay_ns": 418000000,
             "range_after": [
-              3.859185832233436e-06,
-              8.461027971584656e-07,
-              5.10132035558275e-07,
-              7.092043291745398e-06,
-              9.91282151530104e-07,
-              9.423316036150098e-05
+              3.85919701439974e-06,
+              8.461152778416192e-07,
+              5.101330483037181e-07,
+              7.092054135515724e-06,
+              9.912536005352024e-07,
+              9.42331607682867e-05
             ],
             "stays_within": true,
             "passed": true
           }
         },
         {
+          "set": "loaded",
+          "index": 0,
           "name": "payload/out_and_back",
           "describe": "holding the object: every revolute joint 0.2 rad out and back",
           "legs": [
@@ -1701,10 +1834,15 @@
           ],
           "execution": {
             "state": "succeeded",
-            "ended_ns": 15264000000
+            "ended_ns": 57112000000
           },
-          "end_ns": 15262000000,
+          "end_ns": 57110000000,
           "payload": {
+            "lift": {
+              "height": 0.1,
+              "minimum_rise": 0.09,
+              "support": "ada_table"
+            },
             "object_at_start": [
               0.3082,
               -0.6416,
@@ -1723,7 +1861,7 @@
               -0.0002166975632866539,
               0.9626728461914712
             ],
-            "approach_error": 2.220446049250313e-16,
+            "approach_error": 5.961418593931259e-16,
             "object_approached": [
               0.3082177700585787,
               -0.641629798359808,
@@ -1733,52 +1871,93 @@
               -0.00019920634645667311,
               0.9626729239947907
             ],
-            "close": "stopped_short",
+            "close": "reached_target",
             "object_gripped": [
-              0.30757038512847473,
-              -0.6419471732216527,
-              0.7949476327387254,
-              0.26250984224692075,
-              -0.003151804248733372,
-              -0.004690777650749919,
-              0.9649127657247083
+              0.32154648458402457,
+              -0.6274698834275215,
+              0.7970597987287726,
+              0.29779062483979196,
+              0.0688330393074812,
+              0.11925642016136957,
+              0.9446484333907058
             ],
-            "object_raised_m": -0.005473371414920103,
-            "object_raised_to_m": 0.7894742613238053
+            "lift_plan": "succeeded",
+            "lift_diagnostics": [
+              {
+                "code": "line_margin",
+                "message": "planned against the line narrowed by 2.5e-05 m on each side; validated against the original"
+              }
+            ],
+            "lift_execution": "succeeded",
+            "object_raised_m": 0.09151933742331209,
+            "object_raised_to_m": 0.8885791361520847,
+            "lift_violation": null,
+            "settle": {
+              "evidence": "PRIVILEGED CALIBRATION EVIDENCE: the simulator's pose of the held object, observed to decide when the grip has settled before the attachment's reference is reset. It establishes loaded arm-rest criteria; it is not a runtime gripper-rest event.",
+              "criteria": {
+                "max_gap_ns": 2000000,
+                "dwell_ns": 500000000,
+                "translation_m": 0.0001,
+                "rotation_rad": 0.001,
+                "source": "calibrate_rest.py: 1% of MujocoRuntime's attachment tolerances over 0.5 s"
+              },
+              "outcome": "at_rest",
+              "started_ns": 11718000000,
+              "ended_ns": 53110000000,
+              "violation_while_settling": {
+                "stamp_ns": 11784000000,
+                "position_error_m": 0.002940051328567627,
+                "rotation_error_rad": 0.10004068777166308
+              },
+              "object_raised_m": 0.07989801343481129
+            }
+          },
+          "validation": {
+            "valid": true,
+            "checks": 201,
+            "validator": "sscbirrt 3.15.0 native",
+            "policy": "Valid at states at most 0.05 apart (Euclidean, joint space, to a relative 1e-09) along each raw-linear motion, endpoints included; nothing is claimed between them. No collision clearance is added.",
+            "witness": null
           },
           "objects": {
             "cylinder": [
-              0.16723422327224863,
-              -0.6952868764946051,
-              0.7975964105366375
+              0.34017769808833637,
+              -0.6068401881250147,
+              0.8746644727066107
             ]
           },
-          "valid": false,
+          "violations": {
+            "cylinder": null
+          },
+          "invalid": [],
+          "valid": true,
           "out_of_envelope": false,
-          "judged": false,
+          "judged": true,
           "longest_false_still": {
-            "span_ns": 2526000000,
-            "from_ns": 22730000000,
-            "to_ns": 25256000000
+            "span_ns": 82000000,
+            "from_ns": 57330000000,
+            "to_ns": 57412000000
           },
           "check": {
             "outcome": "at_rest",
-            "watched_from_ns": 15264000000,
-            "fired_ns": 16578000000,
-            "delay_ns": 1314000000,
+            "watched_from_ns": 57112000000,
+            "fired_ns": 57702000000,
+            "delay_ns": 590000000,
             "range_after": [
-              7.366938078012808e-05,
-              0.0009344057200255662,
-              0.0005613650503728529,
-              0.0007848577771438769,
-              0.0005511518086724898,
-              5.867842426177106e-06
+              9.388029296708567e-05,
+              5.5670490864301314e-05,
+              4.294136168958573e-05,
+              2.9904937774105633e-05,
+              1.7889329600340176e-05,
+              1.1978527219014268e-06
             ],
-            "stays_within": false,
-            "passed": false
+            "stays_within": true,
+            "passed": true
           }
         },
         {
+          "set": "loaded",
+          "index": 1,
           "name": "payload/slow_creep",
           "describe": "holding the object: every revolute joint 0.01 rad over 5 s",
           "legs": [
@@ -1797,10 +1976,15 @@
           ],
           "execution": {
             "state": "succeeded",
-            "ended_ns": 18264000000
+            "ended_ns": 60112000000
           },
-          "end_ns": 18262000000,
+          "end_ns": 60110000000,
           "payload": {
+            "lift": {
+              "height": 0.1,
+              "minimum_rise": 0.09,
+              "support": "ada_table"
+            },
             "object_at_start": [
               0.3082,
               -0.6416,
@@ -1819,7 +2003,7 @@
               -0.0002166975632866539,
               0.9626728461914712
             ],
-            "approach_error": 2.220446049250313e-16,
+            "approach_error": 5.961418593931259e-16,
             "object_approached": [
               0.3082177700585787,
               -0.641629798359808,
@@ -1829,52 +2013,93 @@
               -0.00019920634645667311,
               0.9626729239947907
             ],
-            "close": "stopped_short",
+            "close": "reached_target",
             "object_gripped": [
-              0.30757038512847473,
-              -0.6419471732216527,
-              0.7949476327387254,
-              0.26250984224692075,
-              -0.003151804248733372,
-              -0.004690777650749919,
-              0.9649127657247083
+              0.32154648458402457,
+              -0.6274698834275215,
+              0.7970597987287726,
+              0.29779062483979196,
+              0.0688330393074812,
+              0.11925642016136957,
+              0.9446484333907058
             ],
-            "object_raised_m": -0.005473371414920103,
-            "object_raised_to_m": 0.7894742613238053
+            "lift_plan": "succeeded",
+            "lift_diagnostics": [
+              {
+                "code": "line_margin",
+                "message": "planned against the line narrowed by 2.5e-05 m on each side; validated against the original"
+              }
+            ],
+            "lift_execution": "succeeded",
+            "object_raised_m": 0.09151933742331209,
+            "object_raised_to_m": 0.8885791361520847,
+            "lift_violation": null,
+            "settle": {
+              "evidence": "PRIVILEGED CALIBRATION EVIDENCE: the simulator's pose of the held object, observed to decide when the grip has settled before the attachment's reference is reset. It establishes loaded arm-rest criteria; it is not a runtime gripper-rest event.",
+              "criteria": {
+                "max_gap_ns": 2000000,
+                "dwell_ns": 500000000,
+                "translation_m": 0.0001,
+                "rotation_rad": 0.001,
+                "source": "calibrate_rest.py: 1% of MujocoRuntime's attachment tolerances over 0.5 s"
+              },
+              "outcome": "at_rest",
+              "started_ns": 11718000000,
+              "ended_ns": 53110000000,
+              "violation_while_settling": {
+                "stamp_ns": 11784000000,
+                "position_error_m": 0.002940051328567627,
+                "rotation_error_rad": 0.10004068777166308
+              },
+              "object_raised_m": 0.07989801343481129
+            }
+          },
+          "validation": {
+            "valid": true,
+            "checks": 501,
+            "validator": "sscbirrt 3.15.0 native",
+            "policy": "Valid at states at most 0.05 apart (Euclidean, joint space, to a relative 1e-09) along each raw-linear motion, endpoints included; nothing is claimed between them. No collision clearance is added.",
+            "witness": null
           },
           "objects": {
             "cylinder": [
-              0.16530841347592964,
-              -0.694764534943744,
-              0.7975798308778336
+              0.3325800710400996,
+              -0.6090223931700968,
+              0.8870644098977369
             ]
           },
-          "valid": false,
+          "violations": {
+            "cylinder": null
+          },
+          "invalid": [],
+          "valid": true,
           "out_of_envelope": true,
           "judged": false,
           "longest_false_still": {
-            "span_ns": 3718000000,
-            "from_ns": 24542000000,
-            "to_ns": 28260000000
+            "span_ns": 0,
+            "from_ns": 60114000000,
+            "to_ns": 60114000000
           },
           "check": {
             "outcome": "at_rest",
-            "watched_from_ns": 18264000000,
-            "fired_ns": 18636000000,
+            "watched_from_ns": 60112000000,
+            "fired_ns": 60484000000,
             "delay_ns": 372000000,
             "range_after": [
-              0.00013611116633738263,
-              0.0007210004112856438,
-              0.000436162485695224,
-              0.0005826904592547422,
-              0.00042285746772741106,
-              9.773435215798543e-06
+              5.068076941672217e-06,
+              4.455594663888007e-06,
+              2.1905416818235324e-06,
+              1.8864230169057805e-06,
+              1.3439484780608524e-06,
+              1.6723298879028903e-06
             ],
-            "stays_within": false,
-            "passed": false
+            "stays_within": true,
+            "passed": true
           }
         },
         {
+          "set": "loaded",
+          "index": 2,
           "name": "payload/pause",
           "describe": "holding the object: every revolute joint 0.1 rad, a 0.5 s pause, then 0.1 rad more",
           "legs": [
@@ -1917,10 +2142,15 @@
           ],
           "execution": {
             "state": "succeeded",
-            "ended_ns": 15764000000
+            "ended_ns": 57612000000
           },
-          "end_ns": 15762000000,
+          "end_ns": 57610000000,
           "payload": {
+            "lift": {
+              "height": 0.1,
+              "minimum_rise": 0.09,
+              "support": "ada_table"
+            },
             "object_at_start": [
               0.3082,
               -0.6416,
@@ -1939,7 +2169,7 @@
               -0.0002166975632866539,
               0.9626728461914712
             ],
-            "approach_error": 2.220446049250313e-16,
+            "approach_error": 5.961418593931259e-16,
             "object_approached": [
               0.3082177700585787,
               -0.641629798359808,
@@ -1949,46 +2179,85 @@
               -0.00019920634645667311,
               0.9626729239947907
             ],
-            "close": "stopped_short",
+            "close": "reached_target",
             "object_gripped": [
-              0.30757038512847473,
-              -0.6419471732216527,
-              0.7949476327387254,
-              0.26250984224692075,
-              -0.003151804248733372,
-              -0.004690777650749919,
-              0.9649127657247083
+              0.32154648458402457,
+              -0.6274698834275215,
+              0.7970597987287726,
+              0.29779062483979196,
+              0.0688330393074812,
+              0.11925642016136957,
+              0.9446484333907058
             ],
-            "object_raised_m": -0.005473371414920103,
-            "object_raised_to_m": 0.7894742613238053
+            "lift_plan": "succeeded",
+            "lift_diagnostics": [
+              {
+                "code": "line_margin",
+                "message": "planned against the line narrowed by 2.5e-05 m on each side; validated against the original"
+              }
+            ],
+            "lift_execution": "succeeded",
+            "object_raised_m": 0.09151933742331209,
+            "object_raised_to_m": 0.8885791361520847,
+            "lift_violation": null,
+            "settle": {
+              "evidence": "PRIVILEGED CALIBRATION EVIDENCE: the simulator's pose of the held object, observed to decide when the grip has settled before the attachment's reference is reset. It establishes loaded arm-rest criteria; it is not a runtime gripper-rest event.",
+              "criteria": {
+                "max_gap_ns": 2000000,
+                "dwell_ns": 500000000,
+                "translation_m": 0.0001,
+                "rotation_rad": 0.001,
+                "source": "calibrate_rest.py: 1% of MujocoRuntime's attachment tolerances over 0.5 s"
+              },
+              "outcome": "at_rest",
+              "started_ns": 11718000000,
+              "ended_ns": 53110000000,
+              "violation_while_settling": {
+                "stamp_ns": 11784000000,
+                "position_error_m": 0.002940051328567627,
+                "rotation_error_rad": 0.10004068777166308
+              },
+              "object_raised_m": 0.07989801343481129
+            }
+          },
+          "validation": {
+            "valid": true,
+            "checks": 251,
+            "validator": "sscbirrt 3.15.0 native",
+            "policy": "Valid at states at most 0.05 apart (Euclidean, joint space, to a relative 1e-09) along each raw-linear motion, endpoints included; nothing is claimed between them. No collision clearance is added.",
+            "witness": null
           },
           "objects": {
             "cylinder": [
-              0.021497462047547662,
-              -0.6646179405302384,
-              1.0531137890603506
+              0.16643382759908307,
+              -0.584377311404278,
+              1.1230101409172135
             ]
           },
-          "valid": false,
+          "violations": {
+            "cylinder": null
+          },
+          "invalid": [],
+          "valid": true,
           "out_of_envelope": false,
-          "judged": false,
+          "judged": true,
           "longest_false_still": {
-            "span_ns": 88000000,
-            "from_ns": 15946000000,
-            "to_ns": 16034000000
+            "span_ns": 86000000,
+            "from_ns": 57796000000,
+            "to_ns": 57882000000
           },
           "check": {
             "outcome": "at_rest",
-            "watched_from_ns": 15764000000,
-            "fired_ns": 16318000000,
-            "delay_ns": 554000000,
+            "watched_from_ns": 57612000000,
+            "fired_ns": 58168000000,
+            "delay_ns": 556000000,
             "range_after": [
-              7.94523564962013e-05,
-              9.202927121965132e-05,
-              4.617383646499107e-05,
-              2.3217380706874735e-05,
-              1.778674459940177e-05,
-              8.963789310811876e-07
+              5.79866597050227e-05,
+              9.199670557524797e-05,
+              4.552392822398943e-05,
+              1.4869174323806078e-05,
+              8.524162438572347e-06,
+              1.5817441956222922e-06
             ],
             "stays_within": true,
             "passed": true
