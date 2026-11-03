@@ -460,11 +460,11 @@
   </contact>
 
   <tendon>
-    <fixed name="finger_1_tendon">
+    <fixed name="finger_1_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_1" coef="1"/>
       <joint joint="j2n6s200_joint_finger_tip_1" coef="0.5"/>
     </fixed>
-    <fixed name="finger_2_tendon">
+    <fixed name="finger_2_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_2" coef="1"/>
       <joint joint="j2n6s200_joint_finger_tip_2" coef="0.5"/>
     </fixed>
@@ -477,8 +477,8 @@
     <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -14"/>
     <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -12"/>
     <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -12"/>
-    <general name="act_finger_1" tendon="finger_1_tendon" ctrlrange="0 1.51" forcerange="-2 2" biastype="affine" gainprm="0.3" biasprm="0 -0.3 -0.05"/>
-    <general name="act_finger_2" tendon="finger_2_tendon" ctrlrange="0 1.51" forcerange="-2 2" biastype="affine" gainprm="0.3" biasprm="0 -0.3 -0.05"/>
+    <general name="act_finger_1" tendon="finger_1_tendon" ctrlrange="0 1.51" forcerange="-1.81 1.81" biastype="affine" gainprm="134" biasprm="0 -134"/>
+    <general name="act_finger_2" tendon="finger_2_tendon" ctrlrange="0 1.51" forcerange="-1.81 1.81" biastype="affine" gainprm="134" biasprm="0 -134"/>
     <general name="articutool/act_atool_tilt" joint="articutool/atool_joint1" ctrlrange="-1.5708 1.5708" ctrllimited="true" forcerange="-1.4 1.4" biastype="affine" gainprm="100" biasprm="0 -100 -3"/>
     <general name="articutool/act_atool_roll" joint="articutool/atool_joint2" ctrlrange="-3.14159 3.14159" ctrllimited="true" forcerange="-1.4 1.4" biastype="affine" gainprm="100" biasprm="0 -100 -3"/>
   </actuator>

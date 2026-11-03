@@ -206,11 +206,11 @@
        Spring stiffness on distal is tuned so it holds straight in
        free space but yields under the tendon's transferred force. -->
   <tendon>
-    <fixed name="finger_1_tendon">
+    <fixed name="finger_1_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_1" coef="1.0"/>
       <joint joint="j2n6s200_joint_finger_tip_1" coef="0.5"/>
     </fixed>
-    <fixed name="finger_2_tendon">
+    <fixed name="finger_2_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_2" coef="1.0"/>
       <joint joint="j2n6s200_joint_finger_tip_2" coef="0.5"/>
     </fixed>
@@ -229,13 +229,34 @@
     <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -14" forcerange="-20 20"/>
     <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -12" forcerange="-20 20"/>
     <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" gaintype="fixed" biastype="affine" gainprm="350" biasprm="0 -350 -12" forcerange="-20 20"/>
-    <!-- Finger actuators: each independently drives its proximal joint.
-         ctrl range maps to Kinova API 0 (open) → 1.51 (fully closed).
-         Effort limit 2 Nm (from URDF). Strong enough to grip firmly. -->
+    <!-- Finger actuators: each independently drives its finger's tendon, a position
+         servo at the hand's rated grip (#46). ctrl range maps to Kinova API 0 (open) →
+         1.51 (fully closed).
+
+         Grip force. Kinova's Jaco assistive robot user guide (EN-UG-007 R05, (c) 2021,
+         Table 1: Specifications, p. 11) gives "Gripper force: 2 fingers: 25N", as does
+         the KG-2 entry of Kinova's KG-series datasheet ("Gripping Force 25 N"). Read as
+         each finger pressing an object with 25 N. Each finger's tendon force F acts on
+         its proximal joint with coefficient 1, so a fingertip contact at moment arm r
+         about the proximal joint's axis presses with F / r. On the package's grasp of a
+         50 mm cylinder at sstsr 4.2.0's KinovaJaco2TwoFinger mid side grasp, each finger
+         touches it on its distal pad at r = 72.3 mm (tests/test_hand_package.py), so
+         forcerange = 25 N * 0.0723 m = 1.81, within the URDF's 2 Nm effort limit.
+
+         Stiffness. A finger that stops short of its target by more than the gripper's
+         completion tolerance (0.01 of the opening, 0.0135 of the 1.35 tendon stroke,
+         mujoco.toml) presses at that force: kp = 1.81 / 0.0135 = 134.
+
+         Speed. The KG-2 datasheet gives an opening or closing travel time of 1.2 s.
+         Closing freely, the drive is at its force limit and its speed is set by the
+         damping outside it (a servo's own kv is inside the force limit, so it cannot
+         slow a saturated drive): over the 1.35 stroke in 1.2 s, 1.125/s, so the
+         tendon's damping + 0.05 (the proximal joint's) = 1.81 / 1.125, and the tendon
+         damping is 1.56 (finger_N_tendon, above). -->
     <general name="act_finger_1" tendon="finger_1_tendon" gaintype="fixed" biastype="affine"
-             gainprm="0.3" biasprm="0 -0.3 -0.05" ctrlrange="0 1.51" forcerange="-2 2"/>
+             gainprm="134" biasprm="0 -134 0" ctrlrange="0 1.51" forcerange="-1.81 1.81"/>
     <general name="act_finger_2" tendon="finger_2_tendon" gaintype="fixed" biastype="affine"
-             gainprm="0.3" biasprm="0 -0.3 -0.05" ctrlrange="0 1.51" forcerange="-2 2"/>
+             gainprm="134" biasprm="0 -134 0" ctrlrange="0 1.51" forcerange="-1.81 1.81"/>
   </actuator>
 
   <!-- Adjacent-link collision exclusions. MuJoCo's collision checker
