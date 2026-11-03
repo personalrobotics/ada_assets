@@ -21,6 +21,9 @@
         </default>
         <default class="jaco2_collision">
           <geom type="mesh" group="3" rgba="0.3 0.5 0.3 0.2"/>
+          <default class="jaco2_finger_collision">
+            <geom condim="4"/>
+          </default>
         </default>
         <default class="jaco2_ring">
           <geom type="mesh" contype="0" conaffinity="0" group="2"/>
@@ -228,24 +231,24 @@
                         <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                         <joint name="j2n6s200_joint_finger_1" range="0 1.51" armature="0.001" damping="0.05" limited="true"/>
                         <geom class="jaco2_visual" material="finger_rubber" mesh="finger_proximal"/>
-                        <geom class="jaco2_collision" mesh="finger_proximal"/>
+                        <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                         <body name="j2n6s200_link_finger_tip_1" pos="0.044 -0.003 0" gravcomp="1">
                           <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                           <joint name="j2n6s200_joint_finger_tip_1" stiffness="0.2" range="0 1.2" armature="0.001" damping="0.05" limited="true"/>
                           <geom class="jaco2_visual" material="finger_rubber" mesh="finger_distal"/>
-                          <geom class="jaco2_collision" mesh="finger_distal"/>
+                          <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                         </body>
                       </body>
                       <body name="j2n6s200_link_finger_2" pos="-0.0025 -0.03095 -0.11482" quat="0.633364 -0.314405 0.633364 -0.314405" gravcomp="1">
                         <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                         <joint name="j2n6s200_joint_finger_2" range="0 1.51" armature="0.001" damping="0.05" limited="true"/>
                         <geom class="jaco2_visual" material="finger_rubber" mesh="finger_proximal"/>
-                        <geom class="jaco2_collision" mesh="finger_proximal"/>
+                        <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                         <body name="j2n6s200_link_finger_tip_2" pos="0.044 -0.003 0" gravcomp="1">
                           <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                           <joint name="j2n6s200_joint_finger_tip_2" stiffness="0.2" range="0 1.2" armature="0.001" damping="0.05" limited="true"/>
                           <geom class="jaco2_visual" material="finger_rubber" mesh="finger_distal"/>
-                          <geom class="jaco2_collision" mesh="finger_distal"/>
+                          <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                         </body>
                       </body>
                       <frame pos="0.0165 0 0.0011" quat="0.5 -0.5 0.5 -0.5">

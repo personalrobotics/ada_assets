@@ -26,6 +26,14 @@
       <default class="jaco2_collision">
         <geom type="mesh" contype="1" conaffinity="1" group="3"
               rgba="0.3 0.5 0.3 0.2"/>
+        <!-- The fingers' contacts resist twisting about their normals (#46). With
+             MuJoCo's default condim 3 a contact has no torsional friction, so an object
+             pinched between the two fingertips turns freely about the line between
+             them, as on an axle. condim 4 adds it, with the friction values unchanged
+             (MuJoCo's defaults: sliding 1, torsional 0.005 m, rolling 1e-4). -->
+        <default class="jaco2_finger_collision">
+          <geom condim="4"/>
+        </default>
       </default>
       <default class="jaco2_ring">
         <geom type="mesh" contype="0" conaffinity="0" group="2"/>
@@ -153,26 +161,26 @@
                     <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                     <joint name="j2n6s200_joint_finger_1" axis="0 0 1" range="0 1.51" limited="true" damping="0.05" armature="0.001"/>
                     <geom class="jaco2_visual" mesh="finger_proximal" material="finger_rubber"/>
-                    <geom class="jaco2_collision" mesh="finger_proximal"/>
+                    <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                     <body name="j2n6s200_link_finger_tip_1" pos="0.044 -0.003 0" gravcomp="1">
                       <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                       <joint name="j2n6s200_joint_finger_tip_1" axis="0 0 1" range="0 1.2" limited="true"
                              stiffness="0.2" damping="0.05" springref="0" armature="0.001"/>
                       <geom class="jaco2_visual" mesh="finger_distal" material="finger_rubber"/>
-                      <geom class="jaco2_collision" mesh="finger_distal"/>
+                      <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                     </body>
                   </body>
                   <body name="j2n6s200_link_finger_2" pos="-0.0025 -0.03095 -0.11482" quat="0.633364 -0.314405 0.633364 -0.314405" gravcomp="1">
                     <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                     <joint name="j2n6s200_joint_finger_2" axis="0 0 1" range="0 1.51" limited="true" damping="0.05" armature="0.001"/>
                     <geom class="jaco2_visual" mesh="finger_proximal" material="finger_rubber"/>
-                    <geom class="jaco2_collision" mesh="finger_proximal"/>
+                    <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                     <body name="j2n6s200_link_finger_tip_2" pos="0.044 -0.003 0" gravcomp="1">
                       <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                       <joint name="j2n6s200_joint_finger_tip_2" axis="0 0 1" range="0 1.2" limited="true"
                              stiffness="0.2" damping="0.05" springref="0" armature="0.001"/>
                       <geom class="jaco2_visual" mesh="finger_distal" material="finger_rubber"/>
-                      <geom class="jaco2_collision" mesh="finger_distal"/>
+                      <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                     </body>
                   </body>
 

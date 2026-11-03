@@ -140,6 +140,7 @@ Kinova JACO2 j2n6s200 — 6-DOF arm with 2 underactuated fingers.
 - **Joints**: 6 revolute (arm) + 2 revolute per finger (proximal + distal with spring)
 - **Actuators**: 6 arm + 2 finger position servos
 - **Fingers**: Tendon-coupled underactuated mechanism. Proximal and distal joints linked by a fixed tendon (coef 1.0 proximal, 0.5 distal). Distal has a return spring — when the proximal is blocked by contact, force transfers to the distal via the tendon, wrapping around the object.
+- **Finger contacts**: `condim 4` on the fingers' collision geoms, so a pinched object resists twisting about the line between the fingertips; friction values are MuJoCo's defaults (#46)
 - **Materials**: Carbon fiber (arm links), brushed aluminum (rings), rubber (finger pads) — from the original DAE files.
 - **Gravity compensation**: Enabled on all moving bodies (`gravcomp="1"`)
 - **Effort limits**: From URDF — J1/J3 ±40 Nm, J2 ±80 Nm, J4-6 ±20 Nm, fingers ±2 Nm
