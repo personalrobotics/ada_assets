@@ -125,7 +125,7 @@ package = ssrobot.load_installed_package("ada_assets")         # ADA with the ar
 - **Commands**: joint position and trajectory for `arm`, and `gripper`.
 - **Channels**: joint position, velocity, and effort for `arm`, and the gripper opening.
 - **No** articutool, tool wrench, or wrist camera sensor. The camera is still on the model.
-- **Rest criteria** for `arm_q` in its MuJoCo profile: ADA's declared variation, with a dwell of 370 ms measured on this model, since ADA's was measured with the articutool. `evidence/ada_hand-mujoco-rest.json` holds the measurement.
+- **Rest criteria** for `arm_q` in its MuJoCo profile: ADA's declared variation, with a dwell of 370 ms measured on this model, since ADA's was measured with the articutool. It covers the arm both empty and holding the reference cylinder. `evidence/ada_hand-mujoco-rest.json` holds the measurement.
 
 `tests/test_hand_package.py` opens it with ssrobot's `MujocoRuntime`, puts a cylinder of ADA's size (r 25 mm, h 100 mm) in the open hand where sstsr's `KinovaJaco2TwoFinger` side grasp places it relative to `palm_grasp_site`, and closes the gripper: both fingers touch the cylinder and the palm does not. It also checks, with the fingers open, that the finger pads lie on either side of the site's z axis, along its y. Its record, `artifacts/test_hand_package/hand_grasp.json`, is written twice and must be byte-identical. The test needs Python 3.11 or later, as ssrobot does.
 
