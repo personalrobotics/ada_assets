@@ -21,6 +21,9 @@
         </default>
         <default class="jaco2_collision">
           <geom type="mesh" group="3" rgba="0.3 0.5 0.3 0.2"/>
+          <default class="jaco2_finger_collision">
+            <geom condim="4"/>
+          </default>
         </default>
         <default class="jaco2_ring">
           <geom type="mesh" contype="0" conaffinity="0" group="2"/>
@@ -235,24 +238,24 @@
                         <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                         <joint name="j2n6s200_joint_finger_1" range="0 1.51" armature="0.001" damping="0.05" limited="true"/>
                         <geom class="jaco2_visual" material="finger_rubber" mesh="finger_proximal"/>
-                        <geom class="jaco2_collision" mesh="finger_proximal"/>
+                        <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                         <body name="j2n6s200_link_finger_tip_1" pos="0.044 -0.003 0" gravcomp="1">
                           <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                           <joint name="j2n6s200_joint_finger_tip_1" stiffness="0.2" range="0 1.2" armature="0.001" damping="0.05" limited="true"/>
                           <geom class="jaco2_visual" material="finger_rubber" mesh="finger_distal"/>
-                          <geom class="jaco2_collision" mesh="finger_distal"/>
+                          <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                         </body>
                       </body>
                       <body name="j2n6s200_link_finger_2" pos="-0.0025 -0.03095 -0.11482" quat="0.633364 -0.314405 0.633364 -0.314405" gravcomp="1">
                         <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                         <joint name="j2n6s200_joint_finger_2" range="0 1.51" armature="0.001" damping="0.05" limited="true"/>
                         <geom class="jaco2_visual" material="finger_rubber" mesh="finger_proximal"/>
-                        <geom class="jaco2_collision" mesh="finger_proximal"/>
+                        <geom class="jaco2_finger_collision" mesh="finger_proximal"/>
                         <body name="j2n6s200_link_finger_tip_2" pos="0.044 -0.003 0" gravcomp="1">
                           <inertial pos="0.022 0 0" mass="0.01" diaginertia="7.9e-07 7.9e-07 8e-08"/>
                           <joint name="j2n6s200_joint_finger_tip_2" stiffness="0.2" range="0 1.2" armature="0.001" damping="0.05" limited="true"/>
                           <geom class="jaco2_visual" material="finger_rubber" mesh="finger_distal"/>
-                          <geom class="jaco2_collision" mesh="finger_distal"/>
+                          <geom class="jaco2_finger_collision" mesh="finger_distal"/>
                         </body>
                       </body>
                       <frame pos="0.0165 0 0.0011" quat="0.5 -0.5 0.5 -0.5">
@@ -473,11 +476,11 @@
   </contact>
 
   <tendon>
-    <fixed name="finger_1_tendon">
+    <fixed name="finger_1_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_1" coef="1"/>
       <joint joint="j2n6s200_joint_finger_tip_1" coef="0.5"/>
     </fixed>
-    <fixed name="finger_2_tendon">
+    <fixed name="finger_2_tendon" damping="1.56">
       <joint joint="j2n6s200_joint_finger_2" coef="1"/>
       <joint joint="j2n6s200_joint_finger_tip_2" coef="0.5"/>
     </fixed>
@@ -490,8 +493,8 @@
     <general name="act_j2n6s200_joint_4" joint="j2n6s200_joint_4" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -14"/>
     <general name="act_j2n6s200_joint_5" joint="j2n6s200_joint_5" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -12"/>
     <general name="act_j2n6s200_joint_6" joint="j2n6s200_joint_6" forcerange="-20 20" biastype="affine" gainprm="350" biasprm="0 -350 -12"/>
-    <general name="act_finger_1" tendon="finger_1_tendon" ctrlrange="0 1.51" forcerange="-2 2" biastype="affine" gainprm="0.3" biasprm="0 -0.3 -0.05"/>
-    <general name="act_finger_2" tendon="finger_2_tendon" ctrlrange="0 1.51" forcerange="-2 2" biastype="affine" gainprm="0.3" biasprm="0 -0.3 -0.05"/>
+    <general name="act_finger_1" tendon="finger_1_tendon" ctrlrange="0 1.51" forcerange="-1.81 1.81" biastype="affine" gainprm="134" biasprm="0 -134"/>
+    <general name="act_finger_2" tendon="finger_2_tendon" ctrlrange="0 1.51" forcerange="-1.81 1.81" biastype="affine" gainprm="134" biasprm="0 -134"/>
     <general name="articutool/act_atool_tilt" joint="articutool/atool_joint1" ctrlrange="-1.5708 1.5708" ctrllimited="true" forcerange="-1.4 1.4" biastype="affine" gainprm="100" biasprm="0 -100 -3"/>
     <general name="articutool/act_atool_roll" joint="articutool/atool_joint2" ctrlrange="-3.14159 3.14159" ctrllimited="true" forcerange="-1.4 1.4" biastype="affine" gainprm="100" biasprm="0 -100 -3"/>
   </actuator>
