@@ -108,7 +108,7 @@ In the generated models the articutool is **rigidly mounted**: its tilt and roll
   - the wrist camera's RGB and depth, at 640x360.
 - **Named configurations**: `resting`, `staging`, `above_plate`, `stow`, equal to the keyframes of the same names.
 - **Joint limits**: the JACO2's velocity and effort, and the articutool's, from their URDFs in ada_ros2 and articutool_ros2. Kinova publishes no acceleration limit, so ADA's operating limits are declared instead, as ada_mj uses: each joint's velocity limit reached in 0.1 s. The sources are in comments in `ssrobot.toml`.
-- **Gripper positions** (`open_positions`, `closed_positions`): where the gripper's four joints settle commanded fully open and fully closed on nothing, so a gripper command can be checked against the scene before it runs. They are MuJoCo's values; the real hand's are unmeasured. ssrobot's `scripts/calibrate_gripper.py` measures them; `evidence/mujoco-gripper.json` holds the measurement, and `evidence/ada_hand-mujoco-gripper.json` the bare-hand package's.
+- **Gripper positions** (`open_positions`, `closed_positions`): where the gripper's four joints settle commanded fully open and fully closed on nothing, so a gripper command can be checked against the scene before it runs. They are MuJoCo's values; the real hand's are unmeasured. ssrobot's `scripts/calibrate_gripper.py` measures them; `evidence/mujoco-gripper.json` holds the measurement.
 
 ### Bare-hand package
 
@@ -122,6 +122,7 @@ package = ssrobot.load_installed_package("ada_assets")         # ADA with the ar
 ```
 
 - **Same as ADA's**: the `arm` group and manipulator, the `gripper`, the named configurations, the JACO2's joint limits, and the gripper's controls and completion detector in its MuJoCo profile (`models/mujoco.toml`).
+- **Gripper positions** measured on this model: `evidence/ada_hand-mujoco-gripper.json` holds the measurement.
 - **End effector** `hand`, at `palm_grasp_site` (see the JACO2 sites below), with the gripper.
 - **Commands**: joint position and trajectory for `arm`, and `gripper`.
 - **Channels**: joint position, velocity, and effort for `arm`, and the gripper opening.

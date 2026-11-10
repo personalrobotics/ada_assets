@@ -1,7 +1,8 @@
 # ADA with an empty hand: the robot of ../ssrobot.toml without the articutool, for grasping
 # objects with the fingers. Its arm, gripper, named configurations, and JACO2 joint limits
-# are the same declarations as there, with the same sources; keep the two in step. Its end
-# effector is the palm grasp site, sstsr's canonical parallel-jaw frame (jaco2.xml).
+# are the same declarations as there, with the same sources; keep the two in step. The
+# gripper's open_positions and closed_positions are measured on this model, not copied. Its
+# end effector is the palm grasp site, sstsr's canonical parallel-jaw frame (jaco2.xml).
 # The package root is this directory, which holds the model and its meshes.
 schema = "ssrobot.package"
 version = 1
