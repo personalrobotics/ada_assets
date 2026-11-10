@@ -44,7 +44,7 @@ dev = [
     "pytest",
     "ruff",
     "sstsr==4.2.0",
-    "ssrobot @ git+https://github.com/personalrobotics/ssrobot@2d8285e6822fe72fd3cbe82902df229678b4ef75 ; python_full_version >= '3.11'",
+    "ssrobot @ git+https://github.com/personalrobotics/ssrobot@90676c05772488c1448decfc20a23ddab0adf9e1 ; python_full_version >= '3.11'",
 ]
 
 [tool.uv]

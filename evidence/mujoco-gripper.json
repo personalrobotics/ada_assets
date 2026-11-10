@@ -1,0 +1,188 @@
+{
+  "robot": "ada",
+  "provenance": {
+    "ssrobot_commit": "90676c05772488c1448decfc20a23ddab0adf9e1",
+    "ssrobot_clean": true,
+    "script": "scripts/calibrate_gripper.py",
+    "command": [
+      "python",
+      "scripts/calibrate_gripper.py",
+      "--out",
+      "artifacts/calibrate-gripper-ada",
+      "--robot",
+      "ada",
+      "--commit",
+      "ada=2d8f7972920e4369933065e9131b22dcd5858f2e"
+    ],
+    "python": "3.14.7",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "mujoco": "3.14.0",
+    "package": {
+      "robot": "ada",
+      "repository": "personalrobotics/ada_assets",
+      "commit": "2d8f7972920e4369933065e9131b22dcd5858f2e",
+      "pinned": true,
+      "archive_sha256": "356fb893bd64392f496081382731c25d11c2526c63f0cfac5f70a62de73e6502",
+      "package_root": "src/ada_assets",
+      "fingerprint": "41c46ee3b865846893dc8bb62c8cf1b813d6028886ce2cab08f57acba4a79c3f"
+    }
+  },
+  "procedure": {
+    "readings": [
+      {
+        "reading": "first_close",
+        "opening": 0.0
+      },
+      {
+        "reading": "open",
+        "opening": 1.0
+      },
+      {
+        "reading": "closed",
+        "opening": 0.0
+      }
+    ],
+    "hold_s": 1.0,
+    "read": "every gripper joint from a snapshot, once settled after the open (from closed) and after the second close (from open)",
+    "settled": "every gripper joint's range over the last dwell at most the tolerance, and the change in its mean from the dwell before, extrapolated over the horizon, too",
+    "settle_dwell_s": 0.2,
+    "settle_horizon_s": 10.0,
+    "settle_timeout_s": 20.0,
+    "limit_slack": 0.001,
+    "command_deadline_ticks": 5000,
+    "contacts": "outside the gripper, checked every tick of each command and settle",
+    "tolerance": 1e-06
+  },
+  "start": {
+    "keyframe": null,
+    "move": null,
+    "hold_s": 1.0
+  },
+  "grippers": {
+    "gripper": {
+      "joints": [
+        "j2n6s200_joint_finger_1",
+        "j2n6s200_joint_finger_tip_1",
+        "j2n6s200_joint_finger_2",
+        "j2n6s200_joint_finger_tip_2"
+      ],
+      "first_close": {
+        "opening": 0.0,
+        "state": "succeeded",
+        "termination": "reached_target",
+        "final_opening": 0.008551169261423741,
+        "command_ns": 8000000,
+        "settled": true,
+        "settle_ns": 3870000000,
+        "raw_positions": [
+          1.3499999929791515,
+          1.4024258818876262e-08,
+          1.3499999929791515,
+          1.4024258794426429e-08
+        ],
+        "positions": [
+          1.3499999929791515,
+          1.4024258818876262e-08,
+          1.3499999929791515,
+          1.4024258794426429e-08
+        ],
+        "clamped": [],
+        "first_contact": null
+      },
+      "open": {
+        "opening": 1.0,
+        "state": "succeeded",
+        "termination": "reached_target",
+        "final_opening": 0.9904477375757073,
+        "command_ns": 1190000000,
+        "settled": true,
+        "settle_ns": 818000000,
+        "raw_positions": [
+          8.088022121018442e-11,
+          -1.6155454241775725e-10,
+          8.081280598307786e-11,
+          -1.6142071230786393e-10
+        ],
+        "positions": [
+          8.088022121018442e-11,
+          0.0,
+          8.081280598307786e-11,
+          0.0
+        ],
+        "clamped": [
+          {
+            "joint": "j2n6s200_joint_finger_tip_1",
+            "raw": -1.6155454241775725e-10,
+            "bound": 0.0,
+            "excess": 1.6155454241775725e-10
+          },
+          {
+            "joint": "j2n6s200_joint_finger_tip_2",
+            "raw": -1.6142071230786393e-10,
+            "bound": 0.0,
+            "excess": 1.6142071230786393e-10
+          }
+        ],
+        "first_contact": null
+      },
+      "closed": {
+        "opening": 0.0,
+        "state": "succeeded",
+        "termination": "reached_target",
+        "final_opening": 0.009633692065521025,
+        "command_ns": 1188000000,
+        "settled": true,
+        "settle_ns": 4682000000,
+        "raw_positions": [
+          1.3499999929879352,
+          1.4006713505372757e-08,
+          1.3499999929879352,
+          1.4006713507285893e-08
+        ],
+        "positions": [
+          1.3499999929879352,
+          1.4006713505372757e-08,
+          1.3499999929879352,
+          1.4006713507285893e-08
+        ],
+        "clamped": [],
+        "first_contact": null
+      },
+      "open_positions": [
+        8.088022121018442e-11,
+        0.0,
+        8.081280598307786e-11,
+        0.0
+      ],
+      "closed_positions": [
+        1.3499999929879352,
+        1.4006713505372757e-08,
+        1.3499999929879352,
+        1.4006713507285893e-08
+      ],
+      "clamped": [
+        {
+          "reading": "open",
+          "joint": "j2n6s200_joint_finger_tip_1",
+          "raw": -1.6155454241775725e-10,
+          "bound": 0.0,
+          "excess": 1.6155454241775725e-10
+        },
+        {
+          "reading": "open",
+          "joint": "j2n6s200_joint_finger_tip_2",
+          "raw": -1.6142071230786393e-10,
+          "bound": 0.0,
+          "excess": 1.6142071230786393e-10
+        }
+      ],
+      "declarable": {
+        "ok": true
+      }
+    }
+  },
+  "ok": true,
+  "failures": [],
+  "result_sha256": "1541e0de43bcd3e2b061a1a0aa8a3598459f399d50c91d8eebd322f7ba7a00d7"
+}
