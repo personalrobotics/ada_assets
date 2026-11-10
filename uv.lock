@@ -42,7 +42,7 @@ requires-dist = [{ name = "mujoco", specifier = ">=3.14" }]
 dev = [
     { name = "pytest" },
     { name = "ruff" },
-    { name = "ssrobot", marker = "python_full_version >= '3.11'", git = "https://github.com/personalrobotics/ssrobot?rev=2d8285e6822fe72fd3cbe82902df229678b4ef75" },
+    { name = "ssrobot", marker = "python_full_version >= '3.11'", git = "https://github.com/personalrobotics/ssrobot?rev=90676c05772488c1448decfc20a23ddab0adf9e1" },
     { name = "sstsr", specifier = "==4.2.0" },
 ]
 
@@ -718,7 +718,7 @@ wheels = [
 [[package]]
 name = "ssrobot"
 version = "0.0.0"
-source = { git = "https://github.com/personalrobotics/ssrobot?rev=2d8285e6822fe72fd3cbe82902df229678b4ef75#2d8285e6822fe72fd3cbe82902df229678b4ef75" }
+source = { git = "https://github.com/personalrobotics/ssrobot?rev=90676c05772488c1448decfc20a23ddab0adf9e1#90676c05772488c1448decfc20a23ddab0adf9e1" }
 
 [[package]]
 name = "sstsr"

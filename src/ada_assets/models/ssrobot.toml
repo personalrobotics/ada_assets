@@ -1,7 +1,8 @@
 # ADA with an empty hand: the robot of ../ssrobot.toml without the articutool, for grasping
 # objects with the fingers. Its arm, gripper, named configurations, and JACO2 joint limits
-# are the same declarations as there, with the same sources; keep the two in step. Its end
-# effector is the palm grasp site, sstsr's canonical parallel-jaw frame (jaco2.xml).
+# are the same declarations as there, with the same sources; keep the two in step. The
+# gripper's open_positions and closed_positions are measured on this model, not copied. Its
+# end effector is the palm grasp site, sstsr's canonical parallel-jaw frame (jaco2.xml).
 # The package root is this directory, which holds the model and its meshes.
 schema = "ssrobot.package"
 version = 1
@@ -26,6 +27,12 @@ joints = ["j2n6s200_joint_1", "j2n6s200_joint_2", "j2n6s200_joint_3", "j2n6s200_
 name = "gripper"
 frame = "j2n6s200_link_6"
 joints = ["j2n6s200_joint_finger_1", "j2n6s200_joint_finger_tip_1", "j2n6s200_joint_finger_2", "j2n6s200_joint_finger_tip_2"]
+# Where the joints settle commanded fully open and fully closed on nothing: MuJoCo's
+# values, the hardware is unmeasured. Measured by ssrobot scripts/calibrate_gripper.py
+# at ssrobot 90676c05772 on personalrobotics/ada_assets@2d8f7972920e (MuJoCo
+# 3.14.0); evidence/ada_hand-mujoco-gripper.json sha256 91f44243cdfc7f777ab13a73aa4a2dd3775467dbf56a87244c3f26a405766854
+open_positions = [5.4820280672972064e-12, 0.0, 5.462468868187398e-12, 0.0]
+closed_positions = [1.3499999929879352, 1.4006713506702923e-08, 1.3499999929879352, 1.4006713598753754e-08]
 
 [[semantics.manipulators]]
 name = "arm"

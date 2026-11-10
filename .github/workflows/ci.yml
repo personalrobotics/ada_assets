@@ -103,7 +103,7 @@ jobs:
         run: |
           for package in src/ada_assets src/ada_assets/models; do
             uvx --python 3.12 \
-              --from "git+https://github.com/personalrobotics/ssrobot@c17ce05bb12a26b65893e5561ecc451a0444c11d" \
+              --from "git+https://github.com/personalrobotics/ssrobot@90676c05772488c1448decfc20a23ddab0adf9e1" \
               ssrobot doctor "$package" --wheel "$(ls dist/*.whl)"
           done
 

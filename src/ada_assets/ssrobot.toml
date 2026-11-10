@@ -24,6 +24,12 @@ joints = ["j2n6s200_joint_1", "j2n6s200_joint_2", "j2n6s200_joint_3", "j2n6s200_
 name = "gripper"
 frame = "j2n6s200_link_6"
 joints = ["j2n6s200_joint_finger_1", "j2n6s200_joint_finger_tip_1", "j2n6s200_joint_finger_2", "j2n6s200_joint_finger_tip_2"]
+# Where the joints settle commanded fully open and fully closed on nothing: MuJoCo's
+# values, the hardware is unmeasured. Measured by ssrobot scripts/calibrate_gripper.py
+# at ssrobot 90676c05772 on personalrobotics/ada_assets@2d8f7972920e (MuJoCo
+# 3.14.0); evidence/mujoco-gripper.json sha256 1aa16724b50c7d92b1a20f21f660ff6341aa50facd7d87421665b05c9eb7d941
+open_positions = [8.088022121018442e-11, 0.0, 8.081280598307786e-11, 0.0]
+closed_positions = [1.3499999929879352, 1.4006713505372757e-08, 1.3499999929879352, 1.4006713507285893e-08]
 
 [[semantics.manipulators]]
 name = "arm"
