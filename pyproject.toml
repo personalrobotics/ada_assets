@@ -43,8 +43,8 @@ select = ["F", "E", "W", "I"]
 dev = [
     "pytest",
     "ruff",
-    "sstsr==4.2.0",
-    "ssrobot @ git+https://github.com/personalrobotics/ssrobot@90676c05772488c1448decfc20a23ddab0adf9e1 ; python_full_version >= '3.11'",
+    "sstsr==4.5.0",
+    "ssrobot @ git+https://github.com/personalrobotics/ssrobot@e1761b1ec61896652577c9ae44c07c5f4a11a282 ; python_full_version >= '3.11'",
 ]
 
 [tool.uv]
